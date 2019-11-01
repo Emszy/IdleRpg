@@ -1,0 +1,66 @@
+Player starts as a sprite
+
+starts with 100 gold
+3 tiny potions
+10 health
+10 hunger
+10 thirst
+1 strength
+1 agility
+
+character walks and attacks on his own
+Players goal is to keep him alive and upgrade him
+
+
+walks through first door
+
+automatically attacks closest target once dead
+attacks next target
+and so on
+
+when all enemies are dead you collect treasure
+then walk through next door
+
+death occurs when {
+	hp < 0
+}
+
+hp depletion occurs {
+	thirst <= 0
+	hunger <= 0
+}
+
+Mechanics {
+	enemies == 0 && treasure == 0 {
+		move to exit
+	}
+
+	enemies > 0 {
+		find closest enemy location and move to them {
+			enemy dies delete from array and find next enemy
+		}
+	}
+
+	enemies == 0 and treasure > 1 {
+		find closest treasure and collect {
+			when collected {
+				move to next treasure and collect
+			}
+		}
+	}
+
+	hunger depletes randomly between n-n seconds
+	thirst steadily depletes every n seconds
+
+
+	no need for character control, only click to upgrade skills
+	click item to use {
+		item does corresponding bonus
+	}
+}
+
+
+
+
+
+

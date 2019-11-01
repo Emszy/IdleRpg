@@ -1,0 +1,27 @@
+Canvas is going to handle the drawing aspect of whatever comes its way
+
+Map {
+	x and y coordinates
+	img array
+	walkable index // for now all is walkable
+	
+
+}
+
+Character {
+	some way to draw an image + animate it
+	img array
+	takes in x and y coordinates
+}
+
+Enemies {
+		some way to draw an image + animate it
+		img array
+		takes in x and y coordinates
+}
+
+items {
+		some way to draw an image + animate it
+		img array
+		takes in x and y coordinates
+}

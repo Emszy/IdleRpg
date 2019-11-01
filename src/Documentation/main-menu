@@ -1,0 +1,27 @@
+Main menu has three buttons
+
+
+	Start
+	Options
+	saved progress
+
+
+Start{
+	Starts game normally
+	creates character
+	creates starting map
+	game actually starts
+}
+
+options {
+	sound - on / off
+	credits - shows who made it
+}
+
+saved progress {
+	loads a previously saved game into memory
+	character data {
+		levels
+		items
+	}
+}

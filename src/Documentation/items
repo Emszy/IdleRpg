@@ -1,0 +1,21 @@
+items
+
+Can be used in game for status effect
+
+Potions {
+	Heal according to their stats
+}
+
+food {
+	make hunger go back up and heal a little
+}
+
+water {
+	makes thirst go down
+}
+
+autobuy {
+	you can buy autobuy for stats such as strength, def, and agility
+	you can buy autouse potions, food, and water
+	autobuy can also buy in the beginning of each stage once you enter/exit
+}

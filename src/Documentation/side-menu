@@ -1,0 +1,34 @@
+SideMenu
+
+Open during game
+
+shows character and data {
+	img of character
+	stats {
+		attack
+		defence
+		attack speed
+		hunger
+		thirst
+		
+	}
+
+	current items {
+		inventory gridlike pattern
+		click item to use item
+
+		Items will have a spot predetermined no rearranging for now to keep project simple
+	}
+}
+
+Tab for
+buy menu {
+	shows current things unlocked that you can buy
+	items
+	abilities
+	skill upgrades
+}
+
+achievements {
+	will fill in data
+}

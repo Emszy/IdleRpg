@@ -1,0 +1,10 @@
+Upgrades {
+	
+	you can buy stat upgrades with gold {
+		strength
+		defence
+		agility
+		hunger decreaser
+		thirst decreaser
+	}
+}

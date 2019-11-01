@@ -1,0 +1,19 @@
+Enemies {
+	drop {
+		any Item, the higher the level the better the drop
+		always drops some amount of gold n-n
+		progressively get harder as you get to levels
+	}
+}
+
+Bosses {
+	happen every ten levels
+	ten times harder than original enemies
+	drop ten times the gold, and better items
+}
+
+mechanics {
+	enemies stay within a very close distance of their spawn point
+	it is possible to be attacked by <1 at one time but unlikely
+
+}
