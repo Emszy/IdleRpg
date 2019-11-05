@@ -97,6 +97,7 @@ export default class MapLogic {
 	create_base(level) {
 		let tiles = []
     let terrain = this.selectTerrain(level);
+    console.log(terrain);
     let layerType = this.layerType(terrain);
 		for (let y = 0; y < this.height; y++) {
 			tiles[y] = [];

@@ -34,7 +34,7 @@ export default class Entity {
 		} else {
 			this.status.location = "lost";
 		}
-		console.log("location", this.status.location)
+		// console.log("location", this.status.location)
 	}
 
 	setDestination() {
@@ -53,7 +53,7 @@ export default class Entity {
 		} else {
 			this.status.actions.destination = "wild"
 		}
-		console.log("Destination", this.status.actions.destination)
+		// console.log("Destination", this.status.actions.destination)
 	}
 
 
@@ -65,14 +65,14 @@ export default class Entity {
 		} else if (this.status.actions.mine.state === true && ores.length) {
 			this.status.actions.action = "mining";
 		} else if (this.status.actions.woodCut.state === true && trees.length) {
-			this.status.actions.action = "woodcutting";
+			this.status.actions.action = "woodCutting";
  		} else if (this.status.actions.hunt.state === true && animals.length) {
 			this.status.actions.action = "hunting";
  		} else {
  			this.status.actions.action = "walk";
  		}
 
- 		console.log("Action", this.status.actions.action)
+ 		// console.log("Action", this.status.actions.action)
 	}
 
 

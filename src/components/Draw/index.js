@@ -53,9 +53,9 @@ export default class Draw extends React.Component {
         this.state.logic.UI.drawInventory(player, ctx);
         this.state.logic.UI.drawMapInventory(map.inventory[player.status.currLevel - 1], ctx);
 
-      //   this.state.logic.UI.drawOre(this.state.logic.ore, ctx);
-      //   this.state.logic.UI.drawTrees(this.state.logic.trees, ctx);
-      //   this.state.logic.UI.drawAnimals(this.state.logic.animals, ctx);
+        this.state.logic.UI.drawResource(this.state.logic.ore, ctx);
+        this.state.logic.UI.drawResource(this.state.logic.trees, ctx);
+        this.state.logic.UI.drawAnimals(this.state.logic.animals, ctx);
       //   this.state.logic.UI.drawFarm(player, ctx)
         this.state.logic.UI.drawPlayers(player, enemies, ctx);
       //   this.state.logic.UI.drawHome(player, this.state.logic.items, ctx);

@@ -10,16 +10,14 @@ import Entity from '../Entity'
 export default class Resources {
 	constructor(items) {
 		this.items = items;
-		let oreItems = items.returnItems(1,0);
-		let woodItems = items.returnItems(1,1);
 	}
 
-	ores(level) {
+	newResource(level, items, resFunc) {
 		let arr = [];
 		for (var i = 0; i < randomInt(1,4); i++) {
-				let settings = this.createOres();
-				let ore = new Entity({
-					name : this.oreItems[settings.oreItemIndex].info.name,
+				let settings = resFunc(level);
+				let resource = new Entity({
+					name : items[settings.itemIndex].name,
 					x : randomInt(0, 450),
 					y : randomInt(0, 450),
 					width : 64,
@@ -50,32 +48,17 @@ export default class Resources {
 						thirstDecay : 800,
 					},
 					animation : { 
-									body: settings.animation,
+									singleImg: settings.animation,
 								},
 					items : this.items
 				})
-				ore.inventory.add(this.oreItems[settings.oreItemIndex].info.copy())
-				ore.inventory.add(this.oreItems[settings.oreItemIndex].info.copy())
-				ore.inventory.add(this.oreItems[settings.oreItemIndex].info.copy())
-				ore.inventory.add(this.oreItems[settings.oreItemIndex].info.copy())
-				ore.inventory.add(this.oreItems[settings.oreItemIndex].info.copy())
-
-			arr.push(ore)
+				for (var i = 0; i < settings.amount; i++) {
+					resource.inventory.add(items[settings.itemIndex].copy())
+				}
+			arr.push(resource)
 		}
 		return (arr);
 	}
-
-
-
-	// constructor(x,y,width,height, items) {
-	// 	this.items = items
-	// 	this.body = new RigidBody(x, y, width, height);
-	// 	this.skills = new Skills();
-	// 	this.inventory = new Inventory(items);
-	// 	this.miningLvl = 1;
-	// 	this.woodCuttingLvl = 1;
-	// 	this.dead = false;
-	// }
 
 	createOres(level) {
 		let animation = new ResourceAnimation(ore.tin)
@@ -109,74 +92,62 @@ export default class Resources {
 				miningLvl = 80;
 				animation = new ResourceAnimation(ore.diamond)
 			}
+			
+			let amount = randomInt(settings.resources.ore.spawnCountRange.start, settings.resources.ore.spawnCountRange.end)
 
 			return ({
-				oreItemIndex : num,
-				miningLvl : miningLvl,
+				itemIndex : num,
+				miningLvl : level,
+				woodCutLvl : 1,
+				huntingLvl : 1,
+				health : 100,
 				animation : animation,
+				amount : amount
 			})
 		}
 
 
-	// createWood(level) {
-	// 	let wood = this.items.categories[1].subcategory[1].items;
+	createWood(level) {
+			let num = 4;
+			let woodCuttingLvl = 1;
+			let animation = new ResourceAnimation(trees.oak)
+			if (level >= 0 && level < 20) {
+				num = 0
+				woodCuttingLvl = 1;
+				animation = new ResourceAnimation(trees.oak)
 
-	// 		let num = 4;
-	// 		if (level >= 0 && level < 20) {
-	// 			num = 0
-	// 			this.woodCuttingLvl = 1;
-	// 			this.animation = new ResourceAnimation(trees.oak)
+			} else if (level >= 20 && level < 40) {
+				num = 1;
+				woodCuttingLvl = 20
+				animation = new ResourceAnimation(trees.maple)
 
-	// 		} else if (level >= 20 && level < 40) {
-	// 			num = 1;
-	// 			this.woodCuttingLvl = 20
-	// 			this.animation = new ResourceAnimation(trees.maple)
+			} else if (level >= 40 && level < 60) {
+				num = 2;
+				woodCuttingLvl = 40
+				animation = new ResourceAnimation(trees.mahogony)
 
-	// 		} else if (level >= 40 && level < 60) {
-	// 			num = 2;
-	// 			this.woodCuttingLvl = 40
-	// 			this.animation = new ResourceAnimation(trees.mahogony)
+			} else if (level >= 60 && level < 80) {
+				num = 3;
+				woodCuttingLvl = 60;
+				animation = new ResourceAnimation(trees.magic)
 
-	// 		} else if (level >= 60 && level < 80) {
-	// 			num = 3;
-	// 			this.woodCuttingLvl = 60;
-	// 			this.animation = new ResourceAnimation(trees.magic)
+			} else {
+				num = 4;
+				woodCuttingLvl = 80;
+				animation = new ResourceAnimation(trees.super)
 
-	// 		} else if (level >= 80) {
-	// 			num = 4;
-	// 			this.woodCuttingLvl = 80;
-	// 			this.animation = new ResourceAnimation(trees.super)
+			}
 
-	// 		}
-	// 		let amount = randomInt(settings.resources.wood.spawnCountRange.start, settings.resources.wood.spawnCountRange.end)
-
-	// 		for (var x = 0; x < amount; x++) {
-	// 			this.inventory.add(wood[num].info.copy());
-	// 		}
-	// }
-
-	
-
-	// dropInventory() {
-	// 	return this.inventory;
-	// }
-	
-	// takeDamage(damage) {
-	// 	this.skills.health.take(damage);
-	// 	return (this.isDead());
-	// }
-
-	// isDead() {
-	// 	if (this.skills.health.isZero()) {
-	// 		this.dead = true;
-	// 		return(this.dropInventory());
-	// 	}
-	// 	return (false);
-	// }
-
-	// getHealth() {
-	// 	return this.skills.health.getCurrent();
-	// }
-
+			let amount = randomInt(settings.resources.wood.spawnCountRange.start, settings.resources.wood.spawnCountRange.end)
+			return ({
+				itemIndex : num,
+				miningLvl : 1,
+				woodCutLvl : woodCuttingLvl,
+				huntingLvl : 1,
+				health : 100,
+				animation : animation,
+				amount : amount,
+			})
+	}
 
 }

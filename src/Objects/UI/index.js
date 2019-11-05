@@ -274,6 +274,7 @@ export default class UI {
     // draws enemies;
     for (let i = 0; i < enemies.length; i++) {
         this.playerAnimationMovement(enemies[i], ctx)
+        enemies[i].body.followPath();
     }
 
     for (var i = 0; i < player.range.projectiles.active.length; i++) {
@@ -284,53 +285,40 @@ export default class UI {
 
 
     this.playerAnimationMovement(player, ctx)
-    
     this.drawPlayerStatsInCorner(player, ctx);
 
 
   }
 
   drawAnimals(animals, ctx) {
-    for (let i = 0; i < animals.count; i++) {
-      if (!animals.arr[i].dead) {
-        animals.arr[i].body.followPath();
+    for (let i = 0; i < animals.length; i++) {
+      
+        animals[i].body.followPath();
 
-        if (animals.arr[i].body.currentDirection === "north") {
-          animals.arr[i].animation.walk("up", animals.arr[i], ctx)
+        if (animals[i].body.currentDirection === "north") {
+          animals[i].armor.animation.walk("up", animals[i], ctx)
         }
           
-        if (animals.arr[i].body.currentDirection === "east") {
-          animals.arr[i].animation.walk("right", animals.arr[i], ctx)
+        if (animals[i].body.currentDirection === "east") {
+          animals[i].armor.animation.walk("right", animals[i], ctx)
         }
 
-        if (animals.arr[i].body.currentDirection === "south") {
-          animals.arr[i].animation.walk("down", animals.arr[i], ctx)
+        if (animals[i].body.currentDirection === "south") {
+          animals[i].armor.animation.walk("down", animals[i], ctx)
         }
 
-        if (animals.arr[i].body.currentDirection === "west") {
-          animals.arr[i].animation.walk("left", animals.arr[i], ctx)
+        if (animals[i].body.currentDirection === "west") {
+          animals[i].armor.animation.walk("left", animals[i], ctx)
         }
-
-        this.drawHealthBar(animals.arr[i], ctx);
-      }
+        this.drawHealthBar(animals[i], ctx);
     }
   }
 
-  drawOre(ore, ctx) {
-	for (let i = 0; i < ore.count; i++) {
-      if (!ore.arr[i].dead) {
-        ore.arr[i].animation.drawOre(ore.arr[i], ctx)
-        this.drawHealthBar(ore.arr[i], ctx);
-      }
-    }
-  }
 
-  drawTrees(trees, ctx) {
-	for (let i = 0; i < trees.count; i++) {
-      if (!trees.arr[i].dead) {
-        trees.arr[i].animation.drawTree(trees.arr[i], ctx)
-        this.drawHealthBar(trees.arr[i], ctx);
-      }
+  drawResource(resource, ctx) {
+    for (let i = 0; i < resource.length; i++) {
+        resource[i].armor.animation.drawResource(resource[i], ctx)
+        this.drawHealthBar(resource[i], ctx);
     }
   }
 
@@ -417,7 +405,7 @@ export default class UI {
     drawHealthBar (obj, ctx)  {
      
         let redHealth = this.button(obj.body.pos.x , obj.body.pos.y, obj.body.size.x, 2);
-        let scaledHealth = this.scale(obj.getHealth(), 0, obj.skills.health.get(), 0 , obj.body.size.x)
+        let scaledHealth = this.scale(obj.skills.health.getCurrent(), 0, obj.skills.health.get(), 0 , obj.body.size.x)
         let currHealth = this.button(obj.body.pos.x , obj.body.pos.y, scaledHealth, 2) 
 
         this.draw.fillRect(redHealth, "red", ctx);

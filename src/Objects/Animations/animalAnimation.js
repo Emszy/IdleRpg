@@ -3,6 +3,7 @@ export default class AnimalAnimation {
 		this.animal = animal;
 		this.walkTimer = this.makeTimer(this.animal.images.walk.directions.up.end, 10);
 		this.eatTimer = this.makeTimer(this.animal.images.eat.directions.up.end, 10);
+		this.deathTimer = this.makeTimer(this.animal.images.eat.directions.up.end, 10);
 	}
 
 	makeTimer(end, animationTime) {

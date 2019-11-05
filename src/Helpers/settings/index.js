@@ -67,6 +67,11 @@ let settings = {
 			start : 0,
 			end : 50,
 		},
+		
+		walkVelocity : {
+			x : 1,
+			y: 1
+		},
 
 	},
 

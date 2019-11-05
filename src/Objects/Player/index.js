@@ -1,5 +1,7 @@
 
 import Entity from '../Entity'
+import {playerImages, playerShirts, playerPants, playerHair, playerTools, playerWeapons, playerArmor} from "../Animations/images"
+import Animation from "../Animations"
 
 export default class Player {
 	main (name, items) {
@@ -35,6 +37,12 @@ export default class Player {
 					hunting : 1,
 					hungerDecay : 300,
 					thirstDecay : 100,
+				},
+				animation : {
+						body : new Animation(playerImages.coffee),
+						shirt : playerShirts.black,
+						pants : playerPants.black,
+						hair : playerHair.black,
 				},
 
 				items : items

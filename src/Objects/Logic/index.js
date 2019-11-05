@@ -6,7 +6,9 @@ import Items from "../Item"
 import MapLogic from "../Map"
 import UI from "../UI"
 import ClickHandler from "../clickhandler"
-import Resources from "../Resources/resources"
+import Resources from "../Resources"
+import Npc from "../Npc"
+
 import Entity from "../Entity"
 import ActionHandler from "../ActionHandler"
 
@@ -17,19 +19,22 @@ export default class Logic {
 
    		this.clickHandler = new ClickHandler();
    		this.items = new Items();
-	   	this.map = new MapLogic(this.items);
+      this.oreItems = this.items.returnItems(1,0);
+      this.woodItems = this.items.returnItems(1,1);
+	   	
+      this.map = new MapLogic(this.items);
       this.actionHandler = new ActionHandler();
       this.Enemies = new Enemies(this.items);
       this.players = new Player()
+      this.resources = new Resources(this.items);
+      this.npcs = new Npc(this.items);
       // this.merchant = new Player(10,170, 32,32,this.items)
       // this.merchant.body.action = "stop";
       // this.merchant.body.currentDirection = "east";
 
 
-   		// this.player = new Player(this.map.start.pos.x,this.map.start.pos.y,32,32, this.items)
-   		// this.player.setName("Emszy");
-
       this.player = this.players.main("Emszy", this.items);
+
 	   	this.map.create_base(this.player.status.currLevel);
 
    		this.UI = new UI(this.items, this.player);
@@ -39,23 +44,7 @@ export default class Logic {
 
       this.animals = [];
       this.ore = [];
-      this.trees = [];
-        // this.animals = new Enemies();
-        // this.animals.createAnimals(this.player.currLevel, this.player.skills, this.items);
-        // this.animalTarget = this.animals.arr[this.animals.target];
-
-
-        // this.ore = new Resources(this.items, this.player.currLevel);
-        // this.ore.createOres(this.player.currLevel);
-        // this.miningTarget = this.ore.arr[this.ore.target];
-
-
-        // this.trees = new Resources(this.items, this.player.currLevel);
-        // this.trees.createWood(this.player.currLevel);
-        // this.woodCuttingTarget = this.trees.arr[this.trees.target];
-
-
-       
+      this.trees = [];       
 
 
    }
@@ -64,31 +53,32 @@ export default class Logic {
 		return Math.floor(Math.random() * (max - min + 1) + min);
 	}
 
+  targetSelectLogic(arr) {
+      if (arr[0].status.dead) {
+        arr.splice(0,1);
+      }
+      if (arr.length) {
+        this.target = arr[0];
+      }
+  }
+
 	selectTarget() {
 
-		if (this.enemies.length && this.enemies[0].status.dead) {
-			this.enemies.splice(0,1);
-      if (this.enemies.length) {
-        this.target = this.enemies[0];
-      }
-		} else {
-        // if (this.ore.arr[this.ore.target].dead)
-        // {
-        //     this.ore.choose_target();
-        //     this.miningTarget = this.ore.arr[this.ore.target];
-        // }
+		if (this.player.status.actions.action === "fighting" && this.enemies.length) {
+      this.targetSelectLogic(this.enemies);
+		}   
+    else if (this.player.status.actions.action === "mining" && this.ore.length)
+    {
+      this.targetSelectLogic(this.ore);
 
-        // if (this.trees.arr[this.trees.target].dead)
-        // {
-        //     this.trees.choose_target();
-        //     this.woodCuttingTarget = this.trees.arr[this.trees.target];
-        // }
-
-        // if (this.animals.arr[this.animals.target].dead)
-        // {
-        //     this.animals.choose_target();
-        //     this.animalTarget = this.animals.arr[this.animals.target];
-        // }
+    } 
+    else if (this.player.status.actions.action === "woodCutting" && this.trees.length)
+    {
+      this.targetSelectLogic(this.trees);
+    } 
+    else if (this.player.status.actions.action === "hunting" && this.animals.length)
+    {
+      this.targetSelectLogic(this.animals);
     }
 	}
 
@@ -171,79 +161,6 @@ export default class Logic {
 
    }
 
-    // mine() {
-    //     let playerMine = this.player.body.move_to(this.miningTarget.body.pos.x,
-    //                                             this.miningTarget.body.pos.y);    
-    //     if (playerMine) {
-    //         this.player.body.action = "mine";
-
-    //         let resourceDrop = this.miningTarget.takeDamage(this.player.mine());
-    //         if (this.miningTarget.isDead()) {
-    //             this.player.skills.mining.addXp(this.miningTarget.skills.health.get() * 4)
-    //             this.player.body.action = "walk";
-    //         }
-
-    //         if (resourceDrop) {
-    //            this.player.inventory.addInventory(resourceDrop)
-    //         }
-    //     }
-    // }
-
-    // WoodCut() {
-    //     let playerWoodCut = this.player.body.move_to(this.woodCuttingTarget.body.pos.x,
-    //                                                  this.woodCuttingTarget.body.pos.y);    
-    //     if (playerWoodCut) {
-    //         this.player.body.action = "woodcut";
-
-    //         let resourceDrop = this.woodCuttingTarget.takeDamage(this.player.woodCut());
-    //         if (this.woodCuttingTarget.isDead()) {
-    //             this.player.skills.woodcutting.addXp(this.woodCuttingTarget.skills.health.get() * 4)
-    //             this.player.body.action = "walk";
-
-    //         }
-
-    //         if (resourceDrop) {
-    //            this.player.inventory.addInventory(resourceDrop)
-
-    //         }
-    //     }
-    // }
-
-    //  hunt() {
-    //     let hunt = this.player.body.move_to(this.animalTarget.body.pos.x,
-    //                                                  this.animalTarget.body.pos.y);    
-    //     if (hunt) {
-    //         this.player.body.action = "fight";
-    //         let resourceDrop = this.animalTarget.takeDamage(this.player.hunt());
-    //         if (this.animalTarget.isDead()) {
-    //             this.player.skills.hunting.addXp(this.animalTarget.skills.health.get() * 4)
-    //             this.player.body.action = "walk";
-    //         }
-
-    //         if (resourceDrop) {
-    //            this.player.inventory.addInventory(resourceDrop)
-
-    //         }
-    //     }
-    // }
-
-
-   nextLevel() {
-        if (this.player.status.actions.destination === "home") {
-           
-        } else if (this.player.status.actions.destination === "farm") {
-            this.player.prevLevel(this.map.end.pos.x, this.map.end.pos.y);
-        } 
-
-        this.player.newLevel(this.map.start.pos.x, this.map.start.pos.y, this.map);
-
-        if (this.player.status.currLevel > 0) {
-            this.recreateTargets()
-        } else {
-            this.clearResources()
-        }
-   }
-     
 
    restart() {
         this.map.inventory[this.player.status.currLevel - 1].addInventoryToMap(this.actionHandler.dropInventory(this.player), this.player)  
@@ -259,109 +176,28 @@ export default class Logic {
         this.enemies = [];
 
 
-
    }
 
    recreateTargets() {
-            if (this.player.currLevel > 0) {
-                this.map.create_base(this.player.currLevel);
+            if (this.player.status.currLevel > 0) {
+                this.map.create_base(this.player.status.currLevel);
             }
             this.enemies = this.Enemies.basic("SOMEONE", this.player.status.currLevel);
             this.target = this.enemies[0];
-            
-            // this.ore = new Resources(this.items, this.player.currLevel);
-            // this.ore.createOres(this.player.currLevel);
-            // this.miningTarget = this.ore.arr[this.ore.target];
-            
-            // this.trees = new Resources(this.items, this.player.currLevel);
-            // this.trees.createWood(this.player.currLevel);
-            // this.woodCuttingTarget = this.trees.arr[this.trees.target];
-
-            // this.animals = new Enemies();
-            // this.animals.createAnimals(this.player.currLevel, this.player.skills, this.items);
-            // this.animalTarget = this.animals.arr[this.animals.target];
-
+            this.ore = this.resources.newResource(this.player.status.currLevel, this.oreItems, this.resources.createOres)
+            this.trees = this.resources.newResource(this.player.status.currLevel, this.woodItems, this.resources.createWood)
+            this.animals = this.npcs.animals(this.player.status.currLevel);
             this.player.range.projectiles.clearActive();
 
 
 
-   }
-
-   moveLogic() {
-
-      if (this.enemies.length) {
-        if (this.target.status.dead === false) {
-          this.fight();
-          this.enemyFight();
-        }
-      }
-
-
-
-      // else if (this.player.body.stopMining === false && this.enemies.complete && this.ore.complete === false)
-      // {
-      //   this.mine();
-      // }
-      //  else if (this.player.body.stopWoodCutting === false && this.enemies.complete && (this.ore.complete || this.player.body.stopMining) && this.trees.complete === false)
-      // {
-      //   this.WoodCut();
-      // }
-
-      // else if (this.player.body.stopHunting === false && this.animals.complete === false && this.enemies.complete && (this.ore.complete || this.player.body.stopMining) && (this.trees.complete || this.player.body.stopWoodCutting))
-      // {
-      //   this.hunt();
-      // }
-
-      else {
-        this.moveToNextLevel();
-      }
-   }
-
-   moveToNextLevel() {
-        let atEnd = false
-
-        if (this.player.status.actions.destination === "farm") {
-            atEnd = this.player.body.move_to(this.map.start.pos.x, this.map.start.pos.y);
-            if (atEnd) {
-                this.nextLevel();
-            }
-        }  else if (this.player.status.actions.destination === "home") {
-            atEnd = this.player.body.move_to(this.map.start.pos.x, this.map.start.pos.y);
-            if (atEnd) {
-                this.nextLevel();
-            }
-        }  else {
-            atEnd = this.player.body.move_to(this.map.end.pos.x, this.map.end.pos.y);
-            if (atEnd) {
-                this.nextLevel();
-            }
-        }
-        
-   }
+   }   
 
    skillDecay() {
         this.actionHandler.thirsty(this.player);
         this.actionHandler.hungry(this.player);
    }
 
-   atHome() {
-    // let atDestination = false
-    //         if (this.UI.bankButtons.open === true) {
-    //              atDestination = this.player.body.move_to(this.player.home.bank.body.pos.x, this.player.home.bank.body.pos.y)
-    //         } else if (this.UI.buyMenuButtons.open || this.UI.craftMenuButtons.open) {
-    //              atDestination = this.player.body.move_to(this.player.home.buyMenu.body.pos.x, this.player.home.buyMenu.body.pos.y)
-
-    //         } else if (this.UI.waterWellButton.open) {
-    //              atDestination = this.player.body.move_to(this.player.home.waterWell.body.pos.x, this.player.home.waterWell.body.pos.y + 40)
-    //         } else {
-    //              atDestination = this.player.body.move_to(this.map.middle.pos.x, this.map.middle.pos.y);
-    //     }
-    //     if (atDestination) {
-    //         this.player.body.action = "stop"
-    //     } else {
-    //         this.player.body.action = "walk"
-    //     }
-   }
 
    teleported() {
         // if (this.player.teleported === true && this.player.currLevel === 0) {
@@ -381,7 +217,7 @@ export default class Logic {
    moveToEnd() {
     let atEnd = this.player.body.move_to(this.map.end.pos.x, this.map.end.pos.y);
     if (atEnd) {
-      this.player.nextLevel(this.map.start.pos.x, this.map.start.pos.y);
+      this.player.newLevel(this.map.start.pos.x, this.map.start.pos.y, this.map);
       if (this.player.status.currLevel > 0) {
           this.recreateTargets()
       } else {
@@ -415,7 +251,9 @@ export default class Logic {
           this.moveToEnd();
       } else if (playerStatus.location == "wild" && playerStatus.currLevel > 0) {
           this.moveToBeginning();
-          this.enemyFight();
+          if (this.enemies.length) {
+            this.enemyFight();
+          }
 
       }
 
@@ -437,24 +275,16 @@ export default class Logic {
    goToWild() {
     let playerStatus = this.player.status;
 
-    if (playerStatus.location === "wild" && this.enemies.length) {
+    if (playerStatus.actions.action === "walk") {
+      this.moveToEnd();
+    } else {
+      this.fight();
+    }
+    if (playerStatus.location === "wild" && this.enemies.length && playerStatus.actions.action === "fighting") {
         if (this.target.status.dead === false) {
-          this.fight();
           this.enemyFight();
         }
-    }
-    else {
-      let atEnd = this.player.body.move_to(this.map.end.pos.x, this.map.end.pos.y);
-      if (atEnd) {
-        this.player.newLevel(this.map.start.pos.x, this.map.start.pos.y, this.map);
-        if (this.player.status.currLevel > 0) {
-            this.recreateTargets()
-        } else {
-            this.clearResources()
-        }
-      }
-
-    }
+    } 
    }
 
    play() {
@@ -466,12 +296,12 @@ export default class Logic {
 
         let playerStatus = this.player.status;
 
-        if (playerStatus.dead === true) {
-            if (this.player.armor.animation.deathTimer.done) {
-                this.restart();
-            }
-            return this
-        }
+          if (playerStatus.dead === true) {
+              if (this.player.armor.animation.deathTimer.done) {
+                  this.restart();
+              }
+              return this
+          }
 
           if (playerStatus.actions.destination === "home") {
             this.goHome();
@@ -481,9 +311,7 @@ export default class Logic {
             this.goToWild()
           } else if (playerStatus.location === "lost"){
             console.log("SPOOFEM");
-          } else {
-
-          }
+          } 
 
         this.selectTarget();
         // this.player.range.moveFiredArrows();

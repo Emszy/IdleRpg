@@ -8,6 +8,7 @@ export default class ResourceAnimation {
 			end = this.image.end
 		}
 		this.resourceTimer = this.makeTimer(end, 10);
+		this.deathTimer = this.makeTimer(end, 10)
 
 	}
 
@@ -37,7 +38,20 @@ export default class ResourceAnimation {
 		})
 	}
 
+	drawResource(resource, ctx) {
+		ctx.drawImage(this.image.img, 
+                      this.image.pos.x,
+                      this.image.pos.y, 
+                      this.image.pos.width, 
+                      this.image.pos.height,
+                      resource.body.pos.x,
+                      resource.body.pos.y,
+                      this.image.pos.width, 
+                      this.image.pos.height,
+                    );
 
+	}
+	
 	drawTree(resource, ctx) {
 		ctx.drawImage(this.image.img, 
                       this.image.pos.x,
@@ -46,14 +60,24 @@ export default class ResourceAnimation {
                       this.image.pos.height,
                       resource.body.pos.x,
                       resource.body.pos.y,
-                      64, 
-                      96,
+                      this.image.pos.width, 
+                      this.image.pos.height,
                     );
 
 	}
 
 	drawOre(resource, ctx) {
-		this.draw(this.image.img, this.image.pos.x, this.image.pos.y, this.image.size, resource.body.pos.x, resource.body.pos.y, ctx, 64)
+				ctx.drawImage(
+					this.image.img, 
+					this.image.pos.x, 
+					this.image.pos.y, 
+					this.image.pos.width, 
+                    this.image.pos.height,
+					resource.body.pos.x, 
+					resource.body.pos.y, 
+					this.image.pos.width, 
+                    this.image.pos.height,
+				64)
 
 	}
 

@@ -23,20 +23,16 @@ export default class Armor {
 		this.rangeBonus = 0;
 		this.miningBonus = 0;
 		this.woodCuttingBonus = 0;
-
-
-		if (animation) {
+		
+		if (animation.singleImg) {
+			this.animation = animation.singleImg;
+		}
+		if (animation.body) {
 			this.animation = animation.body
 			this.animation.addShirt(animation.shirt)
 			this.animation.addPants(animation.pants)
 			this.animation.addHair(animation.hair)
-		} else {
-			this.animation = new Animation(playerImages.coffee)
-			this.animation.addShirt(playerShirts.black)
-			this.animation.addPants(playerPants.black)
-			this.animation.addHair(playerHair.black)	
 		}
-
 	}
 
 	logBonus() {

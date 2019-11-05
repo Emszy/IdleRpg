@@ -858,7 +858,9 @@ let ore = {
 		size : 64,
 		pos : {
 			x : 0,
-			y : 64
+			y : 64,
+			width : 64,
+			height : 64,
 		},
 	},
 
@@ -867,7 +869,9 @@ let ore = {
 		size : 64,
 		pos : {
 			x : 64,
-			y : 64
+			y : 64,
+			width : 64,
+			height : 64,
 		},
 	},
 	iron : {
@@ -875,7 +879,9 @@ let ore = {
 		size : 64,
 		pos : {
 			x : 128,
-			y : 64
+			y : 64,
+			width : 64,
+			height : 64,
 		},
 	},
 	gold : {
@@ -883,7 +889,9 @@ let ore = {
 		size : 64,
 		pos : {
 			x : 0,
-			y : 128
+			y : 128,
+			width : 64,
+			height : 64,
 		},
 	},
 	platinum : {
@@ -891,7 +899,9 @@ let ore = {
 		size : 64,
 		pos : {
 			x : 64,
-			y : 128
+			y : 128,
+			width : 64,
+			height : 64,
 		},
 	},
 	diamond : {
@@ -899,7 +909,9 @@ let ore = {
 		size : 64,
 		pos : {
 			x : 128,
-			y : 128
+			y : 128,
+			width : 64,
+			height : 64,
 		},
 	}
 }
