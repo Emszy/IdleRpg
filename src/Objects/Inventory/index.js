@@ -80,7 +80,6 @@ export default class Inventory {
    }
 
    addInventoryToMap(newInventory, player) {
-
          for (let y = 0; y < newInventory.spaces.length; y++) {
             if (newInventory.spaces[y].id !== -1) {
                 for (let x = 0; x < this.max; x++) {

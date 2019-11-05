@@ -3,8 +3,9 @@ import React from "react"
 // import PlayerTest from "../../Test/Player"
 // import SkillsTest from "../../Test/Skills"
 // import InventoryTest from "../../Test/Inventory"
-import Euphori from "../../assets/sounds/Euphori.mp3"
+// import Euphori from "../../assets/sounds/Euphori.mp3"
 import Draw from "../Draw"
+// import EntityTest from "../../Test/Entity"
 
 export default class Game extends React.Component {
   
@@ -21,11 +22,9 @@ export default class Game extends React.Component {
     // new RigidBodyTest();
     // let Player = new PlayerTest();
     // Player.log();
-
     // let Skills = new SkillsTest();
-
     // let inventory = new InventoryTest();
-    
+    // let playerEntity = new EntityTest();
 
   }
 
@@ -33,9 +32,6 @@ export default class Game extends React.Component {
     return (
       <div>
         <Draw />
-        <div>
-          <audio ref="audio_tag" src={Euphori} controls/>
-        </div>
       </div>
     )
   }

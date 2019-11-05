@@ -120,7 +120,7 @@ export default class RigidBody {
 
 	followPath() {
 		if (this.move_to(this.path.arr[this.path.index].pos.x, 
-					this.path.arr[this.path.index].pos.y)
+			this.path.arr[this.path.index].pos.y)
 		   ) 
 		{
 			this.path.next();
@@ -131,34 +131,24 @@ export default class RigidBody {
 		if (this.pos.x > 480) {
 			return false
 		}
-		if (this.stop === false)
-		{ 
-			this.pos.x += this.velocity.x;
-		}
+		this.pos.x += this.velocity.x;
 	}
 
 	move_left() {
 		if (this.pos.x <= 0) {
 			return false
 		}
-		if (this.stop === false)
-		{
+		
 			this.pos.x -= this.velocity.x;
-		}
+
 	}
 
 	move_down() {
-		if (this.stop === false)
-		{
 			this.pos.y += this.velocity.y
-		}	
 	}
 
 	move_up() {
-		if (this.stop === false)
-		{
 			this.pos.y -= this.velocity.y
-		}	
 	}
 
 	move_to(x,y) {

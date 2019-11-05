@@ -8,20 +8,19 @@ export default class Grid {
 	constructor(settings) {
 		
 
-		let x = settings.x ? settings.x : 0
-		let y = settings.y ? settings.y : 0
-		let width = settings.width ? settings.width : 3
-		let height = settings.height ? settings.height : 4
-		let cellWidth = settings.cellWidth ? settings.cellWidth : 32
-		let cellHeight = settings.cellHeight ? settings.cellHeight : 32
-		let labelOffsetX = settings.labelOffsetX ? settings.labelOffsetX : 0
-		let labelOffsetY = settings.labelOffsetY ? settings.labelOffsetY : 10
-		let labelSize = settings.labelSize ? settings.labelSize : 10
-		let labels = settings.labels ? settings.labels : []
-		let imgs = settings.imgs ? settings.imgs : []
-		let xSpace = settings.xSpace ? settings.xSpace : 0;
-		let ySpace = settings.ySpace ? settings.ySpace : 0;
-
+		let x = settings.x || 0
+		let y = settings.y || 0
+		let width = settings.width || 3
+		let height = settings.height || 4
+		let cellWidth = settings.cellWidth || 32
+		let cellHeight = settings.cellHeight || 32
+		let labelOffsetX = settings.labelOffsetX || 0
+		let labelOffsetY = settings.labelOffsetY || 10
+		let labelSize = settings.labelSize || 10
+		let labels = settings.labels || []
+		let imgs = settings.imgs || []
+		let xSpace = settings.xSpace || 0;
+		let ySpace = settings.ySpace || 0;
 
 		this.open = false;
 		this.start = new RigidBody(x, y, width,height);

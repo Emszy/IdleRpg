@@ -204,7 +204,7 @@ export default class UI {
 
 
   animationMovement(player, ctx) {
-    if (player.dead === true) {
+    if (player.status.dead === true) {
         player.armor.animation.death(player,ctx)
         return false
       }
@@ -245,7 +245,7 @@ export default class UI {
   
 
   playerAnimationMovement(player, ctx) {
-    if (player.dead === true) {
+    if (player.status.dead === true) {
         player.armor.animation.death(player,ctx)
         return false
       }
@@ -272,17 +272,13 @@ export default class UI {
 
   drawPlayers(player, enemies, ctx) {
     // draws enemies;
-    for (let i = 0; i < enemies.count; i++) {
-      if (!enemies.arr[i].dead) {
-        // this.drawPlayer(enemies.arr[i], "red", ctx);
-        this.animationMovement(enemies.arr[i], ctx)
-        this.drawHealthBar(enemies.arr[i], ctx);
-      }
+    for (let i = 0; i < enemies.length; i++) {
+        this.playerAnimationMovement(enemies[i], ctx)
     }
 
-    for (var i = 0; i < player.firedArrows.length; i++) {
-      if (player.firedArrows[i]) {
-          this.draw.fillRect(player.firedArrows[i].arrow, "blue", ctx);
+    for (var i = 0; i < player.range.projectiles.active.length; i++) {
+      if (player.range.projectiles.active[i]) {
+          this.draw.fillRect(player.range.projectiles.active[i].projectile, "blue", ctx);
       }
     }
 
@@ -376,7 +372,7 @@ export default class UI {
 
 
 		//may need to be drawn somwhere else
-		this.draw.text(player.getName(), 362, 20, "20", ctx);
+		this.draw.text(player.name, 362, 20, "20", ctx);
 		//
 		
     this.draw.img(userInterface.stats, 360, 0, 120,480, ctx)
@@ -408,8 +404,8 @@ export default class UI {
 
 		yOffset += 40
 		this.draw.text("Gold: " + inventory.gold, xOffset, yOffset += yIncrement, "10", ctx);
-		this.draw.text("Level: " + player.currLevel, xOffset, yOffset += yIncrement, "10", ctx);
-		this.draw.text("Highest Level: " + player.highestLevel, xOffset, yOffset += yIncrement, "10", ctx);
+		this.draw.text("Level: " + player.status.currLevel, xOffset, yOffset += yIncrement, "10", ctx);
+		this.draw.text("Highest Level: " + player.status.highestLevel, xOffset, yOffset += yIncrement, "10", ctx);
 
   	}
 
@@ -448,23 +444,25 @@ export default class UI {
 
       // draw green part of health bar scaled to player width
 
-      let scaledHealth = this.scale(player.getHealth(), 0, player.skills.health.get(), 0 , player.body.size.x)
+      let scaledHealth = this.scale(player.skills.health.getCurrent(), 0, player.skills.health.get(), 0 , player.body.size.x)
       let currHealth = this.button(xOffset, 0, scaledHealth, barHeight) 
 
       this.draw.fillRect(currHealth, "purple", ctx);
 
 
-      let scaledThirst = this.scale(player.getThirst(), 0, player.skills.thirst.get(), 0 , player.body.size.x)
+      let scaledThirst = this.scale(player.skills.thirst.getCurrent(), 0, player.skills.thirst.get(), 0 , player.body.size.x)
       let currThirst = this.button(xOffset, 15, scaledThirst, barHeight) 
       this.draw.fillRect(currThirst, "blue", ctx);
 
-      let scaledHunger = this.scale(player.getHunger(), 0, player.skills.hunger.get(), 0 , player.body.size.x)
+      let scaledHunger = this.scale(player.skills.hunger.getCurrent(), 0, player.skills.hunger.get(), 0 , player.body.size.x)
 	    let currHunger = this.button(xOffset, 30, scaledHunger, barHeight) 
       this.draw.fillRect(currHunger, "orange", ctx);
 
       this.draw.text("HP", 0, 8, "10", ctx)
       this.draw.text("Thirst", 0, 22, "10", ctx)
       this.draw.text("Food", 0, 38, "10", ctx)
+      this.draw.text("Level: " + player.status.currLevel, 0, 54, "10", ctx);
+
   }
 
 	// inventory
@@ -870,80 +868,50 @@ export default class UI {
          this.actionButtons[3].label.changeLabel("Stop");
   }
 
+  actionToggle(action, index) {
+    if (action.state === false) {
+       this.actionButtons[index].label.changeLabel("Stop");
+       action.start()
+    } else {
+       this.actionButtons[index].label.changeLabel("Start");
+       action.stop()
+    }
+  }
+
 	actionClick(mouse, player, canvas) {
   if (this.bankButtons.open || this.craftMenuButtons.open || this.buyMenuButtons.open) {
     return false
   }
 
+
 		let len = this.actionButtons.length
         for (let x = 0; x < len; x++) {
             if (this.clickHandler.click(mouse, this.actionButtons[x].button, canvas))
             {
-               	if (x === 0) {
-	                if (player.body.stop === false) {
-	                   this.actionButtons[x].label.changeLabel("Start");
-	                   player.body.stopMoving();
-	                } else {
-	                   this.actionButtons[x].label.changeLabel("Stop");
-	                   player.body.startMoving();
-	                }
-              	}
+             	if (x === 0) {
+                this.actionToggle(player.status.actions.walk, x);
+            	}
 
 	            if (x === 1) {
-	                if (player.body.stopMining === false) {
-	                   this.actionButtons[x].label.changeLabel("Start");
-	                   player.body.stopMine();
-
-	                } else {
-	                   this.actionButtons[x].label.changeLabel("Stop");
-	                   player.body.startMine();
-
-	                }
+                  this.actionToggle(player.status.actions.mine, x);
 	            }
 
 	            if (x === 2) {
-	                if (player.body.stopWoodCutting === false) {
-	                   this.actionButtons[x].label.changeLabel("Start");
-	                   player.body.stopWoodCut();
-
-	                } else {
-	                   this.actionButtons[x].label.changeLabel("Stop");
-	                   player.body.startWoodCut();
-
-	                }
+                this.actionToggle(player.status.actions.woodCut, x);
 	            }
-	            if (x === 3) {
-	                if (player.body.goHome === false) {
-	                   this.actionButtons[x].label.changeLabel("Stop");
-	                   player.body.stopGoingHome();
 
-	                } else {
-	                   this.actionButtons[x].label.changeLabel("Start");
-	                   player.body.startGoingHome();
-	                }
+	            if (x === 3) {
+                this.actionToggle(player.status.actions.home, x);
 	            }
 
               if (x === 4) {
-                  if (player.body.stopHunting === false) {
-                     this.actionButtons[x].label.changeLabel("Start");
-                     player.body.stopHunt();
-
-                  } else {
-                     this.actionButtons[x].label.changeLabel("Stop");
-                     player.body.startHunting();
-                  }
+                this.actionToggle(player.status.actions.hunt, x);
               }
 
-               if (x === 5) {
-                  if (player.body.goFarm === false) {
-                     this.actionButtons[x].label.changeLabel("Stop");
-                     player.body.stopFarm();
-
-                  } else {
-                     this.actionButtons[x].label.changeLabel("Start");
-                     player.body.startFarm();
-                  }
+              if (x === 5) {
+                this.actionToggle(player.status.actions.farm, x);
               }
+
 	         }
         }
 	}
@@ -999,7 +967,6 @@ export default class UI {
       for (let x = 0; x < len; x++) {
         if (this.clickHandler.click(mouse, this.inventorySpaces[x], canvas))
         {
-
           if (this.bankButtons.open === true) {
             player.home.bank.inventory.add(player.inventory.spaces[x])
             player.inventory.deleteOne(x);

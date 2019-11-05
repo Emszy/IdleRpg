@@ -18,7 +18,6 @@ export default class Draw extends React.Component {
       const ctx = canvas.getContext('2d');
 
 
-     
       this.updateCanvas();
     }
 
@@ -34,35 +33,36 @@ export default class Draw extends React.Component {
       }));   
     }
 
-  updateCanvas = () => {
+    updateCanvas = () => {
 
-    const canvas = this.canvasRef.current;
-    const ctx = canvas.getContext('2d');
+      const canvas = this.canvasRef.current;
+      const ctx = canvas.getContext('2d');
 
-    ctx.clearRect(0,0, 480, 480);
+      ctx.clearRect(0,0, 480, 480);
 
-    let player = this.state.logic.player;
-    let merchant = this.state.logic.merchant;
-    let enemies = this.state.logic.enemies;
-    let map = this.state.logic.map;
+      let player = this.state.logic.player;
+      let enemies = this.state.logic.enemies;
+      let map = this.state.logic.map;
 
-    if (this.state.logic) {
-      this.updateLogic();
-      this.state.logic.UI.drawMap(map, ctx);
-      this.state.logic.UI.drawHomeDesign(player, merchant, ctx)
-      this.state.logic.UI.drawInventory(player, ctx);
-      this.state.logic.UI.drawMapInventory(map.inventory[player.currLevel - 1], ctx);
+      // let merchant = this.state.logic.merchant;
+      if (this.state.logic) {
+        this.updateLogic();
 
-      this.state.logic.UI.drawOre(this.state.logic.ore, ctx);
-      this.state.logic.UI.drawTrees(this.state.logic.trees, ctx);
-      this.state.logic.UI.drawAnimals(this.state.logic.animals, ctx);
-      this.state.logic.UI.drawFarm(player, ctx)
-      this.state.logic.UI.drawPlayers(player, enemies, ctx);
-      this.state.logic.UI.drawHome(player, this.state.logic.items, ctx);
+        this.state.logic.UI.drawMap(map, ctx);
+      //   this.state.logic.UI.drawHomeDesign(player, merchant, ctx)
+        this.state.logic.UI.drawInventory(player, ctx);
+        this.state.logic.UI.drawMapInventory(map.inventory[player.status.currLevel - 1], ctx);
 
-    }
-       
-    this.rAF = requestAnimationFrame(this.updateCanvas);
+      //   this.state.logic.UI.drawOre(this.state.logic.ore, ctx);
+      //   this.state.logic.UI.drawTrees(this.state.logic.trees, ctx);
+      //   this.state.logic.UI.drawAnimals(this.state.logic.animals, ctx);
+      //   this.state.logic.UI.drawFarm(player, ctx)
+        this.state.logic.UI.drawPlayers(player, enemies, ctx);
+      //   this.state.logic.UI.drawHome(player, this.state.logic.items, ctx);
+
+      }
+         
+      this.rAF = requestAnimationFrame(this.updateCanvas);
   }
 
   handleClick = (e) => {
@@ -73,7 +73,7 @@ export default class Draw extends React.Component {
 
         this.state.logic.UI.menuClick(e, canvas);
         this.state.logic.UI.actionClick(e, player, canvas);
-        if (player.currLevel > -1) {
+        if (player.status.currLevel > -1) {
           this.state.logic.UI.inventoryClick(e, player, canvas);
         }
         this.state.logic.UI.armorClick(e, player, canvas);
@@ -85,7 +85,7 @@ export default class Draw extends React.Component {
           this.state.logic.UI.craftButtonClick(e, player, canvas);
           
         } 
-        if (player.body.goFarm && player.currLevel === -1) {
+        if (player.body.goFarm && player.status.currLevel === -1) {
 
           this.state.logic.UI.farmButtonClick(e, player, canvas)
           this.state.logic.UI.farmInventoryClick(e, player, canvas)
@@ -103,8 +103,8 @@ export default class Draw extends React.Component {
 
         let map = this.state.logic.map;
 
-        if (player.currLevel > 0) {
-          this.state.logic.UI.mapInventoryClick(e, map.inventory[player.currLevel - 1], player,canvas)
+        if (player.status.currLevel > 0) {
+          this.state.logic.UI.mapInventoryClick(e, map.inventory[player.status.currLevel - 1], player ,canvas)
         }
     }
 

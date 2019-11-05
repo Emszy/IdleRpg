@@ -95,7 +95,7 @@ export default class Items {
 
 	randomItemDrop(level) {
       let chance = randomInt(1, 100);
-	  if (chance > 75) {
+	  if (chance > 100) {
       	return this.none();
       }
 		let potions = this.returnItems(0,0);
@@ -105,7 +105,7 @@ export default class Items {
 	  // consumable or resources
 	  // choose random category, select level of item
 	  
-	  	chance = randomInt(0, 100);
+	  	chance = randomInt(0, 50);
 
 	  	let currentItems = potions;
 	  	if (chance <= 8) {			  
