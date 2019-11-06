@@ -28,6 +28,7 @@ export default class Npc {
 						currLevel : 1,
 						highestLevel : 0,
 						teleported : false,
+						type : "animal",
 					},
 					
 					skills : {
@@ -50,11 +51,10 @@ export default class Npc {
 								},
 					items : this.items
 				})
-				animal.inventory.add(this.items.randomFood(level))
-				animal.inventory.add(this.items.randomFood(level))
-				animal.inventory.add(this.items.randomFood(level))
-				animal.inventory.add(this.items.randomFood(level))
-				animal.inventory.add(this.items.randomFood(level))
+				for (var i = 0; i < animalSettings.amount; i++) {
+					animal.inventory.add(this.items.randomFood(level))
+
+				}
 				animal.body.createPath(animal.body.pos.x, animal.body.pos.y);
 				animal.body.setVelocity(settings.animals.walkVelocity.x, settings.animals.walkVelocity.y)
 			
@@ -99,7 +99,6 @@ export default class Npc {
 
 	    let amount = randomInt(settings.animals.itemDropCountRange.start, settings.animals.itemDropCountRange.end);
 		animation = new AnimalAnimation(animal);
-		console.log(animation)
 		return ({
 				name : name,
 				amount : amount,

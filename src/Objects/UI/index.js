@@ -77,6 +77,8 @@ export default class UI {
                                 })
 
 		this.actionButtons = [];
+    this.actionButtons = [];
+
 		this.armorButtons = [];
 
 		this.bankButtons = {
@@ -155,7 +157,7 @@ export default class UI {
 		this.draw = new Draw();
 		this.clickHandler = new ClickHandler();
 		this.makeInventorySpaces();
-		this.makeCharacterActionButtons();
+		this.makeCharacterActionButtons(player);
 		this.makeArmorSpaces();
 		this.makeBankButtons();
 		this.makeBuyButtons(items);
@@ -273,8 +275,9 @@ export default class UI {
   drawPlayers(player, enemies, ctx) {
     // draws enemies;
     for (let i = 0; i < enemies.length; i++) {
-        this.playerAnimationMovement(enemies[i], ctx)
-        enemies[i].body.followPath();
+        this.playerAnimationMovement(enemies[i], ctx);
+        this.drawHealthBar(enemies[i], ctx);
+        // enemies[i].body.followPath();
     }
 
     for (var i = 0; i < player.range.projectiles.active.length; i++) {
@@ -494,7 +497,7 @@ export default class UI {
 	}
 
   drawHomeDesign(player, merchant, ctx) {
-      if (player.currLevel === 0) {
+      if (player.status.currLevel === 0) {
         for (var i = 0; i < player.home.floor.length; i++) {
           player.home.floorAnimation.drawFloor(player.home.floor[i].index, player.home.floor[i], ctx)
         }
@@ -508,7 +511,7 @@ export default class UI {
 
 	drawHome(player, items, ctx) {
 		let home = player.home;
-		if (player.currLevel === 0) {
+		if (player.status.currLevel === 0) {
 
 			if (this.bankButtons.open === true) {
 				this.drawBankButtons(player, ctx);
@@ -529,22 +532,13 @@ export default class UI {
 	}
 
   drawFarm(player, ctx) {
-    if (player.body.goFarm && player.currLevel === -1) {
+    if (player.status.destination === "farm" && player.status.currLevel === -1) {
       this.drawFarmButtons(player, ctx);
     }
   }
 
   drawActionButtons(ctx){
-      let len = this.actionButtons.length
-      for (let x = 0; x < len; x++) {
-        let button = userInterface.redButton
-
-        if (this.actionButtons[x].label.label === "Start") {
-            button = userInterface.greenButton
-        }
-          this.draw.img(button, this.actionButtons[x].button.body.pos.x - 5,this.actionButtons[x].button.body.pos.y - 5, 50, 25,  ctx)
-          this.draw.label(this.actionButtons[x], ctx)
-      }
+      this.actionButtons.drawGrid(ctx);
   }
 
   drawHomeActionButtons(player, ctx){
@@ -858,12 +852,13 @@ export default class UI {
 
   actionToggle(action, index) {
     if (action.state === false) {
-       this.actionButtons[index].label.changeLabel("Stop");
        action.start()
     } else {
-       this.actionButtons[index].label.changeLabel("Start");
        action.stop()
     }
+    this.actionButtons.changeImg(index, action.button())
+    this.actionButtons.changeLabel(index, action.label())
+
   }
 
 	actionClick(mouse, player, canvas) {
@@ -871,37 +866,12 @@ export default class UI {
     return false
   }
 
-
-		let len = this.actionButtons.length
-        for (let x = 0; x < len; x++) {
-            if (this.clickHandler.click(mouse, this.actionButtons[x].button, canvas))
-            {
-             	if (x === 0) {
-                this.actionToggle(player.status.actions.walk, x);
-            	}
-
-	            if (x === 1) {
-                  this.actionToggle(player.status.actions.mine, x);
-	            }
-
-	            if (x === 2) {
-                this.actionToggle(player.status.actions.woodCut, x);
-	            }
-
-	            if (x === 3) {
-                this.actionToggle(player.status.actions.home, x);
-	            }
-
-              if (x === 4) {
-                this.actionToggle(player.status.actions.hunt, x);
-              }
-
-              if (x === 5) {
-                this.actionToggle(player.status.actions.farm, x);
-              }
-
-	         }
-        }
+      let click = this.actionButtons.click(mouse, canvas)
+		  if (click.click) {
+        let keys =  Object.keys(player.status.actions)
+        this.actionToggle(player.status.actions[keys[click.index]], click.index);
+      }
+   
 	}
 
 	inventoryClick(mouse, player, canvas) {
@@ -1461,10 +1431,6 @@ export default class UI {
 		this.menuButtons.push({button: button, label:label})
 	}
 
-	actionButton(button, label, label2) {
-		this.actionButtons.push({button: button, label:label, label2: label2})
-	}
-
 	armorButton(button, label) {
 		this.armorButtons.push({button: button, label:label})
 	}
@@ -1631,45 +1597,30 @@ export default class UI {
 	}
 
 
-	makeCharacterActionButtons() {
-		this.actionButton(
-		  this.button(260, 450, 50, 60),
-		  this.label("Stop", 265, 460, "10"),
-		  this.label("Walk", 270, 445, "10")
-		)
+	makeCharacterActionButtons(player) {
 
-		this.actionButton(
-		  this.button(0, 450, 50, 60),
-		  this.label("Start", 5, 460, "10"),
-		  this.label("Mine", 10, 445, "10")
 
-		)
-
-		this.actionButton(
-		  this.button(50, 450, 50, 60),
-		  this.label("Start", 55, 460, "10"),
-		  this.label("WoodCut", 50, 445, "10")
-		)
-
-		this.actionButton(
-		  this.button(210, 450, 50, 60),
-		  this.label("Start", 215, 460, "10"),
-		  this.label("Go Home", 210, 445, "10")
-		)
-
-    this.actionButton(
-      this.button(100, 450, 50, 60),
-      this.label("Start", 105, 460, "10"),
-      this.label("hunt", 105, 445, "10")
-    )
-
-    this.actionButton(
-      this.button(310, 450, 50, 60),
-      this.label("Start", 315, 460, "10"),
-      this.label("Farm", 320, 445, "10")
-
-    )
-
+   let keys =  Object.keys(player.status.actions)
+   let imgs = [];
+   let labels = [];
+   for (var i = 0; i < keys.length; i++) {
+        imgs.push(player.status.actions[keys[i]].button());
+        labels.push(player.status.actions[keys[i]].label())
+   }
+   this.actionButtons = new Grid({
+                                  x: 0,
+                                  y: 440,
+                                  width : keys.length,
+                                  height : 1,
+                                  cellWidth : 60,
+                                  cellHeight: 50,
+                                  labelOffsetX : 5,
+                                  labelOffsetY : 5,
+                                  labelSize : 10,
+                                  imgs : imgs,
+                                  labels :labels,
+                                  background : userInterface.actionButtonBackGround
+                                })
 	}
 
 	makeBankButtons() {
@@ -1946,8 +1897,8 @@ export default class UI {
     }
 
     drawFarmButtons(player, ctx) {
+      console.log("drawingFARM")
       player.home.farm.plot.drawFarmPlot(player.home.farm, ctx)
-
       for (let i = 0; i < this.farmButtons.spaces.length; i++) {
 
         if (player.home.farm.spaces[i].seed) {

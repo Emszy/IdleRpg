@@ -12,10 +12,10 @@ export default class Resources {
 		this.items = items;
 	}
 
-	newResource(level, items, resFunc) {
+	newResource(level, items, resourceFunc) {
 		let arr = [];
 		for (var i = 0; i < randomInt(1,4); i++) {
-				let settings = resFunc(level);
+				let settings = resourceFunc(level);
 				let resource = new Entity({
 					name : items[settings.itemIndex].name,
 					x : randomInt(0, 450),
@@ -30,6 +30,7 @@ export default class Resources {
 						currLevel : 1,
 						highestLevel : 0,
 						teleported : false,
+						type: settings.type
 					},
 					
 					skills : {
@@ -102,7 +103,8 @@ export default class Resources {
 				huntingLvl : 1,
 				health : 100,
 				animation : animation,
-				amount : amount
+				amount : amount,
+				type : "ore"
 			})
 		}
 
@@ -147,6 +149,7 @@ export default class Resources {
 				health : 100,
 				animation : animation,
 				amount : amount,
+				type : "tree"
 			})
 	}
 

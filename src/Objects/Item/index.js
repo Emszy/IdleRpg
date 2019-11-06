@@ -92,7 +92,6 @@ export default class Items {
       return (noItem);
    }
 
-
 	randomItemDrop(level) {
       let chance = randomInt(1, 100);
 	  if (chance > 100) {

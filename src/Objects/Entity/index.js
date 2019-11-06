@@ -19,6 +19,7 @@ export default class Entity {
 		this.armor = new Armor(settings.items, settings.animation);
 		this.home = new Home(settings.items);
 		this.inventory = new Inventory(settings.items);
+		this.inventory.addGold(settings.startingGold);
 		this.magic = new Magic(settings.items);
 		this.status = new Status(settings.status);
 		this.range = new Range();
@@ -39,21 +40,22 @@ export default class Entity {
 
 	setDestination() {
 		if (this.status.actions.walk.state === true && this.status.actions.home.state === true && this.status.actions.farm.state === true) {
-			this.status.actions.destination = "farm";
+			this.status.destination = "farm";
 		} else if (this.status.actions.walk.state === true && this.status.actions.home.state === false && this.status.actions.farm.state === true) {
-			this.status.actions.destination = "farm";
+			this.status.destination = "farm";
 		} else if (this.status.actions.walk.state === true && this.status.actions.home.state === true && this.status.actions.farm.state === false) {
-			this.status.actions.destination = "home";
+			this.status.destination = "home";
 		} else if (this.status.actions.walk.state === false && this.status.actions.home.state === true && this.status.actions.farm.state === false) {
-			this.status.actions.destination = "home";
+			this.status.destination = "home";
 		} else if (this.status.actions.walk.state === false && this.status.actions.home.state === false && this.status.actions.farm.state === true) {
-			this.status.actions.destination = "farm";
+			this.status.destination = "farm";
 		} else if (this.status.actions.walk.state === false && this.status.actions.home.state === false && this.status.actions.farm.state === false) {
-			this.status.actions.destination = "none";
+			this.status.destination = "none";
+		} else if (this.status.actions.walk.state === false && this.status.actions.home.state === true && this.status.actions.farm.state === true) {
+			this.status.destination = "home";
 		} else {
-			this.status.actions.destination = "wild"
+			this.status.destination = "wild"
 		}
-		// console.log("Destination", this.status.actions.destination)
 	}
 
 
@@ -61,18 +63,16 @@ export default class Entity {
 	setAction(enemies, ores, trees, animals) {
 
 		if (enemies.length) {
-			this.status.actions.action = "fighting";
+			this.status.action = "fighting";
 		} else if (this.status.actions.mine.state === true && ores.length) {
-			this.status.actions.action = "mining";
+			this.status.action = "mining";
 		} else if (this.status.actions.woodCut.state === true && trees.length) {
-			this.status.actions.action = "woodCutting";
+			this.status.action = "woodCutting";
  		} else if (this.status.actions.hunt.state === true && animals.length) {
-			this.status.actions.action = "hunting";
+			this.status.action = "hunting";
  		} else {
- 			this.status.actions.action = "walk";
+ 			this.status.action = "walk";
  		}
-
- 		// console.log("Action", this.status.actions.action)
 	}
 
 

@@ -11,6 +11,7 @@ import Npc from "../Npc"
 
 import Entity from "../Entity"
 import ActionHandler from "../ActionHandler"
+import {randomInt} from "../../Helpers/functions"
 
 export default class Logic {
 
@@ -28,10 +29,10 @@ export default class Logic {
       this.players = new Player()
       this.resources = new Resources(this.items);
       this.npcs = new Npc(this.items);
-      // this.merchant = new Player(10,170, 32,32,this.items)
-      // this.merchant.body.action = "stop";
-      // this.merchant.body.currentDirection = "east";
-
+      
+      this.merchant = this.players.main("Merchant", this.items);
+      this.merchant.body.action = "stop";
+      this.merchant.body.currentDirection = "east";
 
       this.player = this.players.main("Emszy", this.items);
 
@@ -49,10 +50,6 @@ export default class Logic {
 
    }
 
-	randomInt(min, max) {
-		return Math.floor(Math.random() * (max - min + 1) + min);
-	}
-
   targetSelectLogic(arr) {
       if (arr[0].status.dead) {
         arr.splice(0,1);
@@ -63,57 +60,23 @@ export default class Logic {
   }
 
 	selectTarget() {
-
-		if (this.player.status.actions.action === "fighting" && this.enemies.length) {
+		if (this.player.status.action === "fighting" && this.enemies.length) {
       this.targetSelectLogic(this.enemies);
 		}   
-    else if (this.player.status.actions.action === "mining" && this.ore.length)
+    else if (this.player.status.action === "mining" && this.ore.length)
     {
       this.targetSelectLogic(this.ore);
 
     } 
-    else if (this.player.status.actions.action === "woodCutting" && this.trees.length)
+    else if (this.player.status.action === "woodCutting" && this.trees.length)
     {
       this.targetSelectLogic(this.trees);
     } 
-    else if (this.player.status.actions.action === "hunting" && this.animals.length)
+    else if (this.player.status.action === "hunting" && this.animals.length)
     {
       this.targetSelectLogic(this.animals);
     }
 	}
-
-
-  // archerFight() {
-  //   this.player.body.action = "archery"
-
-  //   if (this.player.currLevel % 2 === 0) {
-  //      this.player.body.move_to(this.map.middle.pos.x + 100, this.map.middle.pos.y - 100);
-  //   } else {
-  //     this.player.body.move_to(this.map.middle.pos.x + 100, this.map.middle.pos.y - 100);
-  //   }
-
-
-  //   this.player.fireArrow(this.target);
-  //   let hit = this.player.arrowCollision();
-
-  //      if (hit.hit) {
-          
-  //         let enemyDrop = this.target.takeDamage(this.player.skills.range.get() + hit.damage);
-  //         this.player.skills.range.addXp(hit.damage * 4)
-          
-  //         if (this.target.isDead()) {
-  //             this.player.skills.health.addXp(this.target.skills.health.get() * 15)
-  //             this.player.body.action = "walk"
-  //         }
-
-  //         if (enemyDrop) {
-  //             this.map.inventory[this.player.currLevel - 1].addInventoryToMap(enemyDrop, this.target)
-  //             this.player.inventory.addGold(enemyDrop.gold)
-  //         }
-
-
-  //      }
-  // }
 
 
    fight() {
@@ -130,20 +93,19 @@ export default class Logic {
        		let playerFight = this.player.body.move_to(this.target.body.pos.x,
        		 						 			this.target.body.pos.y);
        		if (playerFight) {
-          
-            this.player.body.action = "fight";
 
-       			let enemyDrop = this.actionHandler.takeDamage(this.target, this.actionHandler.fight(this.player));
+                this.player.body.action = "fight";
+                let enemyDrop = this.actionHandler.fight(this.player, this.target);
+
                 if (this.actionHandler.isDead(this.target)) {
-                    this.player.skills.attack.addXp(this.target.skills.health.get() * 15)
-                    this.player.skills.health.addXp(this.target.skills.health.get() * 40)
+                    this.actionHandler.xp(this.player, this.target)
                     this.player.body.action = "walk"
                 }
 
-       			if (enemyDrop) {
-                this.map.inventory[this.player.status.currLevel - 1].addInventoryToMap(enemyDrop, this.target)
-                this.player.inventory.addGold(enemyDrop.gold)
-       			}
+           			if (enemyDrop) {
+                    this.map.inventory[this.player.status.currLevel - 1].addInventoryToMap(enemyDrop, this.target)
+                    this.player.inventory.addGold(enemyDrop.gold)
+           			}
        		} else {
                 this.player.body.action = "walk"
           }
@@ -155,7 +117,7 @@ export default class Logic {
                                                this.player.body.pos.y);
 
      if (enemyFight) {
-        this.actionHandler.takeDamage(this.player, this.actionHandler.fight(this.target));
+        let enemyDrop = this.actionHandler.fight(this.target, this.player);
         this.target.body.action = "fight"
      }
 
@@ -163,7 +125,7 @@ export default class Logic {
 
 
    restart() {
-        this.map.inventory[this.player.status.currLevel - 1].addInventoryToMap(this.actionHandler.dropInventory(this.player), this.player)  
+        this.map.inventory[this.player.status.currLevel - 1].addInventoryToMap(this.player.inventory, this.player)  
         this.actionHandler.revive(this.player);
         this.recreateTargets();
 
@@ -171,18 +133,16 @@ export default class Logic {
 
    clearResources() {
         this.ore = [];
-        this.tree = [];
-        this.animal = [];
+        this.trees = [];
+        this.animals = [];
         this.enemies = [];
-
-
    }
 
    recreateTargets() {
             if (this.player.status.currLevel > 0) {
                 this.map.create_base(this.player.status.currLevel);
             }
-            this.enemies = this.Enemies.basic("SOMEONE", this.player.status.currLevel);
+            this.enemies = this.Enemies.basic(this.player.status.currLevel);
             this.target = this.enemies[0];
             this.ore = this.resources.newResource(this.player.status.currLevel, this.oreItems, this.resources.createOres)
             this.trees = this.resources.newResource(this.player.status.currLevel, this.woodItems, this.resources.createWood)
@@ -267,7 +227,9 @@ export default class Logic {
         return this;
       } else {
         this.moveToBeginning();
-        this.enemyFight();
+        if (this.enemies.length) {
+          this.enemyFight();  
+        }
 
       }
    }
@@ -275,12 +237,12 @@ export default class Logic {
    goToWild() {
     let playerStatus = this.player.status;
 
-    if (playerStatus.actions.action === "walk") {
+    if (playerStatus.action === "walk") {
       this.moveToEnd();
     } else {
       this.fight();
     }
-    if (playerStatus.location === "wild" && this.enemies.length && playerStatus.actions.action === "fighting") {
+    if (playerStatus.location === "wild" && this.enemies.length && playerStatus.action === "fighting") {
         if (this.target.status.dead === false) {
           this.enemyFight();
         }
@@ -289,7 +251,6 @@ export default class Logic {
 
    play() {
         
-
         this.player.setLocation();
         this.player.setDestination();
         this.player.setAction(this.enemies, this.ore, this.trees, this.animals)
@@ -303,11 +264,11 @@ export default class Logic {
               return this
           }
 
-          if (playerStatus.actions.destination === "home") {
+          if (playerStatus.destination === "home") {
             this.goHome();
-          } else if (playerStatus.actions.destination === "farm") {
+          } else if (playerStatus.destination === "farm") {
             this.goFarm();
-          } else if (playerStatus.actions.destination === "wild") {
+          } else if (playerStatus.destination === "wild") {
             this.goToWild()
           } else if (playerStatus.location === "lost"){
             console.log("SPOOFEM");
@@ -316,7 +277,7 @@ export default class Logic {
         this.selectTarget();
         // this.player.range.moveFiredArrows();
         this.skillDecay();
-        // this.player.home.farm.timer();
+        this.player.home.farm.timer();
 
         // this.player.range.checkCollision(this.enemies);
 

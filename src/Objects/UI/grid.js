@@ -7,7 +7,6 @@ export default class Grid {
 
 	constructor(settings) {
 		
-
 		let x = settings.x || 0
 		let y = settings.y || 0
 		let width = settings.width || 3
@@ -21,7 +20,7 @@ export default class Grid {
 		let imgs = settings.imgs || []
 		let xSpace = settings.xSpace || 0;
 		let ySpace = settings.ySpace || 0;
-
+		let background = settings.background || false
 		this.open = false;
 		this.start = new RigidBody(x, y, width,height);
 		this.cell = new RigidBody(0, 0, cellWidth, cellHeight)
@@ -31,7 +30,7 @@ export default class Grid {
 		this.imgs = imgs;
 		this.spaces = [];
 		this.controls = [];
-		this.backGround = "insert button"
+		this.backGround = background
 		this.page = 0;
 		this.draw = new Draw();
 		this.clickHandler = new ClickHandler();
@@ -54,6 +53,14 @@ export default class Grid {
 		for (var i = 0; i < this.spaces.length; i++) {
 			this.spaces[i].label.change(labels[i]);
 		}
+	}
+
+	changeImg(index, img) {
+		this.imgs[index] = img;
+	}
+
+	changeLabel(index, label) {
+		this.spaces[index].label.change(label);
 	}
 
 	makeCells() {
@@ -82,6 +89,10 @@ export default class Grid {
 	}
 
 	drawGrid(ctx) {
+		if (this.backGround) {
+			this.draw.img(this.backGround, this.start.pos.x - 5, this.start.pos.y - 5, this.cell.size.x * this.start.size.x + 5, this.cell.size.y * this.start.size.y, ctx)
+		}
+
 		for (var i = 0; i < this.spaces.length; i++) {
 			if (this.imgs[i]) {
 				this.draw.img(

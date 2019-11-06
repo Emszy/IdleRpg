@@ -150,6 +150,8 @@ import icons from "../../assets/images/spriteSheets/UI/icons.png"
 import bankBackGround from "../../assets/images/spriteSheets/UI/bankBackGround.png"
 import itemBorder from "../../assets/images/spriteSheets/UI/itemBorder.png"
 
+import actionButtonBackGround from "../../assets/images/spriteSheets/UI/actionButtonBackGround.png"
+
 
 function npcImage(srcs) {
 	function directions(end) {
@@ -1648,6 +1650,10 @@ let userInterface = {
 		pos : mapTile(110, 40, 30, 30) 
 	},
 
+	actionButtonBackGround : {
+		img : singleImage(actionButtonBackGround),
+		pos : mapTile(0, 0, 431, 196) 
+	}
 
 
 

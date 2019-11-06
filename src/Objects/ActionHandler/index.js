@@ -21,20 +21,36 @@ export default class ActionHandler {
 
 		player.skills.health.take(damage);
 		if (this.isDead(player)){
-			return (this.dropInventory(player));
+			return (player.inventory);
 		}
 	}
 
-	dropInventory(player) {
-		return (player.inventory);
+	xp(player, target) {
+		switch (target.status.type) {
+          case "enemy" :
+                player.skills.attack.addXp(target.skills.health.get() * 15)
+                player.skills.health.addXp(target.skills.health.get() * 40)
+                break;
+          case "ore" :
+                player.skills.mining.addXp(target.skills.health.get() * 15)
+                break;
+          case "tree" : 
+                player.skills.woodcutting.addXp(target.skills.health.get() * 15)
+                break;
+          case "animal" : 
+                player.skills.hunting.addXp(target.skills.health.get() * 15)
+                break;
+          default : 
+                break
+        }
 	}
 
-	fight(player) {
+	fight(player, target) {
 		let damage = player.skills.attack.timer(player.armor.attackSpeedBonus)
 		if (damage > 0) {
 			 damage = damage + player.armor.attackBonus
 		}
-		return(damage)
+		return(this.takeDamage(target, damage));
 	}
 
 	isDead(player) {

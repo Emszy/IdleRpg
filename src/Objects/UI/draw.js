@@ -86,12 +86,18 @@ export default class Draw {
     label(obj, ctx) {
       ctx.strokeStyle = "white"
       ctx.font = obj.label.fontSize + "px Comic Sans MS";
-
+      let xOffset = 0;
       if (obj.label.label.length) {
         let lines = obj.label.label.split('\n');
 
         for (var i = 0; i < lines.length; i++) {
-          ctx.strokeText(lines[i], obj.label.body.pos.x, obj.label.body.pos.y + i*15);
+          if (lines[i].length > 6) {
+            xOffset = -4
+          } else {
+            xOffset = 0;
+          }
+
+          ctx.strokeText(lines[i], obj.label.body.pos.x + xOffset, obj.label.body.pos.y + i*15);
         } 
       }
 

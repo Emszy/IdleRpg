@@ -10,17 +10,17 @@ export default class Enemies {
 		this.items = items
 	}
 
-	basic(name, level) {
+	basic(level) {
 		let arr = [];
 		for (var i = 0; i < randomInt(1,4); i++) {
 			
 				let enemy = new Entity({
-					name : name,
+					name : this.randomName(),
 					x : randomInt(0, 450),
 					y : randomInt(0, 450),
 					width : 64,
 					height : 64,
-					startingGold : 100,
+					startingGold : this.getGold(level),
 					
 					status : {
 						dead : false,
@@ -28,11 +28,12 @@ export default class Enemies {
 						currLevel : 1,
 						highestLevel : 0,
 						teleported : false,
+						type: "enemy",
 					},
 					
 					skills : {
-						attack : 1,
-						health : 5,
+						attack : this.getLevel(settings.enemies.attack.base, level, settings.enemies.attack.exponent),
+						health : this.getLevel(settings.enemies.health.base, level, settings.enemies.health.exponent),
 						defense : 1,
 						attackSpeed : 1,
 						range : 1,
@@ -53,28 +54,41 @@ export default class Enemies {
 								},
 					items : this.items
 				})
-				enemy.inventory.add(this.items.randomItemDrop(level))
-				enemy.inventory.add(this.items.randomItemDrop(level))
-				enemy.inventory.add(this.items.randomItemDrop(level))
-				enemy.inventory.add(this.items.randomItemDrop(level))
-				enemy.inventory.add(this.items.randomItemDrop(level))
-				enemy.body.createPath(enemy.body.pos.x,enemy.body.pos.y)
-				enemy.body.setVelocity(settings.enemies.walkVelocity.x, settings.enemies.walkVelocity.y)
-
+				enemy = this.addItems(enemy, level);
 			arr.push(enemy)
 		}
 		return (arr);
 	}
 
+	getLevel(base, level, exponent) {
+		let lvl = Math.round(base * (Math.pow(level + 3, exponent)))
+		return lvl
+	}
 
+	getGold(level) {
+		let goldMultiplierStart = level + 1 * (Math.pow(level, settings.enemies.baseGoldRange.exponent.start));
+		let goldMultiplierEnd = level + 1 * (Math.pow(level, settings.enemies.baseGoldRange.exponent.end));
+		let baseGoldRange = randomInt(settings.enemies.baseGoldRange.start, settings.enemies.baseGoldRange.end)
+		let gold = randomInt(goldMultiplierStart + baseGoldRange, goldMultiplierEnd + baseGoldRange);
+		return gold
+	}
+
+	addItems(enemy, level) {
+		let itemCount = randomInt(1,4);
+
+		for (var i = 0; i < itemCount; i++) {
+			enemy.inventory.add(this.items.randomItemDrop(level))
+		}
+		return enemy;
+	}
 
 	randomEnemy(level) {
 			let animation = new Animation(enemyImages.lightDrake)
 			if (level >= 0 && level < 20) {
-				animation = this.maleor();
+				animation = this.blueDrake();
 			}
 			else if (level >= 20 && level < 40) {
-				animation = this.lightDrake();
+				animation = this.skeleton();
 			}
 
 			else if (level >= 40 && level < 60) {
@@ -82,7 +96,7 @@ export default class Enemies {
 			}
 
 		    else if (level >= 60 && level < 80) {
-				animation = this.lightDrake();
+				animation = this.maleor();
 			}
 
 		    else if (level >= 80 && level < 100) {
@@ -123,4 +137,19 @@ export default class Enemies {
 			let animation = new Animation(enemyImages.blueImp)
 			return animation
 		}
+
+		randomName() {
+			let adjectives = ["adamant", "adroit", "amatory", "animistic", "antic", "arcadian", "baleful", "bellicose", "bilious", "boorish", "calamitous", "caustic", "cerulean", "comely", "concomitant", "contumacious", "corpulent", "crapulous", "defamatory", "didactic", "dilatory", "dowdy", "efficacious", "effulgent", "egregious", "endemic", "equanimous", "execrable", "fastidious", "feckless", "fecund", "friable", "fulsome", "garrulous", "guileless", "gustatory", "heuristic", "histrionic", "hubristic", "incendiary", "insidious", "insolent", "intransigent", "inveterate", "invidious", "irksome", "jejune", "jocular", "judicious", "lachrymose", "limpid", "loquacious", "luminous", "mannered", "mendacious", "meretricious", "minatory", "mordant", "munificent", "nefarious", "noxious", "obtuse", "parsimonious", "pendulous", "pernicious", "pervasive", "petulant", "platitudinous", "precipitate", "propitious", "puckish", "querulous", "quiescent", "rebarbative", "recalcitant", "redolent", "rhadamanthine", "risible", "ruminative", "sagacious", "salubrious", "sartorial", "sclerotic", "serpentine", "spasmodic", "strident", "taciturn", "tenacious", "tremulous", "trenchant", "turbulent", "turgid", "ubiquitous", "uxorious", "verdant", "voluble", "voracious", "wheedling", "withering", "zealous"];
+			let nouns = ["ninja", "chair", "pancake", "statue", "unicorn", "rainbows", "laser", "senor", "bunny", "captain", "nibblets", "cupcake", "carrot", "gnomes", "glitter", "potato", "salad", "toejam", "curtains", "beets", "toilet", "exorcism", "stick figures", "mermaid eggs", "sea barnacles", "dragons", "jellybeans", "snakes", "dolls", "bushes", "cookies", "apples", "ice cream", "ukulele", "kazoo", "banjo", "opera singer", "circus", "trampoline", "carousel", "carnival", "locomotive", "hot air balloon", "praying mantis", "animator", "artisan", "artist", "colorist", "inker", "coppersmith", "director", "designer", "flatter", "stylist", "leadman", "limner", "make-up artist", "model", "musician", "penciller", "producer", "scenographer", "set decorator", "silversmith", "teacher", "auto mechanic", "beader", "bobbin boy", "clerk of the chapel", "filling station attendant", "foreman", "maintenance engineering", "mechanic", "miller", "moldmaker", "panel beater", "patternmaker", "plant operator", "plumber", "sawfiler", "shop foreman", "soaper", "stationary engineer", "wheelwright", "woodworkers"];
+
+	    	let i = randomInt(0, adjectives.length);
+	    	let j = randomInt(0, nouns.length);
+	    	return (adjectives[i] + " " + nouns[j]);
+		}
+
+
+
+
+
+
 }
