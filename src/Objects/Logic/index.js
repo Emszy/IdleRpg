@@ -81,18 +81,12 @@ export default class Logic {
 
    fight() {
 
-
-       this.target.body.action = "walk"
-
         if (this.player.armor.arrows.id !== -1 && this.player.armor.bow.id !== -1) {
-             
-           // this.archerFight();
 
         } else {
 
-       		let playerFight = this.player.body.move_to(this.target.body.pos.x,
-       		 						 			this.target.body.pos.y);
-       		if (playerFight) {
+
+       		if (this.player.body.move_to(this.target.body.pos.x, this.target.body.pos.y)) {
 
                 this.player.body.action = "fight";
                 let enemyDrop = this.actionHandler.fight(this.player, this.target);
@@ -113,11 +107,10 @@ export default class Logic {
    }
 
    enemyFight() {
-     let enemyFight = this.target.body.move_to(this.player.body.pos.x,
-                                               this.player.body.pos.y);
+     this.target.body.action = "walk"
 
-     if (enemyFight) {
-        let enemyDrop = this.actionHandler.fight(this.target, this.player);
+     if (this.target.body.move_to(this.player.body.pos.x, this.player.body.pos.y)) {
+        this.actionHandler.fight(this.target, this.player);
         this.target.body.action = "fight"
      }
 
@@ -131,13 +124,7 @@ export default class Logic {
 
    }
 
-   clearResources() {
-        this.ore = [];
-        this.trees = [];
-        this.animals = [];
-        this.enemies = [];
-   }
-
+   
    recreateTargets() {
             if (this.player.status.currLevel > 0) {
                 this.map.create_base(this.player.status.currLevel);
@@ -153,12 +140,6 @@ export default class Logic {
 
    }   
 
-   skillDecay() {
-        this.actionHandler.thirsty(this.player);
-        this.actionHandler.hungry(this.player);
-   }
-
-
    teleported() {
         // if (this.player.teleported === true && this.player.currLevel === 0) {
         //     this.clearResources()
@@ -172,6 +153,12 @@ export default class Logic {
         //     this.player.teleLevel();
         //     this.player.teleported = false
         // }
+   }
+  clearResources() {
+        this.ore = [];
+        this.trees = [];
+        this.animals = [];
+        this.enemies = [];
    }
 
    moveToEnd() {
@@ -276,7 +263,7 @@ export default class Logic {
 
         this.selectTarget();
         // this.player.range.moveFiredArrows();
-        this.skillDecay();
+        this.actionHandler.skillDecay(this.player);
         this.player.home.farm.timer();
 
         // this.player.range.checkCollision(this.enemies);

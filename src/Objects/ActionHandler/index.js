@@ -25,6 +25,24 @@ export default class ActionHandler {
 		}
 	}
 
+
+	fight(player, target) {
+		let damage = player.skills.attack.timer(player.armor.attackSpeedBonus)
+		if (damage > 0) {
+			 damage = damage + player.armor.attackBonus
+		}
+		return(this.takeDamage(target, damage));
+	}
+
+	isDead(player) {
+		if (player.skills.health.isZero() === true) {
+			player.armor.animation.deathTimer.done = false;
+			player.status.dead = true;
+			player.status.deaths++;
+			return (true)
+		}
+	}
+
 	xp(player, target) {
 		switch (target.status.type) {
           case "enemy" :
@@ -43,23 +61,6 @@ export default class ActionHandler {
           default : 
                 break
         }
-	}
-
-	fight(player, target) {
-		let damage = player.skills.attack.timer(player.armor.attackSpeedBonus)
-		if (damage > 0) {
-			 damage = damage + player.armor.attackBonus
-		}
-		return(this.takeDamage(target, damage));
-	}
-
-	isDead(player) {
-		if (player.skills.health.isZero() === true) {
-			player.armor.animation.deathTimer.done = false;
-			player.status.dead = true;
-			player.status.deaths++;
-			return (true)
-		}
 	}
 
 	revive(player) {
@@ -102,6 +103,10 @@ export default class ActionHandler {
 		return(damage)
 	}
 
+	skillDecay(player) {
+		this.thirsty(player);
+		this.hungry(player);
+	}
 
 	thirsty(player) {
 		let isTime = player.skills.thirst.decayTimer(player.skills.thirst.get());
