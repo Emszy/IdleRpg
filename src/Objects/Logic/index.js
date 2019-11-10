@@ -30,9 +30,9 @@ export default class Logic {
       this.resources = new Resources(this.items);
       this.npcs = new Npc(this.items);
       
-      this.merchant = this.players.main("Merchant", this.items);
-      this.merchant.body.action = "stop";
-      this.merchant.body.currentDirection = "east";
+      this.merchant = this.players.merchant(this.items);
+      
+
 
       this.player = this.players.main("Emszy", this.items);
 
@@ -116,14 +116,6 @@ export default class Logic {
 
    }
 
-
-   restart() {
-        this.map.inventory[this.player.status.currLevel - 1].addInventoryToMap(this.player.inventory, this.player)  
-        this.actionHandler.revive(this.player);
-        this.recreateTargets();
-
-   }
-
    
    recreateTargets() {
             if (this.player.status.currLevel > 0) {
@@ -189,22 +181,21 @@ export default class Logic {
         this.player.body.move_to(150,250);
    }
 
-   goHome() {
+   goToWild() {
     let playerStatus = this.player.status;
-      if (playerStatus.location === "home") {
-        this.moveToMiddle();
-        return this
-      } else if (this.player.status.location === "farm") {
-          this.moveToEnd();
-      } else if (playerStatus.location == "wild" && playerStatus.currLevel > 0) {
-          this.moveToBeginning();
-          if (this.enemies.length) {
-            this.enemyFight();
-          }
 
-      }
-
+    if (playerStatus.action === "walk") {
+      this.moveToEnd();
+    } else {
+      this.fight();
+    }
+    if (playerStatus.location === "wild" && this.enemies.length && playerStatus.action === "fighting") {
+        if (this.target.status.dead === false) {
+          this.enemyFight();
+        }
+    } 
    }
+
 
    goFarm() {
     let playerStatus = this.player.status;
@@ -221,19 +212,28 @@ export default class Logic {
       }
    }
 
-   goToWild() {
-    let playerStatus = this.player.status;
+    goHome() {
+      let playerStatus = this.player.status;
+      if (playerStatus.location === "home") {
+        this.moveToMiddle();
+        return this
+      } else if (this.player.status.location === "farm") {
+          this.moveToEnd();
+      } else if (playerStatus.location == "wild" && playerStatus.currLevel > 0) {
+          this.moveToBeginning();
+          if (this.enemies.length) {
+            this.enemyFight();
+          }
 
-    if (playerStatus.action === "walk") {
-      this.moveToEnd();
-    } else {
-      this.fight();
-    }
-    if (playerStatus.location === "wild" && this.enemies.length && playerStatus.action === "fighting") {
-        if (this.target.status.dead === false) {
-          this.enemyFight();
-        }
-    } 
+      }
+
+   }
+
+   restart() {
+        this.map.inventory[this.player.status.currLevel - 1].addInventoryToMap(this.player.inventory, this.player)
+        this.actionHandler.revive(this.player);
+        this.recreateTargets();
+
    }
 
    play() {

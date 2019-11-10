@@ -1,7 +1,7 @@
 export default class Draw {
 
-	 text(str, x, y, size, ctx) {
-      ctx.strokeStyle = "white"
+	 text(str, x, y, size, ctx, color= "white") {
+      ctx.strokeStyle = color
       ctx.font = size+"px Comic Sans MS";
       ctx.strokeText(str, x, y);
     }

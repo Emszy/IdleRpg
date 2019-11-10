@@ -41,16 +41,7 @@ export default class Inventory {
       return (false);
    }
 
-   maxCraftFind(item, quantity) {
-      for (let x = 0; x < this.max; x++) {
-            if (this.spaces[x].id === item.id) {
-              if (quantity > 0) {
-               return (this.spaces[x].quantity / quantity)
-              }
-            }
-      }
-      return (false);
-   }
+  
 
    craftBuy(item, quantity, amount) {
       for (let x = 0; x < this.max; x++) {
@@ -114,12 +105,6 @@ export default class Inventory {
 
    addQuantity(item, quantity) {
 
-    //may find out why later ?
-      // if (item.quantity < quantity) {
-      //    quantity = item.quantity;
-      // }
-
-
       let foundItem = this.find(item)
          if (foundItem.found) {
             this.spaces[foundItem.index].quantity += quantity;
@@ -136,8 +121,8 @@ export default class Inventory {
          return (false);
    }
 
-   buy (price, item, quantity) {
-      price = price * quantity;
+   buy (item, quantity) {
+      let price = item.price * quantity;
       if (price <= this.gold) {
          if (this.addQuantity(item, quantity)) {
             this.gold -= price;
@@ -165,23 +150,33 @@ export default class Inventory {
    		}		
    }
 
+  maxCraftFind(item, quantity) {
+      for (let x = 0; x < this.max; x++) {
+            if (this.spaces[x].id === item.id) {
+              if (quantity > 0) {
+                console.log(this.spaces[x].quantity, quantity)
+               return (this.spaces[x].quantity / quantity)
+              }
+            }
+      }
+      return (false);
+   }
 
    maxCraft(item) {
-      let maxAmount = 0;
+      let maxAmount = [];
 
       for (var i = item.recipe.length - 1; i >= 0; i--) {
-         let craftAmount = this.maxCraftFind(item.recipe[i].item, item.recipe[i].quantity)
-         if (craftAmount > maxAmount) {
-            maxAmount = craftAmount;
-         }
+         maxAmount.push(this.maxCraftFind(item.recipe[i].item, item.recipe[i].quantity))
       }
-      return (Math.floor(maxAmount));
+
+      let min = Math.min(...maxAmount)
+      return (Math.floor(min));
    }
 
    craft(item, amount) {
 
       //check to see if we have to craft cost in inventory
-
+      console.log(item, amount)
       for (var i = item.recipe.length - 1; i >= 0; i--) {
          let canCraft = this.craftFind(item.recipe[i].item, item.recipe[i].quantity, amount)
          if (canCraft === false) {

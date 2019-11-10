@@ -24,7 +24,7 @@ export default class Skills {
 		this.thirst.setDecayValue(settings.thirstDecay || 100); 
 		this.hunger.setDecayValue(settings.hungerDecay || 100);
 
-		this.dead = false;
+		// this.dead = false;
 	}
 
 	boostDecay() {

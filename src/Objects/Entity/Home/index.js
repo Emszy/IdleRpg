@@ -12,6 +12,7 @@ export default class Home {
 	constructor(items) {
 		this.waterWell = this.makeWaterWell(items);
 		this.bank = this.makeBank(items);
+		this.fillBank(items);
 		this.buyMenu = this.makeBuyMenu();
 		this.farm = this.makeFarm(items);
 		this.floorAnimation = new HomeAnimation(mapAtlas.home.floor)
@@ -275,6 +276,25 @@ export default class Home {
 	fillBank(item) {
 		let items = item.returnItems(1,2);
 		this.addBankItems(items);
+		items = item.returnItems(1,1);
+		this.addBankItems(items);
+		items = item.returnItems(1,0);
+		this.addBankItems(items);
+		items = item.returnItems(2,0);
+		this.addBankItems(items);
+		items = item.returnItems(0,0);
+		this.addBankItems(items);
+		items = item.returnItems(0,1);
+		this.addBankItems(items);
+		items = item.returnItems(0,2);
+		this.addBankItems(items);
+		items = item.returnItems(0,3);
+		this.addBankItems(items);
+		items = item.returnItems(3,0);
+		this.addBankItems(items);
+
+
+
 
 			
 

@@ -1,6 +1,8 @@
 import RigidBody from "../../Helpers/rigidBody"
 import Draw from "./draw"
 import Grid from "./grid"
+import DrawEntity from "./DrawEntity"
+import MakeMenu from "./MakeMenu"
 
 import ClickHandler from "../clickhandler"
 import {userInterface, magicImages} from "../../Objects/Animations/images"
@@ -8,113 +10,26 @@ import {userInterface, magicImages} from "../../Objects/Animations/images"
 
 export default class UI {
 	constructor(items, player) {
-		this.items = items;
-		
-    let  menuLabels =  [   
-                      "Items",
-                      "Armor",
-                      "Stats",
-                      "Magic",
-                  ]
+    this.clickHandler = new ClickHandler();
+    this.drawEntity = new DrawEntity();
+    let makeMenu = new MakeMenu();
 
+		this.currentHomeMenu = "none";
+    this.magicMenu = makeMenu.magic();
+    this.buyMenu = makeMenu.vendor(items, "buyable");
+    this.craftMenu = makeMenu.vendor(items, "craftable");
 
-    let menuImages = [
-                      userInterface.inventoryIcon,
-                      userInterface.armorIcon,
-                      userInterface.statsIcon,
-                      userInterface.magicIcon
-                    ]
-    this.menuButtons = new Grid({
-                                  x: 365,
-                                  y: 440,
-                                  width : 4,
-                                  height : 1,
-                                  cellWidth : 30,
-                                  cellHeight: 40,
-                                  labelOffsetX : 2,
-                                  labelOffsetY : 20,
-                                  labelSize : 9,
-                                  imgs : menuImages
-                                })
+    this.inventoryMenuButtons = makeMenu.inventoryButtons()
+    this.inventorySpaces = makeMenu.inventorySpaces();
 
-
-
-
-    let magicLabels = [ "Home", "+10", "+50",
-                        "+5", "+10", "+30",
-                        "+5", "+10", "+30",
-                        "+5", "+10", "+30",
-                        "+5", "+10", "+30",
-                        "+5", "+10", "+30",
-                        "+5", "+10", "+30",                     
-                    
-                      ];
-
-     let magicImgs = [  
-                        magicImages.teleportStone, magicImages.teleportStone, magicImages.teleportStone,
-                        magicImages.rangeStone, magicImages.rangeStone, magicImages.rangeStone,
-                        magicImages.defenseStone, magicImages.defenseStone, magicImages.defenseStone,
-                        magicImages.attackStone, magicImages.attackStone, magicImages.attackStone,
-                        magicImages.miningStone, magicImages.miningStone, magicImages.miningStone,
-                        magicImages.woodcutStone, magicImages.woodcutStone, magicImages.woodcutStone,
-                        magicImages.huntingStone, magicImages.huntingStone, magicImages.huntingStone,                        
-                      ];
-
-    this.magicButtons = new Grid({
-                                  x: 365,
-                                  y: 140,
-                                  width : 3,
-                                  height : 7,
-                                  cellWidth : 40,
-                                  cellHeight: 40,
-                                  labelOffsetX : 0,
-                                  labelOffsetY : 10,
-                                  labelSize : 9,
-                                  labels : magicLabels,
-                                  imgs : magicImgs,
-                                  ySpace : 2,
-                                  xSpace : 5,
-                                })
-
-		this.actionButtons = [];
-    this.actionButtons = [];
+		this.actionButtons = {};
 
 		this.armorButtons = [];
 
 		this.bankButtons = {
-			background : this.button(32, 32, 300, 430),
-			spaces : [],
-			controls : [],
+      grid : false,			
 			page : 0,
-			open : false,
 		};
-
-		this.buyMenuButtons = {
-			background : this.button(32, 32, 300, 430),
-			spaces : [],
-			controls : [],
-			categories : [],
-			subCategories : [],
-			page : 0,
-			subCategoryPage : 0,
-			selectedItem : -1,
-			itemLength : 0,
-			open : false,
-		};
-
-    this.craftMenuButtons = {
-      background : this.button(32, 32, 300, 430),
-      spaces : [],
-      controls : [],
-      categories : [],
-      subCategories : [],
-      page : 0,
-      subCategoryPage : 0,
-      selectedItem : -1,
-      itemLength : 0,
-      open : false,
-    };
-
 
     this.farmButtons = {
         spaces : [],
@@ -132,7 +47,6 @@ export default class UI {
     }
 
     this.rightClickMenu = {
-
         background : this.button(0, 0, 50, 100),
         index : -1,
         buttons : [],
@@ -149,25 +63,34 @@ export default class UI {
 
    
 		this.homeMenuButtons = [];
-		this.inventorySpaces = [];
 		this.showItems = true;
 		this.showArmor = false;
 		this.showStats = false;
 		this.showMagic = false;
 		this.draw = new Draw();
-		this.clickHandler = new ClickHandler();
-		this.makeInventorySpaces();
+
 		this.makeCharacterActionButtons(player);
-		this.makeArmorSpaces();
-		this.makeBankButtons();
-		this.makeBuyButtons(items);
-    this.makeCraftButtons(items);
+		this.makeArmorMenu();
+		this.makeBankMenu();
+
 		this.makeHomeActionButtons(player);
     this.makeFarmButtons(player);
 
 	}
 
+  getMenuConfig(menu) {
+            let subCategory = menu.subCategoryGrids[menu.currentCategory];
+            let items = subCategory.itemGrids[menu.currentSubcategory];
+          return({
+            currentCategory : menu.currentCategory,
+            currentSubcategory : menu.currentSubcategory,
+            categories : menu.categoryGrid,
+            subCategory : subCategory,
+            items : items,
+            imgs : items.items
+          })
 
+  }
 
 	//map
 	drawMap(map, ctx) {
@@ -187,143 +110,8 @@ export default class UI {
 
 // drawing players
 
-  animationAction(player, direction, ctx) {
-      if (player.body.action === "fight") {
-         player.animation.fight(direction, player,ctx)
-      } else if (player.body.action === "archery") {
-         player.animation.range(direction, player, ctx)
-      } else if (player.body.action === "mine") {
-         player.animation.mine(direction, player, ctx)
-      } else if (player.body.action === "woodcut") {
-         player.animation.woodcut(direction, player, ctx)
-      } else if (player.body.action === "stop") {
-         player.animation.stop(direction, player, ctx)
-      }  else {
-        player.animation.walk(direction, player, ctx)
-      }
-  }
 
 
-
-  animationMovement(player, ctx) {
-    if (player.status.dead === true) {
-        player.armor.animation.death(player,ctx)
-        return false
-      }
-
-    if (player.body.currentDirection === "north") {
-      this.animationAction(player, "up", ctx)
-    }
-      
-    else if (player.body.currentDirection === "east") {
-      this.animationAction(player, "right", ctx)
-    }
-
-    else if (player.body.currentDirection === "south") {
-        this.animationAction(player, "down", ctx)
-    }
-    else if (player.body.currentDirection === "west") {
-      this.animationAction(player, "left", ctx)
-    }
-  }
-
-
-  playerAnimationAction(player, direction, ctx) {
-    if (player.body.action === "fight") {
-         player.armor.animation.fight(direction, player,ctx)
-      } else if (player.body.action === "archery") {
-         player.armor.animation.range(direction, player, ctx)
-      } else if (player.body.action === "mine") {
-         player.armor.animation.mine(direction, player, ctx)
-      } else if (player.body.action === "woodcut") {
-         player.armor.animation.woodcut(direction, player, ctx)
-      } else if (player.body.action === "stop") {
-         player.armor.animation.stop(direction, player, ctx)
-      } else {
-          player.armor.animation.walk(direction, player, ctx)
-      }
-  }
-
-  
-
-  playerAnimationMovement(player, ctx) {
-    if (player.status.dead === true) {
-        player.armor.animation.death(player,ctx)
-        return false
-      }
-
-    if (player.body.currentDirection === "north") {
-      this.playerAnimationAction(player, "up", ctx)
-    }
-      
-    else if (player.body.currentDirection === "east") {
-      this.playerAnimationAction(player, "right", ctx)
-    }
-
-    else if (player.body.currentDirection === "south") {
-        this.playerAnimationAction(player, "down", ctx)
-
-    }
-
-    else if (player.body.currentDirection === "west") {
-      this.playerAnimationAction(player, "left", ctx)
-    }
-  }
-
-
-
-  drawPlayers(player, enemies, ctx) {
-    // draws enemies;
-    for (let i = 0; i < enemies.length; i++) {
-        this.playerAnimationMovement(enemies[i], ctx);
-        this.drawHealthBar(enemies[i], ctx);
-        // enemies[i].body.followPath();
-    }
-
-    for (var i = 0; i < player.range.projectiles.active.length; i++) {
-      if (player.range.projectiles.active[i]) {
-          this.draw.fillRect(player.range.projectiles.active[i].projectile, "blue", ctx);
-      }
-    }
-
-
-    this.playerAnimationMovement(player, ctx)
-    this.drawPlayerStatsInCorner(player, ctx);
-
-
-  }
-
-  drawAnimals(animals, ctx) {
-    for (let i = 0; i < animals.length; i++) {
-      
-        animals[i].body.followPath();
-
-        if (animals[i].body.currentDirection === "north") {
-          animals[i].armor.animation.walk("up", animals[i], ctx)
-        }
-          
-        if (animals[i].body.currentDirection === "east") {
-          animals[i].armor.animation.walk("right", animals[i], ctx)
-        }
-
-        if (animals[i].body.currentDirection === "south") {
-          animals[i].armor.animation.walk("down", animals[i], ctx)
-        }
-
-        if (animals[i].body.currentDirection === "west") {
-          animals[i].armor.animation.walk("left", animals[i], ctx)
-        }
-        this.drawHealthBar(animals[i], ctx);
-    }
-  }
-
-
-  drawResource(resource, ctx) {
-    for (let i = 0; i < resource.length; i++) {
-        resource[i].armor.animation.drawResource(resource[i], ctx)
-        this.drawHealthBar(resource[i], ctx);
-    }
-  }
 
   drawMapInventory(inventory, ctx) {
     if (!inventory) {
@@ -337,7 +125,6 @@ export default class UI {
   }
 
   mapInventoryClick(mouse, inventory, player, canvas) {
-    
     let len = inventory.spaces.length
          for (let x = 0; x < len; x++) {
             if (this.clickHandler.click(mouse, inventory.spaces[x], canvas))
@@ -353,45 +140,20 @@ export default class UI {
 
 	drawPlayerStats(player, ctx) {
 		let xOffset = 370;
-		let yOffset = 140;
+		let yOffset = 50;
 		let yIncrement = 15
 		let yXpIncrement = 10
 
 		let skills = player.skills
 		let inventory = player.inventory
 
-
-
-		//may need to be drawn somwhere else
-		this.draw.text(player.name, 362, 20, "20", ctx);
-		//
+    let skillKeys = Object.keys(skills)
 		
     this.draw.img(userInterface.stats, 360, 0, 120,480, ctx)
-
-    this.draw.text(skills.health.show(), xOffset, yOffset += yIncrement, "10", ctx);
-		this.draw.text(skills.health.showXp(), xOffset + 10, yOffset += yXpIncrement, "8", ctx);
-
-		this.draw.text(skills.attack.show(), xOffset, yOffset += yIncrement, "10", ctx);
-		this.draw.text(skills.attack.showXp(), xOffset + 10, yOffset += yXpIncrement, "8", ctx);
-
-    this.draw.text(skills.range.show(), xOffset, yOffset += yIncrement, "10", ctx);
-    this.draw.text(skills.range.showXp(), xOffset + 10, yOffset += yXpIncrement, "8", ctx);
-
-		this.draw.text(skills.thirst.show(), xOffset, yOffset += yIncrement, "10", ctx);
-		this.draw.text(skills.thirst.showXp(), xOffset + 10, yOffset += yXpIncrement, "8", ctx);
-
-		this.draw.text(skills.hunger.show(), xOffset, yOffset += yIncrement, "10", ctx);
-		this.draw.text(skills.hunger.showXp(), xOffset + 10, yOffset += yXpIncrement, "8", ctx);
-
-		this.draw.text(skills.mining.show(), xOffset, yOffset += yIncrement, "10", ctx);
-		this.draw.text(skills.mining.showXp(), xOffset + 10, yOffset += yXpIncrement, "8", ctx);
-
-		this.draw.text(skills.woodcutting.show(), xOffset, yOffset += yIncrement, "10", ctx);
-		this.draw.text(skills.woodcutting.showXp(), xOffset + 10, yOffset += yXpIncrement, "8", ctx);
-
-    this.draw.text(skills.hunting.show(), xOffset, yOffset += yIncrement, "10", ctx);
-    this.draw.text(skills.hunting.showXp(), xOffset + 10, yOffset += yXpIncrement, "8", ctx);
-
+		for (const key of skillKeys) {
+        this.draw.text(skills[key].show(), xOffset, yOffset += yIncrement, "10", ctx);
+    		this.draw.text(skills[key].showXp(), xOffset + 10, yOffset += yXpIncrement, "8", ctx);
+    }
 
 		yOffset += 40
 		this.draw.text("Gold: " + inventory.gold, xOffset, yOffset += yIncrement, "10", ctx);
@@ -399,87 +161,16 @@ export default class UI {
 		this.draw.text("Highest Level: " + player.status.highestLevel, xOffset, yOffset += yIncrement, "10", ctx);
 
   	}
-
-  	scale(value, x1, y1, x2, y2) {
-  	 return ((value - x1) * (y2 - x2) / (y1 - x1) + x2)
-  	}
-
-
-    drawHealthBar (obj, ctx)  {
-     
-        let redHealth = this.button(obj.body.pos.x , obj.body.pos.y, obj.body.size.x, 2);
-        let scaledHealth = this.scale(obj.skills.health.getCurrent(), 0, obj.skills.health.get(), 0 , obj.body.size.x)
-        let currHealth = this.button(obj.body.pos.x , obj.body.pos.y, scaledHealth, 2) 
-
-        this.draw.fillRect(redHealth, "red", ctx);
-        this.draw.fillRect(currHealth, "green", ctx);
-
-    }
-
-
-  	drawPlayerStatsInCorner(player, ctx) {
-      const barHeight = 10;
-      const xOffset = 30;
-
-      // draw red part of health bar / underside
-
-      let redHealth = this.button(xOffset, 0, player.body.size.x, barHeight);
-
-      this.draw.fillRect(redHealth, "red", ctx);
-      
-      redHealth.body.pos.y += 15;
-      this.draw.fillRect(redHealth, "red", ctx);
-
-      redHealth.body.pos.y += 15;
-      this.draw.fillRect(redHealth, "red", ctx);
-
-      // draw green part of health bar scaled to player width
-
-      let scaledHealth = this.scale(player.skills.health.getCurrent(), 0, player.skills.health.get(), 0 , player.body.size.x)
-      let currHealth = this.button(xOffset, 0, scaledHealth, barHeight) 
-
-      this.draw.fillRect(currHealth, "purple", ctx);
-
-
-      let scaledThirst = this.scale(player.skills.thirst.getCurrent(), 0, player.skills.thirst.get(), 0 , player.body.size.x)
-      let currThirst = this.button(xOffset, 15, scaledThirst, barHeight) 
-      this.draw.fillRect(currThirst, "blue", ctx);
-
-      let scaledHunger = this.scale(player.skills.hunger.getCurrent(), 0, player.skills.hunger.get(), 0 , player.body.size.x)
-	    let currHunger = this.button(xOffset, 30, scaledHunger, barHeight) 
-      this.draw.fillRect(currHunger, "orange", ctx);
-
-      this.draw.text("HP", 0, 8, "10", ctx)
-      this.draw.text("Thirst", 0, 22, "10", ctx)
-      this.draw.text("Food", 0, 38, "10", ctx)
-      this.draw.text("Level: " + player.status.currLevel, 0, 54, "10", ctx);
-
-  }
-
+  	
 	// inventory
 
 
 	drawSpacesForInventory(player, ctx) {   
-      this.draw.img(userInterface.stats, 360, 0, 120, 480, ctx)
-      this.draw.img(userInterface.inventory, 360, 0, 120, 440, ctx)
-
-      for (let i = 0; i < this.inventorySpaces.length; i++) {
-          let x = this.inventorySpaces[i].body.pos.x;
-          let y = this.inventorySpaces[i].body.pos.y;
-
-          if (player.inventory.spaces[i].id !== -1) {
-            if (player.inventory.spaces[i].img) {
-              this.draw.img(player.inventory.spaces[i].img, x, y,32,32, ctx)
-            } else {
-               this.draw.text(player.inventory.spaces[i].name, x, y + 10, "9", ctx);
-            }
-             this.draw.text(player.inventory.spaces[i].quantity, x + 5, y + 15, "15", ctx);
-          }
-        }
-
+      this.inventorySpaces.drawGrid(ctx)
+      this.inventorySpaces.drawInventory(player.inventory, ctx)
   }
 
-	drawInventory(player, ctx) {  
+	drawInventory(player, ctx) { 
 		  if (this.showItems) {
 		    this.drawSpacesForInventory(player, ctx);
 		  } else if (this.showArmor) {
@@ -489,10 +180,10 @@ export default class UI {
 		    this.drawPlayerStats(player, ctx)
 		  } else if (this.showMagic) {
         this.draw.img(userInterface.stats, 360, 0,120,480, ctx)
-        this.magicButtons.drawGrid(ctx);
+        this.magicMenu.drawGrid(ctx);
       }
 
-      this.menuButtons.drawGrid(ctx);
+      this.inventoryMenuButtons.drawGrid(ctx);
 		  this.drawActionButtons(ctx);
 	}
 
@@ -503,8 +194,6 @@ export default class UI {
         }
 
         player.home.wallAnimation.drawWall(ctx);
-
-        this.playerAnimationMovement(merchant, ctx)
         this.drawHomeActionButtons(player, ctx)
       }
   }
@@ -513,14 +202,14 @@ export default class UI {
 		let home = player.home;
 		if (player.status.currLevel === 0) {
 
-			if (this.bankButtons.open === true) {
+			if (this.currentHomeMenu === "bank") {
 				this.drawBankButtons(player, ctx);
 			}
-			if (this.buyMenuButtons.open === true) {
-				this.drawBuyButtons(player, items, ctx);
+			if (this.currentHomeMenu === "buy") {
+				this.drawMenu(this.buyMenu, ctx);
 			}
-      if (this.craftMenuButtons.open === true) {
-        this.drawCraftButtons(player, items, ctx);
+      if (this.currentHomeMenu === "craft") {
+        this.drawMenu(this.craftMenu, ctx);
       }
       if (this.rightClickMenu.open === true) {
         this.drawDoubleClickButtons(player, ctx);
@@ -551,135 +240,6 @@ export default class UI {
 
       player.home.buyMenu.animation.drawCraftCorner(player.home.buyMenu, ctx)
 
-
-  }
-
-  
-
-  drawBuyButtons(player, items, ctx){
-
-
-  	  let page = this.buyMenuButtons.page;
-  	  let subCategoryPage = this.buyMenuButtons.subCategoryPage;
-      let subItems = this.buyMenuButtons.subCategories[page][subCategoryPage].items;
-
-      this.draw.img(userInterface.buyBackGround, 25, 25, userInterface.buyBackGround.pos.width, userInterface.buyBackGround.pos.height, ctx);
-      this.draw.text("Gold: " + player.inventory.gold, 365, 60, "12", ctx);
-      let len = subItems.length
-
-
-      this.buyMenuButtons.itemLength = len;
-      for (let i = 0; i < len; i++) {
-        this.draw.img(userInterface.itemBorder, this.buyMenuButtons.spaces[i].button.body.pos.x, this.buyMenuButtons.spaces[i].button.body.pos.y, this.buyMenuButtons.spaces[i].button.body.size.x, this.buyMenuButtons.spaces[i].button.body.size.y, ctx)
-        if (subItems[i].img) {
-            this.draw.inventoryItemImg(subItems[i].img, this.buyMenuButtons.spaces[i].button.body.pos.x, this.buyMenuButtons.spaces[i].button.body.pos.y, ctx)
-        }
-      	  	this.buyMenuButtons.spaces[i].label.changeLabel(subItems[i].name)
-      	  	this.buyMenuButtons.spaces[i].label2.changeLabel(subItems[i].price)
-          	this.draw.actionButton(this.buyMenuButtons.spaces[i], ctx);
-      }
-      this.draw.img(userInterface.greenButton, this.buyMenuButtons.controls[1].button.body.pos.x - 5,this.buyMenuButtons.controls[1].button.body.pos.y - 5, 110, 60,  ctx)
-      this.draw.img(userInterface.redButton, this.buyMenuButtons.controls[2].button.body.pos.x - 5,this.buyMenuButtons.controls[2].button.body.pos.y - 5, 110, 60,  ctx)
-
-      len = this.buyMenuButtons.controls.length
-      for (let x = 0; x < len; x++) {
-          this.draw.label(this.buyMenuButtons.controls[x], ctx);
-      }
-
-      len = this.buyMenuButtons.categories.length
-      for (let x = 0; x < len; x++) {
-         
-        if (this.buyMenuButtons.categories[x].category === page) {
-            this.draw.img(userInterface.greenButton, this.buyMenuButtons.categories[x].button.body.pos.x - 5,this.buyMenuButtons.categories[x].button.body.pos.y - 5, 70, 35,  ctx)
-        } else {
-          this.draw.img(userInterface.aquaButton, this.buyMenuButtons.categories[x].button.body.pos.x - 5,this.buyMenuButtons.categories[x].button.body.pos.y - 5, 70, 35,  ctx) 
-        }
-          
-          this.draw.label(this.buyMenuButtons.categories[x], ctx);
-      }
-
-
-      len = this.buyMenuButtons.subCategories[page].length
-
-      for (let x = 0; x < len; x++) {
-         if (x === subCategoryPage) {
-          this.draw.img(userInterface.greenButton, this.craftMenuButtons.subCategories[page][x].button.body.pos.x - 5,this.craftMenuButtons.subCategories[page][x].button.body.pos.y - 5, 70, 40,  ctx)
-        } else {
-          this.draw.img(userInterface.blueButton, this.craftMenuButtons.subCategories[page][x].button.body.pos.x - 5,this.craftMenuButtons.subCategories[page][x].button.body.pos.y - 5, 70, 40,  ctx)
-
-        }
-          this.draw.label(this.buyMenuButtons.subCategories[page][x], ctx);
-      }
-
-  }
-
-
-  drawCraftButtons(player, items, ctx){
-
-
-
-      let page = this.craftMenuButtons.page;
-      let subCategoryPage = this.craftMenuButtons.subCategoryPage;
-      let subItems = this.craftMenuButtons.subCategories[page][subCategoryPage].items;
-      let len = subItems.length
-      
-      this.draw.img(userInterface.buyBackGround, 25, 25, userInterface.buyBackGround.pos.width, userInterface.buyBackGround.pos.height, ctx);
-      this.draw.text("Gold: " + player.inventory.gold, 365, 60, "12", ctx);
-
-      this.craftMenuButtons.itemLength = len;
-      for (let i = 0; i < len; i++) {
-
-
-            this.draw.img(userInterface.itemBorder, this.craftMenuButtons.spaces[i].button.body.pos.x, this.craftMenuButtons.spaces[i].button.body.pos.y, this.craftMenuButtons.spaces[i].button.body.size.x, this.craftMenuButtons.spaces[i].button.body.size.y, ctx)
-
-            this.craftMenuButtons.spaces[i].label.changeLabel(subItems[i].name)
-            if (subItems[i].img) {
-              this.draw.inventoryItemImg(subItems[i].img, this.craftMenuButtons.spaces[i].button.body.pos.x, this.craftMenuButtons.spaces[i].button.body.pos.y, ctx)
-            }
-
-            // add this to this.draw.craftButton...
-            if (subItems[i].recipe[2]) {
-              this.craftMenuButtons.spaces[i].label4.changeLabel(subItems[i].recipe[2].item.name + " x " + subItems[i].recipe[2].quantity)
-            } else {
-              this.craftMenuButtons.spaces[i].label4.changeLabel("");
-            }
-
-            this.draw.craftButton(this.craftMenuButtons.spaces[i], subItems[i], ctx);
-      }
-
-
-      this.draw.img(userInterface.redButton, this.craftMenuButtons.controls[1].button.body.pos.x - 5,this.craftMenuButtons.controls[1].button.body.pos.y - 5, 110, 60,  ctx)
-      this.draw.img(userInterface.greenButton, this.craftMenuButtons.controls[2].button.body.pos.x - 5,this.craftMenuButtons.controls[2].button.body.pos.y - 5, 110, 60,  ctx)
-      
-      len = this.craftMenuButtons.controls.length
-      for (let x = 0; x < len; x++) {
-
-          this.draw.label(this.craftMenuButtons.controls[x], ctx);
-      }
-
-      len = this.craftMenuButtons.categories.length
-      for (let x = 0; x < len; x++) {
-         if (x === page) {
-            this.draw.img(userInterface.greenButton, this.craftMenuButtons.categories[x].button.body.pos.x - 5,this.craftMenuButtons.categories[x].button.body.pos.y - 5, 70, 35,  ctx)
-          } else {
-            this.draw.img(userInterface.aquaButton, this.craftMenuButtons.categories[x].button.body.pos.x - 5,this.craftMenuButtons.categories[x].button.body.pos.y - 5, 70, 35,  ctx)
-          }
-
-
-          this.draw.label(this.craftMenuButtons.categories[x], ctx);
-      }
-
-
-      len = this.craftMenuButtons.subCategories[page].length
-
-      for (let x = 0; x < len; x++) {
-        if (x === subCategoryPage) {
-          this.draw.img(userInterface.greenButton, this.craftMenuButtons.subCategories[page][x].button.body.pos.x - 5,this.craftMenuButtons.subCategories[page][x].button.body.pos.y - 5, 70, 40,  ctx)
-        } else {
-          this.draw.img(userInterface.blueButton, this.craftMenuButtons.subCategories[page][x].button.body.pos.x - 5,this.craftMenuButtons.subCategories[page][x].button.body.pos.y - 5, 70, 40,  ctx)
-        }
-          this.draw.label(this.craftMenuButtons.subCategories[page][x], ctx);
-      }
 
   }
 
@@ -744,14 +304,13 @@ export default class UI {
     this.draw.text(player.armor.woodCuttingBonus, 450, 435, "10", ctx);
 
 
-
   }
 
   //toggle and settings
 
 	menuClick(mouse, canvas) {
 	
-    let click = this.menuButtons.click(mouse, canvas)
+    let click = this.inventoryMenuButtons.click(mouse, canvas)
         if (click.click)
             {
               if (click.index === 0) {
@@ -771,7 +330,7 @@ export default class UI {
     if (!this.showMagic) {
       return false;
     }
-    let click = this.magicButtons.click(mouse, canvas)
+    let click = this.magicMenu.click(mouse, canvas)
       if (click.click)
       {
          switch (click.index) {
@@ -862,9 +421,9 @@ export default class UI {
   }
 
 	actionClick(mouse, player, canvas) {
-  if (this.bankButtons.open || this.craftMenuButtons.open || this.buyMenuButtons.open) {
-    return false
-  }
+      if (this.currentHomeMenu !== "none") {
+        return false
+      }
 
       let click = this.actionButtons.click(mouse, canvas)
 		  if (click.click) {
@@ -881,23 +440,12 @@ export default class UI {
 
       let len = this.rightClickMenu.buttons.length;
         let bank = player.home.bank;
-        if (this.rightClickMenu.open === true && this.rightClickMenu.menu === "inventory" && (this.bankButtons.open || this.buyMenuButtons.open)) {
+        if (this.rightClickMenu.open === true && this.rightClickMenu.menu === "inventory" && (this.currentHomeMenu === "bank" || this.currentHomeMenu === "buy")) {
           for (var i = 0; i < len; i++) {
             if (this.clickHandler.click(mouse, this.rightClickMenu.buttons[i].button, canvas)) {
-              let quantity = 0;
-              if (i === 0) {
-                quantity = 10;
-              } else if (i === 1) {
-                quantity = 50;
-              } else if (i === 2) {
-                quantity = player.inventory.spaces[this.rightClickMenu.index].quantity
-              }
-
-              if (quantity > player.inventory.spaces[this.rightClickMenu.index].quantity) {
-                quantity = player.inventory.spaces[this.rightClickMenu.index].quantity;
-              }
-
-              if (this.buyMenuButtons.open === true) {
+              let max = player.inventory.spaces[this.rightClickMenu.index].quantity
+              let quantity = this.getDoubleClickQuantity(i, max);
+              if (this.currentHomeMenu === "buy") {
                  if (player.inventory.sell(this.rightClickMenu.index, quantity)) {
                     this.rightClickMenu.clear();
                  }
@@ -909,8 +457,6 @@ export default class UI {
                 }
 
               }
-
-
               return true
             }
           }
@@ -919,25 +465,23 @@ export default class UI {
         }
 
 
-
-
-		  len = this.inventorySpaces.length
-      for (let x = 0; x < len; x++) {
-        if (this.clickHandler.click(mouse, this.inventorySpaces[x], canvas))
+		  let click = this.inventorySpaces.click(mouse, canvas)
+     
+        if (click.click)
         {
-          if (this.bankButtons.open === true) {
-            player.home.bank.inventory.add(player.inventory.spaces[x])
-            player.inventory.deleteOne(x);
-          } else if (this.buyMenuButtons.open === true) {
-            player.inventory.sell(x, 1);
+          if (this.currentHomeMenu === "bank") {
+            player.home.bank.inventory.add(player.inventory.spaces[click.index])
+            player.inventory.deleteOne(click.index);
+          } else if (this.currentHomeMenu === "buy") {
+            player.inventory.sell(click.index, 1);
           } else {
-            if (player.inventory.spaces[x].wearable) {
-              player.inventory.wearItem(player.armor, x)
-            } else if (player.inventory.spaces[x].magic) {
+            if (player.inventory.spaces[click.index].wearable) {
+              player.inventory.wearItem(player.armor, click.index)
+            } else if (player.inventory.spaces[click.index].magic) {
             } else {
-              player.inventory.useItem(player.skills, x)
+              player.inventory.useItem(player.skills, click.index)
           }
-        }
+        
       }
     }
 	}
@@ -945,53 +489,127 @@ export default class UI {
 
   farmInventoryClick(mouse, player, canvas) {
     
-      let len = this.inventorySpaces.length
-      for (let x = 0; x < len; x++) {
-        if (this.clickHandler.click(mouse, this.inventorySpaces[x], canvas))
+      let click = this.inventorySpaces.click(mouse, canvas)
+        if (click.click)
         {
-            if (player.inventory.spaces[x].quantity > 5) {
-              if (player.home.farm.add(player.inventory.spaces[x])) {
-                player.inventory.deleteQuantity(x,5);
+            if (player.inventory.spaces[click.index].quantity > 5) {
+              if (player.home.farm.add(player.inventory.spaces[click.index])) {
+                player.inventory.deleteQuantity(click.index,5);
               }
             }
-            if (player.home.farm.addWater(player.inventory.spaces[x])) {
-                player.inventory.deleteOne(x);
+            if (player.home.farm.addWater(player.inventory.spaces[click.index])) {
+                player.inventory.deleteOne(click.index);
             }
         }
-      }
     }
 
 
 
 
   drawBankButtons(player, ctx){
+        let page = this.bankButtons.page;
+        this.bankButtons.grid.drawGrid(ctx)
+        this.bankButtons.grid.drawInventory(player.home.bank.inventory, ctx, page)
+        this.bankButtons.grid.drawControls(ctx);
+    }
 
-        // this.draw.fillRect(this.bankButtons.background, "black", ctx)
-        this.draw.img(userInterface.bankBackGround, 25, 25, userInterface.bankBackGround.pos.width,userInterface.bankBackGround.pos.height, ctx);
-        let page = this.bankButtons.page * 50;
-        let len = this.bankButtons.spaces.length
-        for (let i = 0; i < len; i++) {
-            let x = this.bankButtons.spaces[i].button.body.pos.x;
-            let y = this.bankButtons.spaces[i].button.body.pos.y;
-            this.draw.img(userInterface.itemBorder, x, y, 40, 40, ctx)
 
-            if (player.home.bank.inventory.spaces[i].id !== -1 && player.home.bank.inventory.spaces[i + page].id !== -1) {
-               if (player.home.bank.inventory.spaces[i + page].img) {
-                this.draw.inventoryItemImg(player.home.bank.inventory.spaces[i + page].img, x, y, ctx)
-               } else {
-                this.draw.text(player.home.bank.inventory.spaces[i + page].name, x, y + 10, "9", ctx);
-               }
+  drawMenu(menu, ctx){
+      let settings = this.getMenuConfig(menu);
+      settings.categories.drawGrid(ctx);
+      settings.subCategory.grid.drawGrid(ctx);
+      settings.items.grid.drawGrid(ctx);
+      settings.items.grid.drawItems(settings.imgs, ctx);
+      settings.categories.drawControls(ctx);
 
-               this.draw.text(player.home.bank.inventory.spaces[i + page].quantity, x, y + 20, "9", ctx);
+  }
+
+
+    getDoubleClickQuantity(index, max) {
+          let quantity = 0;
+          if (index === 0) {
+            quantity = 10;
+          } else if (index === 1) {
+            quantity = 50;
+          } else if (index === 2) {
+             quantity = max
+          }
+
+          if (quantity > max) {
+              quantity = max
+          }
+          return (quantity)
+    }
+
+
+
+    menuButtonClick(menu, player, purchaseType, mouse, canvas) {
+            let settings = this.getMenuConfig(menu)
+            
+            let click = settings.categories.controlClick(mouse, canvas)    
+            if (click.click)
+            {
+              if (click.index === 0) {
+                  this.currentHomeMenu = "none"
+              }
             }
 
-        }
-        this.draw.img(userInterface.upArrow, this.bankButtons.controls[0].button.body.pos.x - 8,this.bankButtons.controls[0].button.body.pos.y - 8, 32, 32,  ctx)
-        this.draw.img(userInterface.downArrow, this.bankButtons.controls[1].button.body.pos.x - 8,this.bankButtons.controls[1].button.body.pos.y - 8, 32, 32,  ctx)
-        this.draw.button(this.bankButtons.controls[2], ctx);
-        this.draw.button(this.bankButtons.controls[3], ctx);
+            click = settings.items.grid.click(mouse, canvas);
 
+            if (click.click)
+            {
+              let item = settings.items.items[click.index];
+              if (purchaseType === "buy") {
+                player.inventory.buy(item, 1)
+              } else if (purchaseType === "craft") {
+                player.inventory.craft(item, 1)
+              }
+            }
+
+            click = settings.categories.click(mouse, canvas);
+            if (click.click)
+            {
+               menu.currentCategory = click.label;
+               menu.currentSubcategory = menu.subCategoryGrids[menu.currentCategory].first
+            }
+
+            click = settings.subCategory.grid.click(mouse,canvas);
+            if (click.click)
+            {
+              menu.currentSubcategory = click.label;
+            }
     }
+
+
+    buyButtonClick(mouse, player, canvas) {
+    if (this.currentHomeMenu !== "buy") {
+     return false
+    }
+
+    let len = this.rightClickMenu.buttons.length;
+
+     if (this.rightClickMenu.open === true && this.rightClickMenu.menu === "buy") {
+          for (var i = 0; i < len; i++) {
+            if (this.clickHandler.click(mouse, this.rightClickMenu.buttons[i].button, canvas)) {
+              let item = this.buyMenu.subCategoryGrids[this.buyMenu.currentCategory].itemGrids[this.buyMenu.currentSubcategory].items[this.rightClickMenu.index];
+              if (player.inventory.gold <= 0 || item.price > player.inventory.gold) {
+                  return (false)
+              }
+              let quantity = this.getDoubleClickQuantity(i, Math.floor(player.inventory.gold / item.price));
+              player.inventory.buy(item, quantity)
+              return true
+            }
+          }
+          this.rightClickMenu.clear();
+          return (true)
+        }
+
+        this.menuButtonClick(this.buyMenu, player, "buy", mouse, canvas)
+
+  }
+
+
+
 
   drawDoubleClickButtons(player, ctx) {
 
@@ -1003,102 +621,88 @@ export default class UI {
 
         }
     }
-
   }
 
-  bankButtonDoubleClick(mouse, player, canvas) {
-      if (this.bankButtons.open === false) {
-        return false
-      }
-        let page = this.bankButtons.page * 50;
-
-        for (let x = 0; x < 50; x++) {
-            if (this.clickHandler.click(mouse, this.bankButtons.spaces[x].button, canvas))
-            { 
-              let coordinate = this.clickHandler.transformedCoordinate(mouse, canvas)
-              this.makeRightClickButtons("bank", x + page, coordinate.x, coordinate.y);
-            }
-        }
-
-  }
-
-
-   buyButtonDoubleClick(mouse, player, canvas) {
-      if (this.buyMenuButtons.open === false) {
-        return false
-      }
+  doubleClickHandler(player, mouse, canvas) {
       
-        let len = this.buyMenuButtons.itemLength
+      let menuSettings = {
+        player : player,
+        mouse : mouse, 
+        canvas : canvas, 
+      };
 
-        for (let x = 0; x < len; x++) {
-            if (this.clickHandler.click(mouse, this.buyMenuButtons.spaces[x].button, canvas))
-            {
-              let coordinate = this.clickHandler.transformedCoordinate(mouse, canvas)
-              this.makeRightClickButtons("buy", x, coordinate.x, coordinate.y);
-            }
-        }
-  }
+      let inventorySettings = {
+        player : player,
+        mouse : mouse, 
+        canvas : canvas, 
+      };
 
-   craftButtonDoubleClick(mouse, player, canvas) {
-      if (this.craftMenuButtons.open === false) {
-        return false
+      switch (this.currentHomeMenu) {
+        case "bank" :
+          menuSettings.grid = this.bankButtons.grid;
+          menuSettings.tag = "bank";
+          menuSettings.page = this.bankButtons.page;
+
+          inventorySettings.grid = this.inventorySpaces
+          inventorySettings.tag = "inventory"
+
+          break;
+        case "buy" :
+          menuSettings.grid = this.buyMenu.subCategoryGrids[this.buyMenu.currentCategory].itemGrids[this.buyMenu.currentSubcategory].grid;
+          menuSettings.tag = "buy";
+
+          inventorySettings.grid = this.inventorySpaces
+          inventorySettings.tag = "inventory"
+
+          break;
+        case "craft":
+          menuSettings.grid = this.craftMenu.subCategoryGrids[this.craftMenu.currentCategory].itemGrids[this.craftMenu.currentSubcategory].grid;
+          menuSettings.tag = "craft";
+
+            break;
+        default :
+          break;
       }
-      
-        let len = this.craftMenuButtons.itemLength
-
-        for (let x = 0; x < len; x++) {
-            if (this.clickHandler.click(mouse, this.craftMenuButtons.spaces[x].button, canvas))
-            {
-              let coordinate = this.clickHandler.transformedCoordinate(mouse, canvas)
-              this.makeRightClickButtons("craft", x, coordinate.x, coordinate.y);
-            }
-        }
-  }
-
-  inventoryButtonDoubleClick(mouse, player, canvas) {
-      if (!this.bankButtons.open && !this.buyMenuButtons.open) {
-        return false
+  
+      if (menuSettings.grid) {
+         this.doubleClick(menuSettings)
       }
-        let len = this.inventorySpaces.length
-        for (let x = 0; x < len; x++) {
-            if (this.clickHandler.click(mouse, this.inventorySpaces[x], canvas))
-            { 
-              let coordinate = this.clickHandler.transformedCoordinate(mouse, canvas)
-              this.makeRightClickButtons("inventory", x, coordinate.x, coordinate.y);
-            }
-        }
+      if (inventorySettings.grid) {
+        this.doubleClick(inventorySettings)
+      }
   }
 
+  doubleClick(settings) {
+        
+      console.log(settings.tag)
+        let page = settings.page || 0;
+
+        let click = settings.grid.click(settings.mouse, settings.canvas);
+        if (click.click)
+        { 
+          let coordinate = this.clickHandler.transformedCoordinate(settings.mouse, settings.canvas)
+          this.makeRightClickButtons(settings.tag, click.index + page, coordinate.x, coordinate.y);
+        }
+  }
 
 	bankButtonClick(mouse, player, canvas) {
-		if (this.bankButtons.open === false) {
+		if (this.currentHomeMenu !== "bank") {
 			return false
 		}
-        let page = this.bankButtons.page * 50;
+        let page = this.bankButtons.page;
         let len = this.rightClickMenu.buttons.length;
         let bank = player.home.bank;
         if (this.rightClickMenu.open === true && this.rightClickMenu.menu === "bank") {
           let maxAmount = bank.inventory.spaces[this.rightClickMenu.index].quantity
           for (var i = 0; i < len; i++) {
             if (this.clickHandler.click(mouse, this.rightClickMenu.buttons[i].button, canvas)) {
-              let quantity = 0;
-              if (i === 0) {
-                quantity = 10;
-              } else if (i === 1) {
-                quantity = 50;
-              } else if (i === 2) {
-                quantity = maxAmount
-              }
-              if (quantity > maxAmount) {
-                quantity = maxAmount
-              }
+              let quantity = this.getDoubleClickQuantity(i, maxAmount);
 
               player.inventory.addQuantity(bank.inventory.spaces[this.rightClickMenu.index], quantity)
               if (bank.inventory.deleteQuantity(this.rightClickMenu.index, quantity))
               {
                 this.rightClickMenu.clear();
               }
-
               return true
             }
           }
@@ -1106,135 +710,48 @@ export default class UI {
           return (true)
         }
 
-        for (let x = 0; x < 50; x++) {
-            if (this.clickHandler.click(mouse, this.bankButtons.spaces[x].button, canvas))
+            let click = this.bankButtons.grid.click(mouse, canvas);
+
+            if (click.click)
             { 
-      				if (player.inventory.add(player.home.bank.inventory.spaces[x + page])) {
-      				  player.home.bank.inventory.deleteOne(x + page)
+      				if (player.inventory.add(player.home.bank.inventory.spaces[click.index + page])) {
+      				  player.home.bank.inventory.deleteOne(click.index + page)
               }
             }
-        }
 
-        len = this.bankButtons.controls.length
-        for (let x = 0; x < len; x++) {
-            if (this.clickHandler.click(mouse, this.bankButtons.controls[x].button, canvas))
+            click = this.bankButtons.grid.controlClick(mouse, canvas);
+
+            if (click.click)
             {
-            	if (x === 0) {
-              		this.bankButtons.page--;
+            	if (click.index === 0) {
+              		this.bankButtons.page-=50;
               		if (this.bankButtons.page < 0) {
               			this.bankButtons.page = 0
               			return false
               		}
-              		this.bankButtons.controls[3].button.body.pos.y -= 60;
+              		this.bankButtons.grid.controls[3].button.body.pos.y -= 80;
 
-              } else if (x === 1) {
-            		this.bankButtons.page++;
-            		  if (this.bankButtons.page > 4) {
-              			this.bankButtons.page = 4
+              } else if (click.index === 1) {
+            		this.bankButtons.page += 50;
+            		  if (this.bankButtons.page > 150) {
+              			this.bankButtons.page = 150
               			return false;
               		}
-              		this.bankButtons.controls[3].button.body.pos.y += 60;
+              		this.bankButtons.grid.controls[3].button.body.pos.y += 80;
 
 
-              } else if (x === 2) {
-              	this.bankButtons.open = false
+              } else if (click.index === 2) {
+                this.currentHomeMenu = "none";
+
               }
-            }
-        }
-	}
-
-
-	buyButtonClick(mouse, player, canvas) {
-		if (this.buyMenuButtons.open === false) {
-			return false
-		}
-
-    this.showItemMenu()
-    let len = this.rightClickMenu.buttons.length;
-
-     if (this.rightClickMenu.open === true && this.rightClickMenu.menu === "buy") {
-          for (var i = 0; i < len; i++) {
-            if (this.clickHandler.click(mouse, this.rightClickMenu.buttons[i].button, canvas)) {
-              let quantity = 0;
-              let item = this.buyMenuButtons.subCategories[this.buyMenuButtons.page][this.buyMenuButtons.subCategoryPage].items[this.rightClickMenu.index].copy();
-              if (player.inventory.gold <= 0 || item.price > player.inventory.gold) {
-                  return (false)
-              }
-              let maxAmount = Math.floor(player.inventory.gold / item.price);
-              if (i === 0) {
-                quantity = 10;
-              } else if (i === 1) {
-                quantity = 50;
-              } else if (i === 2) {
-                 quantity = maxAmount
-              }
-
-              if (quantity > maxAmount) {
-                  quantity = maxAmount
-              }
-
-              player.inventory.buy(item.price, item, quantity)
-              return true
-            }
           }
-          this.rightClickMenu.clear();
-          return (true)
-        }
-
-
-
-		len = this.buyMenuButtons.itemLength
-        for (let x = 0; x < len; x++) {
-            if (this.clickHandler.click(mouse, this.buyMenuButtons.spaces[x].button, canvas))
-            {
-
-              let item = this.buyMenuButtons.subCategories[this.buyMenuButtons.page][this.buyMenuButtons.subCategoryPage].items[x].copy();
-              player.inventory.buy(item.price, item, 1)
-            }
-        }
-
-        len = this.buyMenuButtons.controls.length
-        for (let x = 0; x < len; x++) {
-            if (this.clickHandler.click(mouse, this.buyMenuButtons.controls[x].button, canvas))
-            {
-            	if (x === 0) {
-              		this.buyMenuButtons.open = false
-                  this.craftMenuButtons.open = false
-              }
-              if (x === 1) {
-                this.buyMenuButtons.open = true;
-                this.craftMenuButtons.open = false;
-              }
-              if (x === 2) {
-                this.buyMenuButtons.open = false;
-                this.craftMenuButtons.open = true;
-
-              }
-
-            }
-        }
-
-        len = this.buyMenuButtons.categories.length
-        for (let x = 0; x < len; x++) {
-            if (this.clickHandler.click(mouse, this.buyMenuButtons.categories[x].button, canvas))
-            {
-            	this.buyMenuButtons.page = this.buyMenuButtons.categories[x].category;
-            	this.buyMenuButtons.subCategoryPage = 0
-            }
-        }
-
-    		let page = this.buyMenuButtons.page;
-    		len = this.buyMenuButtons.subCategories[page].length
-        for (let x = 0; x < len; x++) {
-            if (this.clickHandler.click(mouse, this.buyMenuButtons.subCategories[page][x].button, canvas))
-            {
-            	this.buyMenuButtons.subCategoryPage = x;
-            }
-        }
 	}
+
+
+	
 
     craftButtonClick(mouse, player, canvas) {
-    if (this.craftMenuButtons.open === false) {
+    if (this.currentHomeMenu !== "craft") {
       return false
     }
 
@@ -1245,19 +762,9 @@ export default class UI {
      if (this.rightClickMenu.open === true && this.rightClickMenu.menu === "craft") {
           for (var i = 0; i < len; i++) {
             if (this.clickHandler.click(mouse, this.rightClickMenu.buttons[i].button, canvas)) {
-              let quantity = 0;
-              let item = this.craftMenuButtons.subCategories[this.craftMenuButtons.page][this.craftMenuButtons.subCategoryPage].items[this.rightClickMenu.index].copy();
+              let item = this.craftMenu.subCategoryGrids[this.craftMenu.currentCategory].itemGrids[this.craftMenu.currentSubcategory].items[this.rightClickMenu.index];
               let maxAmount = player.inventory.maxCraft(item);
-              if (i === 0) {
-                quantity = 10;
-              } else if (i === 1) {
-                quantity = 50;
-              } else if (i === 2) {
-                 quantity = maxAmount
-              }
-              if (quantity > maxAmount) {
-                  quantity = maxAmount
-              }
+              let quantity = this.getDoubleClickQuantity(i, maxAmount)
               player.inventory.craft(item, quantity)
               this.rightClickMenu.clear();
               return true
@@ -1268,78 +775,65 @@ export default class UI {
         }
 
 
+          let currentCategory = this.craftMenu.currentCategory;
+          let currentSubcategory = this.craftMenu.currentSubcategory;
 
+          let categories = this.craftMenu.categoryGrid
+          let subCategory = this.craftMenu.subCategoryGrids[currentCategory];
+          let itemGrid = subCategory.itemGrids[this.craftMenu.currentSubcategory]
 
-      len = this.craftMenuButtons.itemLength
-        for (let x = 0; x < len; x++) {
-            if (this.clickHandler.click(mouse, this.craftMenuButtons.spaces[x].button, canvas))
+            let click = categories.controlClick(mouse, canvas)    
+            if (click.click)
             {
-              let item = this.craftMenuButtons.subCategories[this.craftMenuButtons.page][this.craftMenuButtons.subCategoryPage].items[x].copy();
+              if (click.index === 0) {
+                  this.currentHomeMenu = "none"
+              }
+            }
+
+            click = itemGrid.grid.click(mouse, canvas);
+
+            if (click.click)
+            {
+              let item = this.craftMenu.subCategoryGrids[this.craftMenu.currentCategory].itemGrids[this.craftMenu.currentSubcategory].items[click.index];
               player.inventory.craft(item, 1)
             }
-        }
 
-        len = this.craftMenuButtons.controls.length
-        for (let x = 0; x < len; x++) {
-            if (this.clickHandler.click(mouse, this.craftMenuButtons.controls[x].button, canvas))
+            click = categories.click(mouse, canvas);
+            if (click.click)
             {
-             if (x === 0) {
-                  this.buyMenuButtons.open = false
-                  this.craftMenuButtons.open = false
-              }
-              if (x === 1) {
-                this.buyMenuButtons.open = true;
-                this.craftMenuButtons.open = false;
-              }
-              if (x === 2) {
-                this.buyMenuButtons.open = false;
-                this.craftMenuButtons.open = true;
-
-              }
+               this.craftMenu.currentCategory = click.label;
+               this.craftMenu.currentSubcategory = this.craftMenu.subCategoryGrids[this.craftMenu.currentCategory].first
             }
-        }
 
-        len = this.craftMenuButtons.categories.length
-        for (let x = 0; x < len; x++) {
-            if (this.clickHandler.click(mouse, this.craftMenuButtons.categories[x].button, canvas))
+            click = subCategory.grid.click(mouse,canvas);
+            if (click.click)
             {
-              this.craftMenuButtons.page = this.craftMenuButtons.categories[x].category;
-              this.craftMenuButtons.subCategoryPage = 0
+              this.craftMenu.currentSubcategory = click.label;
             }
-        }
-
-        let page = this.craftMenuButtons.page;
-        len = this.craftMenuButtons.subCategories[page].length
-        for (let x = 0; x < len; x++) {
-            if (this.clickHandler.click(mouse, this.craftMenuButtons.subCategories[page][x].button, canvas))
-            {
-              this.craftMenuButtons.subCategoryPage = x;
-            }
-        }
   }
 
 
 
 
-	homeButtonClick(mouse, player, canvas) {
-		if (this.bankButtons.open === true) {
-			return false
-		}
-		let len = this.homeMenuButtons.length
+	homeButtonClick(mouse, player, merchant, canvas) {
+		
+    if (this.currentHomeMenu !== "none") {
+      return false;
+    }
+
+    if (this.clickHandler.click(mouse, merchant, canvas)) {
+      this.currentHomeMenu = "buy"
+    }
+    let len = this.homeMenuButtons.length
         for (let x = 0; x < len; x++) {
             if (this.clickHandler.click(mouse, this.homeMenuButtons[x].button, canvas))
             {
 
             	if (x === 0) {
-                if (this.buyMenuButtons.open === true) {
-                  return false;
-                }
-            		this.bankButtons.open = true;
-                this.waterWellButton.open = false
+                this.currentHomeMenu = "bank";
                 this.homeMenuButtons[x].label.changeLabel("Water");
             	} else if (x === 1) {
-            		this.buyMenuButtons.open = true;
-                this.waterWellButton.open = false
+                this.currentHomeMenu = "craft";
                 this.homeMenuButtons[x].label.changeLabel("Water");
             	} else if (x === 2) {
 
@@ -1347,13 +841,13 @@ export default class UI {
                   this.waterWellButton.open = false
                   this.homeMenuButtons[x].label.changeLabel("Water");
                 } else {
-                  if (!this.bankButtons.open && !this.craftMenuButtons.open && !this.buyMenuButtons.open) {
+                  if (this.currentHomeMenu === "none") {
                     this.waterWellButton.open = true
                     this.homeMenuButtons[x].label.changeLabel("Stop"); 
                   }
                 }
             	} else if (x === 3) {
-                  if (!this.bankButtons.open && !this.craftMenuButtons.open && !this.buyMenuButtons.open) {
+                  if (this.currentHomeMenu === "none") {
                     player.home.waterWell.upgrade(player.inventory);
                     this.homeMenuButtons[x].label.changeLabel(player.home.waterWell.upgradeStr());
                   }
@@ -1427,9 +921,6 @@ export default class UI {
 		this.showMagic = true;
 	}
 
-	menuButton(button, label) {
-		this.menuButtons.push({button: button, label:label})
-	}
 
 	armorButton(button, label) {
 		this.armorButtons.push({button: button, label:label})
@@ -1438,53 +929,6 @@ export default class UI {
 	homeButton(button, label) {
 		this.homeMenuButtons.push({button: button, label:label})
 	}
-
-	bankButton(button, label) {
-		this.bankButtons.spaces.push({button: button, label:label});
-	}
-
-	bankControlButton(button, label) {
-		this.bankButtons.controls.push({button: button, label:label})
-	}
-
-	buyButton(button, label, label2) {
-		this.buyMenuButtons.spaces.push({button: button, label:label, label2: label2});
-	}
-
-	buyControlButton(button, label) {
-		this.buyMenuButtons.controls.push({button: button, label:label})
-	}
-
-	buyCategoryButton(button, label, category) {
-		this.buyMenuButtons.categories.push({button: button, label:label, category:category})
-	}
-
-	buySubCategoryButton(subCategory) {
-		this.buyMenuButtons.subCategories.push(subCategory)
-	}
-
-
-  craftButton(button, label, label2, label3, label4) {
-    this.craftMenuButtons.spaces.push({
-                                       button: button,
-                                       label:  label,
-                                       label2: label2,
-                                       label3 : label3,
-                                       label4 : label4
-                                     });
-  }
-
-  craftControlButton(button, label) {
-    this.craftMenuButtons.controls.push({button: button, label:label})
-  }
-
-  craftCategoryButton(button, label, category) {
-    this.craftMenuButtons.categories.push({button: button, label:label, category:category})
-  }
-
-  craftSubCategoryButton(subCategory) {
-    this.craftMenuButtons.subCategories.push(subCategory)
-  }
 
   
 
@@ -1508,15 +952,39 @@ export default class UI {
 	}
 
 	makeInventorySpaces() {
-      for (var y = 120; y <  440; y+= 40) {
-        for (var x = 360; x < 480; x+= 40) {
-          this.inventorySpaces.push(this.button(x, y, 40, 40 ));
-        }
-        x = 360;
-      }
+    let background = {
+      img: userInterface.stats,
+      x : 360,
+      y : 0,
+      width : 120,
+      height : 480,
+   }
+
+
+   let img = {
+      image : userInterface.itemBorder,
+      repeat : true,
+   }
+
+  this.inventorySpaces = new Grid({
+                                  x: 365,
+                                  y: 120,
+                                  width : 3,
+                                  height : 8,
+                                  cellWidth : 40,
+                                  cellHeight: 40,
+                                  labelOffsetX : 5,
+                                  labelOffsetY : 5,
+                                  labelSize : 10,
+                                  imgs : img,
+                                  background : background,
+                                })
+
+
+
 	}
 
-	makeArmorSpaces() {
+	makeArmorMenu() {
           this.armorButton(
     			  this.button(400, 135, 40, 40),
     		  	this.label("Helm", 405, 130, "10")
@@ -1579,7 +1047,7 @@ export default class UI {
 
 		this.homeButton(
 		  this.button(buy.body.pos.x, buy.body.pos.y, buy.body.size.x, buy.body.size.y),
-		  this.label("Shop", buy.body.pos.x + 10, buy.body.pos.y + 50, "15")
+		  this.label("craft", buy.body.pos.x + 10, buy.body.pos.y + 50, "15")
 
 		)
 
@@ -1607,6 +1075,15 @@ export default class UI {
         imgs.push(player.status.actions[keys[i]].button());
         labels.push(player.status.actions[keys[i]].label())
    }
+
+   let background = {
+      img: userInterface.actionButtonBackGround,
+      x : 0,
+      y : 430,
+      width : 360,
+      height : 180,
+   }
+
    this.actionButtons = new Grid({
                                   x: 0,
                                   y: 440,
@@ -1619,220 +1096,222 @@ export default class UI {
                                   labelSize : 10,
                                   imgs : imgs,
                                   labels :labels,
-                                  background : userInterface.actionButtonBackGround
+                                  background : background,
                                 })
 	}
 
-	makeBankButtons() {
+	makeBankMenu() {
 
-		for (let y = 1; y < 11; y++) {
-			for (let x = 1; x < 6; x++) {
-				this.bankButton(
-					this.button(x * 45, y * 40, 45, 40),
-					this.label("", 0, 0, "0")
-				)
-			}
-		}
+  let background = {
+      img: userInterface.bankBackGround,
+      x : 10,
+      y : 30,
+      width : 320,
+      height : 430,
+   }
 
-		this.bankControlButton(
-								this.button(292, 390, 16, 16),
-							    this.label("/\\", 297, 400, "10")
-							  )
-		this.bankControlButton(
-								this.button(292, 416, 16, 16),
-							    this.label("\\/", 297, 427, "10")
-							  )
-		this.bankControlButton(
-								this.button(292, 45, 16, 16),
-							    this.label("X", 297, 56, "10")
-							  )
-		this.bankControlButton(
-								this.button(292, 70, 16, 60),
-							    this.label("", 297, 56, "10")
-							  )
+
+   let img = {
+      image : userInterface.itemBorder,
+      repeat : true,
+   }
+
+   let controls = [
+                    {
+                        button : this.button(292, 390, 16, 16),
+                        img : userInterface.upArrow,
+                    },
+
+                    {
+                        button: this.button(292, 416, 16, 16),
+                        img : userInterface.downArrow,
+                    },
+
+                    {
+                        button: this.button(292, 45, 16, 16),
+                        img : userInterface.closeButton,
+                    },
+
+                    {
+                        button: this.button(292, 70, 16, 60),
+                        img : userInterface.bankScrollBar,
+                    },
+
+                  ];
+
+
+    this.bankButtons.grid = new Grid({
+                                  x: 40,
+                                  y: 40,
+                                  width : 5,
+                                  height : 10,
+                                  cellWidth : 45,
+                                  cellHeight: 40,
+                                  labelOffsetX : 5,
+                                  labelOffsetY : 5,
+                                  labelSize : 10,
+                                  imgs : img,
+                                  background : background,
+                                  controls : controls,
+                                })
+
 	}
 
-	makeBuyButtons(items) {
-
-		for (let y = 1; y < 6; y++) {
-			for (let x = 1; x < 5; x++) {
-				this.buyButton(
-					this.button(x * 60, y * 80, 50, 40),
-					this.label("name", x*60, y*90, "9"),
-					this.label("price", x*65, y*100, "10")
-				)
-			}
-		}
-
-		// could do in one loop but easier to read logic in 3, and it only runs 1 time
-		// create category buttons
-
-		let categoryCount = items.categories.length
-		let xOffset = 50;
-		for (let x = 0; x < categoryCount; x++) {
-      let categorySettings = items.returnCategorySettings(x)
-      if (categorySettings.buyable) {
-  			this.buyCategoryButton(
-  							this.button(xOffset, 350, 60, 25),
-                this.label(items.categories[x].name, xOffset, 370, "9"),
-                x
-  						  )
-  			xOffset += 68;
-
-      }
-
-		}
-
-		//create subCategoryButtons
-		for (let x = 0; x < categoryCount; x++) {
-			xOffset = 50;
-			let yOffset = 280;
-
-			let subCategoryButtons = [];
+	makeMenu(items, menu, menuType) {
 
 
-			let subCategories = items.returnSubCategories(x);
 
-			let subCategoryLength = subCategories.length
-
-			for (let y = 0; y < subCategoryLength; y++) {
-
-        let subCategorySettings = items.returnSubCategorySettings(x,y);
-
-        if (subCategorySettings.buyable) {
-  				let nameXOffset = 10;
-
-          // too long of name
-  				if (subCategories[y].name.length > 9) {
-  					nameXOffset = 4;
-  				}
-
-  				if (y > 0  && y % 4 === 0) {
-  					xOffset = 50;
-  					yOffset += 30;
-  				}
-
-  				subCategoryButtons.push({
-  							  button: this.button(xOffset, yOffset, 60, 25),
-  						    label: this.label(subCategories[y].name, xOffset + nameXOffset, yOffset + 20, "9"),
-  						    items: items.returnItems(x,y)
-                })
-  				xOffset += 68;
-
-        }
-			}
-			this.buySubCategoryButton(subCategoryButtons);
-		}
-
-
-		this.buyControlButton(
-								  this.button(295, 39, 16, 16),
-							    this.label("X", 300, 50, "10")
-							  )
-    this.buyControlButton(
-                  this.button(50, 400, 100, 50),
-                  this.label("Buy", 80, 430, "16")
-                )
-
-    this.buyControlButton(
-                this.button(220, 400, 100, 50),
-                this.label("Craft", 250, 430, "16")
-              )
-
-    this.buyControlButton(
-                this.button(380, 80, 0, 0),
-                this.label("Click Item To Sell", 365, 110, "14")
-              )
-
-	  }
-
-
-    makeCraftButtons(items) {
-      for (let y = 1; y < 6; y++) {
-        for (let x = 1; x < 5; x++) {
-          this.craftButton(
-            this.button(x * 65, y * 70, 60, 60),
-            this.label("name", x*65, y*70 + 20, "9"),
-            this.label("price", x*65, y*70 + 30, "9"),
-            this.label("price", x*65, y*70 + 50, "9"),
-            this.label("price", x*65, y*70 + 70, "9"),
-          )
-        }
-      }
-
-    // could do in one loop but easier to read logic in 3, and it only runs 1 time
-    // create category buttons
-
-    let categoryCount = items.categories.length
-    let xOffset = 50;
-    for (let x = 0; x < categoryCount; x++) {
-      let categorySettings = items.returnCategorySettings(x)
-      if (categorySettings.craftable) {
-        this.craftCategoryButton(
-                this.button(xOffset, 350, 60, 25),
-                this.label(items.categories[x].name, xOffset, 370, "9"),
-                x
-        )
-        xOffset += 68;
-
-      }
-
+     let background = {
+      img: userInterface.buyBackGround,
+      x : 25,
+      y : 25,
+      width : userInterface.buyBackGround.pos.width,
+      height : userInterface.buyBackGround.pos.height,
     }
 
-    //create subCategoryButtons
-    for (let x = 0; x < categoryCount; x++) {
-      xOffset = 50;
-      let yOffset = 280;
+    let categoryButtonImg = {
+      image : userInterface.aquaButton,
+      repeat : true,
+    }
 
-      let craftingButtons = [];
+    let borderImg = {
+      image : userInterface.itemBorder,
+      repeat : true,
+    }
+  
+     let SubCategoryButtonImg = {
+      image : userInterface.greenButton,
+      repeat : true,
+    }
 
+    let controls = [
+                    {
+                        button : this.button(295, 39, 16, 16),
+                        img : userInterface.closeButton,
+                    },
+                  ];
+
+    
+    let labels = []
+   
+    let categoryCount = 0;
+    for (let x = 0; x < items.categories.length; x++) {
+      let categorySettings = items.returnCategorySettings(x)
+      if (categorySettings[menuType]) {
+          labels.push(items.categories[x].name);
+          categoryCount++;
+      }
+    }
+
+
+   menu.categoryGrid = new Grid({
+                                  x: 50,
+                                  y: 400,
+                                  width : categoryCount,
+                                  height : 1,
+                                  cellWidth : 70,
+                                  cellHeight: 50,
+                                  labelOffsetX : 5,
+                                  labelOffsetY : 30,
+                                  labelSize : 10,
+                                  imgs : categoryButtonImg,
+                                  labels : labels,
+                                  background : background,
+                                  controls : controls
+                                })
+
+    for (let x = 0; x < items.categories.length; x++) {
+      labels = [];
       let subCategories = items.returnSubCategories(x);
+      let subCategoryCount = 0;
+      let categoryName = items.categories[x].name;
+      let subCategoryCheck = false;
+      let itemGrids = {};
 
-      let subCategoryLength = subCategories.length
-
-      for (let y = 0; y < subCategoryLength; y++) {
-
+      for (let y = 0; y < subCategories.length; y++) {
         let subCategorySettings = items.returnSubCategorySettings(x,y);
+        if (subCategorySettings[menuType]) {
+          subCategoryCheck = true
+          labels.push(subCategories[y].name);
+          subCategoryCount++;
+          let subcategoryItems = items.returnItems(x,y);
 
-        if (subCategorySettings.craftable) {
-          let nameXOffset = 10;
+          itemGrids[subCategories[y].name] = {
+                                          grid : new Grid({
+                                                x: 40,
+                                                y: 70,
+                                                width : 4,
+                                                height : 3,
+                                                cellCount : subcategoryItems.length,
+                                                cellWidth : 70,
+                                                cellHeight: 50,
+                                                labelOffsetX : 5,
+                                                labelOffsetY : 5,
+                                                labelSize : 10,
+                                                imgs : borderImg,
+                                              }),
 
-          // too long of name
-          if (subCategories[y].name.length > 9) {
-            nameXOffset = 4;
+                                            items: subcategoryItems,
           }
-
-          if (y > 0  && y % 4 === 0) {
-            xOffset = 50;
-            yOffset += 30;
-
-          }
-
-          craftingButtons.push({
-                  button: this.button(xOffset, yOffset, 60, 25),
-                  label: this.label(subCategories[y].name, xOffset + nameXOffset, yOffset + 20, "9"),
-                  items: items.returnItems(x,y)
-                })
-          xOffset += 68;
 
         }
-      }
-      this.craftSubCategoryButton(craftingButtons);
-    }
 
-    this.craftControlButton(
-                  this.button(295, 39, 16, 16),
-                  this.label("X", 300, 50, "10")
-                )
-    this.craftControlButton(
-                  this.button(50, 400, 100, 50),
-                  this.label("Buy", 80, 430, "16")
-                )
-    this.craftControlButton(
-                this.button(220, 400, 100, 50),
-                this.label("Craft", 250, 430, "16")
-              )
+      }
+      if (subCategoryCheck) {
+          menu.subCategoryGrids[categoryName] = {
+                                            first : labels[0],
+                                            grid:  new Grid({
+                                                x: 50,
+                                                y: 300,
+                                                width : 4,
+                                                height : 2,
+                                                cellCount : subCategoryCount,
+                                                cellWidth : 60,
+                                                cellHeight: 40,
+                                                labelOffsetX : 5,
+                                                labelOffsetY : 30,
+                                                labelSize : 10,
+                                                imgs : SubCategoryButtonImg,
+                                                labels : labels,
+                                              }),
+                                            itemGrids : itemGrids, 
+                                          }
+      }
     }
+	 }
+
+   makeInventoryMenuButtons() {
+    let  menuLabels =  [   
+                      "Items",
+                      "Armor",
+                      "Stats",
+                      "Magic",
+                  ]
+
+
+    let menuImages = [
+                      userInterface.inventoryIcon,
+                      userInterface.armorIcon,
+                      userInterface.statsIcon,
+                      userInterface.magicIcon
+                    ]
+    this.inventoryMenuButtons = new Grid({
+                                  x: 365,
+                                  y: 440,
+                                  width : 4,
+                                  height : 1,
+                                  cellWidth : 30,
+                                  cellHeight: 40,
+                                  labelOffsetX : 2,
+                                  labelOffsetY : 20,
+                                  labelSize : 9,
+                                  imgs : menuImages
+                                })
+
+
+   }
+
+  
 
     makeRightClickButtons(menu, index, x, y) {
       
@@ -1915,9 +1394,7 @@ export default class UI {
                           label: this.label(player.home.farm.waterLevelStr(), 55, 120, "15")
                         }, ctx
                       );
-      
-
-    }
+      }
 
 
     farmButtonClick(mouse, player, canvas) {
@@ -1929,4 +1406,7 @@ export default class UI {
             }
         }
       }
+
+
+
 }

@@ -48,18 +48,26 @@ export default class Draw extends React.Component {
         let enemies = this.state.logic.enemies;
         let map = this.state.logic.map;
         let merchant = this.state.logic.merchant;
+        let ui = this.state.logic.UI;
 
-        this.state.logic.UI.drawMap(map, ctx);
-        this.state.logic.UI.drawHomeDesign(player, merchant, ctx)
-        this.state.logic.UI.drawInventory(player, ctx);
-        this.state.logic.UI.drawMapInventory(map.inventory[player.status.currLevel - 1], ctx);
+        ui.drawMap(map, ctx);
+        ui.drawHomeDesign(player, merchant, ctx)
+        ui.drawInventory(player, ctx);
+        ui.drawMapInventory(map.inventory[player.status.currLevel - 1], ctx);
 
-        this.state.logic.UI.drawResource(this.state.logic.ore, ctx);
-        this.state.logic.UI.drawResource(this.state.logic.trees, ctx);
-        this.state.logic.UI.drawAnimals(this.state.logic.animals, ctx);
-        this.state.logic.UI.drawFarm(player, ctx)
-        this.state.logic.UI.drawPlayers(player, enemies, ctx);
-        this.state.logic.UI.drawHome(player, this.state.logic.items, ctx);
+        ui.drawFarm(player, ctx);
+
+        ui.drawEntity.handler({
+            player: player,
+            enemies: enemies,
+            merchant: merchant,
+            animals: this.state.logic.animals,
+            trees: this.state.logic.trees,
+            ore: this.state.logic.ore,
+
+        }, ctx)
+        // ui.drawPlayers(player, enemies, ctx);
+        ui.drawHome(player, this.state.logic.items, ctx);
 
       }
          
@@ -70,25 +78,27 @@ export default class Draw extends React.Component {
         const canvas = this.canvasRef.current;
         
         let player = this.state.logic.player
+        let merchant = this.state.logic.merchant
         let map = this.state.logic.map;
+        let ui = this.state.logic.UI;
 
-        this.state.logic.UI.menuClick(e, canvas);
-        this.state.logic.UI.actionClick(e, player, canvas);
+        ui.menuClick(e, canvas);
+        ui.actionClick(e, player, canvas);
         if (player.status.currLevel > -1) {
-          this.state.logic.UI.inventoryClick(e, player, canvas);
+          ui.inventoryClick(e, player, canvas);
         }
-        this.state.logic.UI.armorClick(e, player, canvas);
-        this.state.logic.UI.magicClick(e, player, canvas)
+        ui.armorClick(e, player, canvas);
+        ui.magicClick(e, player, canvas)
         if (player.status.destination === "home" && player.status.currLevel === 0) {
-          this.state.logic.UI.bankButtonClick(e, player, canvas);
-          this.state.logic.UI.homeButtonClick(e, player, canvas);
-          this.state.logic.UI.buyButtonClick(e, player, canvas)
-          this.state.logic.UI.craftButtonClick(e, player, canvas);
+          ui.bankButtonClick(e, player, canvas);
+          ui.homeButtonClick(e, player, merchant, canvas);
+          ui.buyButtonClick(e, player, canvas)
+          ui.craftButtonClick(e, player, canvas);
           
         } 
         if (player.status.destination === "farm" && player.status.currLevel === -1) {
-          this.state.logic.UI.farmButtonClick(e, player, canvas)
-          this.state.logic.UI.farmInventoryClick(e, player, canvas)
+          ui.farmButtonClick(e, player, canvas)
+          ui.farmInventoryClick(e, player, canvas)
         }
     }
 
@@ -152,15 +162,11 @@ export default class Draw extends React.Component {
                     onContextMenu = {(e) => {
                       e.preventDefault()
                       const canvas = this.canvasRef.current;
-                      
                       let player = this.state.logic.player
 
                       
                       if (player.status.destination === "home" && player.status.currLevel === 0) {
-                        this.state.logic.UI.buyButtonDoubleClick(e, player, canvas);
-                        this.state.logic.UI.craftButtonDoubleClick(e, player, canvas);
-                        this.state.logic.UI.bankButtonDoubleClick(e, player, canvas);
-                        this.state.logic.UI.inventoryButtonDoubleClick(e, player, canvas);
+                        this.state.logic.UI.doubleClickHandler(player, e, canvas);
 
                       }
 

@@ -26,14 +26,9 @@ export default class ActionHandler {
 	}
 
 
-	fight(player, target) {
-		let damage = player.skills.attack.timer(player.armor.attackSpeedBonus)
-		if (damage > 0) {
-			 damage = damage + player.armor.attackBonus
-		}
-		return(this.takeDamage(target, damage));
-	}
+	
 
+	
 	isDead(player) {
 		if (player.skills.health.isZero() === true) {
 			player.armor.animation.deathTimer.done = false;
@@ -79,6 +74,42 @@ export default class ActionHandler {
 
 	}
 
+	fight(player, target) {
+		let skill = player.skills.attack;
+		let speedBonus = player.armor.attackSpeedBonus;
+		let attackBonus = player.armor.attackBonus;
+
+		switch (target.status.type) {
+          case "enemy" :
+                break;
+          case "ore" :
+          		skill = player.skills.mining;
+				speedBonus = player.armor.attackSpeedBonus;
+				attackBonus = player.armor.miningBonus;
+                break;
+          case "tree" : 
+          		skill = player.skills.woodcutting;
+				speedBonus = player.armor.attackSpeedBonus;
+				attackBonus = player.armor.woodCuttingBonus;
+                break;
+          case "animal" : 
+          		skill = player.skills.hunting;
+				speedBonus = player.armor.attackSpeedBonus;
+				attackBonus = player.armor.attackBonus;
+                break;
+          default : 
+                break
+        }
+
+
+		let damage = skill.timer(speedBonus)
+		if (damage > 0) {
+			 damage = damage + attackBonus
+		}
+		return(this.takeDamage(target, damage));
+	}
+
+
 	mine(player) {
 		let damage = player.skills.mining.timer(player.armor.attackSpeedBonus)
 		if (damage > 0) {
@@ -104,29 +135,20 @@ export default class ActionHandler {
 	}
 
 	skillDecay(player) {
-		this.thirsty(player);
-		this.hungry(player);
+		if (player.status.currLevel > 0) {
+			this.decayLogic(player, player.skills.thirst, settings.player.thirstHealthDecay);
+			this.decayLogic(player, player.skills.hunger, settings.player.hungerHealthDecay);
+
+		}
 	}
 
-	thirsty(player) {
-		let isTime = player.skills.thirst.decayTimer(player.skills.thirst.get());
+	decayLogic(player, skill, healthDecayRate) {
+		let isTime = skill.decayTimer(skill.get());
 		if (isTime) {
-			if (player.skills.thirst.isZero()) {
-				this.takeDamage(player, settings.player.thirstHealthDecay);
+			if (skill.isZero()) {
+				this.takeDamage(player, healthDecayRate);
 			}
 		}
 		
 	}
-
-	hungry(player) {
-
-		let isTime  = player.skills.hunger.decayTimer(player.skills.hunger.get());
-		if (isTime) {
-			if (player.skills.hunger.isZero()) {
-				this.takeDamage(player, settings.player.hungerHealthDecay);
-			}
-		}
-	}
-
-
 }

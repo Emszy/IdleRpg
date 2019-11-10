@@ -11,7 +11,7 @@ export default class Player {
 				y : 0,
 				width : 64,
 				height : 64,
-				startingGold : 100,
+				startingGold : 100000000,
 				
 				status : {
 					dead : false,
@@ -25,13 +25,13 @@ export default class Player {
 				
 				skills : {
 					attack : 1,
-					health : 50,
+					health : 500,
 					defense : 1,
 					attackSpeed : 1,
 					range : 1,
 					magic : 1,
-					thirst : 20,
-					hunger : 20,
+					thirst : 10,
+					hunger : 10,
 					mining : 1,
 					woodcutting : 1,
 					hunting : 1,
@@ -46,11 +46,20 @@ export default class Player {
 				},
 
 				items : items
-
-
 			})
 		)
 
+	}
+	merchant(items) {
+		let diamondArmor = items.returnItems(2,4)
+		let merchant = this.main("The Merchant", items);
+		merchant.body.action = "stop";
+		merchant.body.currentDirection = "west";
+		merchant.body.setPos(200,200)
+		merchant.armor.addHelm(diamondArmor[0])
+		merchant.armor.addChest(diamondArmor[1])
+		merchant.armor.addShield(diamondArmor[4])
+		return merchant
 	}
 }
 

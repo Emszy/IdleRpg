@@ -133,6 +133,9 @@ import cookedFood from "../../assets/images/spriteSheets/resources/food.png"
 
 import magicStones from "../../assets/images/spriteSheets/Player/partSheets/magic/magicStones.png"
 
+// start of UI
+
+
 import inventoryUI from "../../assets/images/spriteSheets/UI/inventoryUI2.png"
 import armorUI from "../../assets/images/spriteSheets/UI/armorUI.png"
 import statsUI from "../../assets/images/spriteSheets/UI/statsUI.png"
@@ -144,6 +147,7 @@ import blueButton from "../../assets/images/spriteSheets/UI/Buttons/Button20s.pn
 import upArrow from "../../assets/images/spriteSheets/UI/upArrow.png"
 import downArrow from "../../assets/images/spriteSheets/UI/downArrow.png"
 import closeButton from "../../assets/images/spriteSheets/UI/closeButton.png"
+import bankScrollBar from "../../assets/images/spriteSheets/UI/bankScrollBar.png"
 
 
 import icons from "../../assets/images/spriteSheets/UI/icons.png"
@@ -152,6 +156,11 @@ import itemBorder from "../../assets/images/spriteSheets/UI/itemBorder.png"
 
 import actionButtonBackGround from "../../assets/images/spriteSheets/UI/actionButtonBackGround.png"
 
+import healthBar from "../../assets/images/spriteSheets/UI/healthBars/healthBar.png"
+import thirstBar from "../../assets/images/spriteSheets/UI/healthBars/thirstBar.png"
+import hungerBar from "../../assets/images/spriteSheets/UI/healthBars/foodBar.png"
+import emptyBar from "../../assets/images/spriteSheets/UI/healthBars/emptyBar.png"
+ 
 
 function npcImage(srcs) {
 	function directions(end) {
@@ -1629,6 +1638,11 @@ let userInterface = {
 		pos : mapTile(0, 0, 64, 64) 
 	},
 
+	bankScrollBar : {
+		img : singleImage(bankScrollBar),
+		pos : mapTile(0, 0, 8, 120) 
+	},
+
 
 	statsIcon : {
 		img : singleImage(icons),
@@ -1653,8 +1667,27 @@ let userInterface = {
 	actionButtonBackGround : {
 		img : singleImage(actionButtonBackGround),
 		pos : mapTile(0, 0, 431, 196) 
-	}
+	},
 
+	healthBar: {
+		img : singleImage(healthBar),
+		pos : mapTile(0, 0, 206, 28) 
+	},
+
+	hungerBar: {
+		img : singleImage(hungerBar),
+		pos : mapTile(0, 0, 206, 28) 
+	},
+
+	thirstBar: {
+		img : singleImage(thirstBar),
+		pos : mapTile(0, 0, 206, 28) 
+	},
+
+	emptyBar: {
+		img : singleImage(emptyBar),
+		pos : mapTile(0, 0, 206, 28) 
+	},
 
 
 }
