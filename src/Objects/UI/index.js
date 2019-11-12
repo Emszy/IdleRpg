@@ -453,7 +453,7 @@ export default class UI {
         }
         let click = this.inventorySpaces.click(mouse, canvas)
         if (click.click) {
-            if (click.index !== this.mouseSwapItem.inventory.index) {
+            if (click.index !== this.mouseSwapItem.inventory.index && this.mouseSwapItem.inventory.item) {
               inventory.swap(this.mouseSwapItem.inventory.index, click.index);
               this.mouseSwapItem.inventory.swap = true;
             } else {
@@ -482,7 +482,7 @@ export default class UI {
         }
         let click = this.bankButtons.grid.click(mouse, canvas)
         if (click.click) {
-            if (click.index !== this.mouseSwapItem.bank.index) {
+            if (click.index !== this.mouseSwapItem.bank.index && this.mouseSwapItem.bank.item) {
               inventory.swap(this.mouseSwapItem.bank.index, click.index + this.bankButtons.page);
               this.mouseSwapItem.bank.swap = true;
             } else {
