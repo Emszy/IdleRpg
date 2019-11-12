@@ -32,8 +32,17 @@ export default class UI {
     this.armorButtons = [];
 
     this.mouseSwapItem = {
-                      swap : false,
-                      index : false,
+                      inventory : {
+                              swap : false,
+                              index : false,
+                              item : false
+                      },
+
+                      bank : {
+                              swap : false,
+                              index : false,
+                              item : false
+                      }
     };
 
     this.mousePosition = {
@@ -432,13 +441,11 @@ export default class UI {
     if (this.inventoryMenu !== "inventory") {
         return false
     }
-        this.mouseSwapItem.swap = false;
+        this.mouseSwapItem.inventory.swap = false;
         let click = this.inventorySpaces.click(mouse, canvas)
         if (click.click) {
-          if (inventory.spaces[click.index].id !== -1) {
-            this.mouseSwapItem.index = click.index
-            this.mouseSwapItem.item = inventory.spaces[click.index];
-          }
+            this.mouseSwapItem.inventory.index = click.index
+            this.mouseSwapItem.inventory.item = inventory.spaces[click.index];
         }
   }
 
@@ -446,32 +453,63 @@ export default class UI {
         if (this.inventoryMenu !== "inventory") {
             return false
         }
-
         let click = this.inventorySpaces.click(mouse, canvas)
         if (click.click) {
-            if (click.index !== this.mouseSwapItem.index) {
-              inventory.swap(this.mouseSwapItem.index, click.index);
-              this.mouseSwapItem.swap = true;
+            if (click.index !== this.mouseSwapItem.inventory.index) {
+              inventory.swap(this.mouseSwapItem.inventory.index, click.index);
+              this.mouseSwapItem.inventory.swap = true;
             } else {
-              this.mouseSwapItem.swap = false;
+              this.mouseSwapItem.inventory.swap = false;
             }
         }
-        this.mouseSwapItem.item = false;
-        this.mouseSwapItem.index = false
+        this.mouseSwapItem.inventory.item = false;
+        this.mouseSwapItem.inventory.index = false
+  }
+
+   arrangeBank(inventory, mouse, canvas) {
+    if (this.currentHomeMenu !== "bank") {
+        return false
+    }
+        this.mouseSwapItem.bank.swap = false;
+        let click = this.bankButtons.grid.click(mouse, canvas)
+        if (click.click) {
+            this.mouseSwapItem.bank.index = click.index + this.bankButtons.page
+            this.mouseSwapItem.bank.item = inventory.spaces[click.index + this.bankButtons.page];
+        }
+  }
+
+  swapBank(inventory, mouse, canvas) {
+        if (this.currentHomeMenu !== "bank") {
+            return false
+        }
+        let click = this.bankButtons.grid.click(mouse, canvas)
+        if (click.click) {
+            if (click.index !== this.mouseSwapItem.bank.index) {
+              inventory.swap(this.mouseSwapItem.bank.index, click.index + this.bankButtons.page);
+              this.mouseSwapItem.bank.swap = true;
+            } else {
+              this.mouseSwapItem.bank.swap = false;
+            }
+        }
+        this.mouseSwapItem.bank.item = false;
+        this.mouseSwapItem.bank.index = false
+  }
+
+  drawMouseSwapItem(menu, ctx) {
+      if (this.mouseSwapItem[menu].item.img && this.mousePosition.x && this.mousePosition.y && ctx) {
+        this.draw.inventoryItemImg(this.mouseSwapItem[menu].item.img, this.mousePosition.x - 10, this.mousePosition.y - 10, ctx);
+      } else if (this.mouseSwapItem[menu].item.name && this.mouseSwapItem[menu].item.id !== -1){
+        this.draw.text(this.mouseSwapItem[menu].item.name, this.mousePosition.x - 10, this.mousePosition.y - 10, 10, ctx)
+      }
   }
 
   updateMouse(mouse,canvas) {
     this.mousePosition = this.clickHandler.transformedCoordinate(mouse, canvas);
   }
 
-  drawMouseSwapItem(ctx) {
-      if (this.mouseSwapItem.item && this.mousePosition.x && this.mousePosition.y && ctx) {
-        this.draw.inventoryItemImg(this.mouseSwapItem.item.img, this.mousePosition.x - 10, this.mousePosition.y - 10, ctx);
-      }
-  }
 
 	inventoryClick(mouse, player, canvas) {
-		if (this.inventoryMenu !== "inventory" || this.mouseSwapItem.swap === true) {
+		if (this.inventoryMenu !== "inventory" || this.mouseSwapItem.inventory.swap === true) {
 			return false
  		} 
 
@@ -710,9 +748,7 @@ export default class UI {
   }
 
   doubleClick(settings) {
-        
-      console.log(settings.tag)
-        let page = settings.page || 0;
+                let page = settings.page || 0;
 
         let click = settings.grid.click(settings.mouse, settings.canvas);
         if (click.click)
@@ -723,7 +759,7 @@ export default class UI {
   }
 
 	bankButtonClick(mouse, player, canvas) {
-		if (this.currentHomeMenu !== "bank") {
+		if (this.currentHomeMenu !== "bank" || this.mouseSwapItem.bank.swap === true) {
 			return false
 		}
         let page = this.bankButtons.page;
@@ -761,20 +797,20 @@ export default class UI {
             if (click.click)
             {
             	if (click.index === 0) {
-              		this.bankButtons.page-=50;
+              		this.bankButtons.page -= 20;
               		if (this.bankButtons.page < 0) {
               			this.bankButtons.page = 0
               			return false
               		}
-              		this.bankButtons.grid.controls[3].button.body.pos.y -= 80;
+              		this.bankButtons.grid.controls[3].button.body.pos.y -= 35;
 
               } else if (click.index === 1) {
-            		this.bankButtons.page += 50;
+            		this.bankButtons.page += 20;
             		  if (this.bankButtons.page > 150) {
               			this.bankButtons.page = 150
               			return false;
               		}
-              		this.bankButtons.grid.controls[3].button.body.pos.y += 80;
+              		this.bankButtons.grid.controls[3].button.body.pos.y += 35;
 
 
               } else if (click.index === 2) {
@@ -1121,7 +1157,6 @@ export default class UI {
     }
 
     drawFarmButtons(player, ctx) {
-      console.log("drawingFARM")
       player.home.farm.plot.drawFarmPlot(player.home.farm, ctx)
       for (let i = 0; i < this.farmButtons.spaces.length; i++) {
 

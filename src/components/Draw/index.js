@@ -68,7 +68,9 @@ export default class Draw extends React.Component {
           }, ctx)
           // ui.drawPlayers(player, enemies, ctx);
           ui.drawHome(player, this.state.logic.items, ctx);
-          ui.drawMouseSwapItem(ctx)
+          ui.drawMouseSwapItem("inventory", ctx)
+          ui.drawMouseSwapItem("bank", ctx)
+
 
         }
           this.rAF = requestAnimationFrame(this.updateCanvas);
@@ -105,7 +107,6 @@ export default class Draw extends React.Component {
 
     handleMouseMove(e) {
         const canvas = this.canvasRef.current;
-        const ctx = canvas.getContext('2d');
         let player = this.state.logic.player
         this.state.logic.UI.updateMouse(e, canvas);
         let map = this.state.logic.map;
@@ -189,6 +190,8 @@ export default class Draw extends React.Component {
                       let player = this.state.logic.player
 
                       this.state.logic.UI.arrangeInventory(player.inventory, e, canvas)
+                      this.state.logic.UI.arrangeBank(player.home.bank.inventory, e, canvas)
+
                     }
                   }
 
@@ -197,6 +200,8 @@ export default class Draw extends React.Component {
                       let player = this.state.logic.player
 
                       this.state.logic.UI.swapInventory(player.inventory, e, canvas)
+                      this.state.logic.UI.swapBank(player.home.bank.inventory, e, canvas)
+
                     }
                   }
             />
