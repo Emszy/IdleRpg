@@ -271,4 +271,10 @@ export default class Inventory {
       }
    }
 
+   swap(index1, index2) {
+      let temp = this.spaces[index1]
+      this.spaces[index1] = this.spaces[index2]
+      this.spaces[index2] = temp;
+   }
+
 }

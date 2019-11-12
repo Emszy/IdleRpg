@@ -1,3 +1,5 @@
+import {timer} from "../../Helpers/functions"
+
 export default class Animation {
 
 	constructor(player) {
@@ -17,55 +19,28 @@ export default class Animation {
 		this.pickaxe = false;
 		this.axe = false;
 		this.bow = false;
-
-		this.deathTimer = this.makeTimer(this.player.images.hurt.directions.up.end, 15);
-		this.walkTimer = this.makeTimer(this.player.images.walk.directions.up.end, 10);
-		this.stopTimer = this.makeTimer(this.player.images.idle.directions.up.end, 10);
-		this.magicTimer = this.makeTimer(this.player.images.magic.directions.up.end, 10)
-		this.shootTimer = this.makeTimer(this.player.images.shoot.directions.up.end, 10)
-		this.swingTimer = this.makeTimer(this.player.images.swing.directions.up.end, 10)
-		this.thrustTimer = this.makeTimer(this.player.images.thrust.directions.up.end, 10)
-
+		this.arrows = false;
+		this.deathTimer = this.makeTimer(this.player.images.hurt.directions.up.end, 200);
+		this.walkTimer = this.makeTimer(this.player.images.walk.directions.up.end, 40);
+		this.stopTimer = this.makeTimer(this.player.images.idle.directions.up.end, 50);
+		this.magicTimer = this.makeTimer(this.player.images.magic.directions.up.end, 200)
+		this.shootTimer = this.makeTimer(this.player.images.shoot.directions.up.end, 200)
+		this.swingTimer = this.makeTimer(this.player.images.swing.directions.up.end, 200)
+		this.thrustTimer = this.makeTimer(this.player.images.thrust.directions.up.end, 250)
 	}
 
-	addAxe(axe) {
-		this.axe = axe;
+	add(article, item) {
+		this[article] = item;
 	}
 
-	addPickaxe(pickaxe) {
-		this.pickaxe = pickaxe;
+	remove(article) {
+		this[article] = false;
 	}
 
-	addWeapon(weapon) {
-		this.weapon = weapon;
-	}
 
-	addBow(bow) {
-		this.bow = bow;
-	}
-
-	addShield(shield) {
-		this.shield = shield;
-	}
-
-	addHelm(helm) {
-		this.helm = helm;
-	}
-
-	addChest(chest) {
-		this.chest = chest;
-	}
-
+	
 
 	// need item assets for boots and legs
-
-	addLegs(legs) {
-		this.legs = legs;
-	}
-
-	addBoots(boots) {
-		this.boots = boots;
-	}
 
 	addShirt(shirt) {
 		this.shirt = shirt;
@@ -82,28 +57,33 @@ export default class Animation {
 
 	makeTimer(end, animationTime) {
 		return ({
-			time : 0,
 			index : 0,
 			end : end,
-			animationTime: animationTime,
 			done : false,
-			clear: function() {
-				this.time = 0
-				this.index = 0
-			},
+			defaultExpire: animationTime,
+			delayTimer : timer(animationTime),
 
 			timer : function() {
-				this.time ++;
-				if (this.time > this.animationTime) {
-					this.time = 0;
+				if (this.delayTimer.check()) {
 					this.index++;
 					if (this.index > this.end) {
 						this.done = true
 						this.index = 0;
 					}
+					return true
 				}
+				return (false)
+			},
+
+			setExpiration : function(newExpirationTime) {
+				this.delayTimer.setExpiration(newExpirationTime);
+			},
+
+			defaultExpiration : function() {
+				this.delayTimer.setExpiration(this.defaultExpire);
 			}
 		})
+
 	}
 
 
@@ -151,32 +131,32 @@ export default class Animation {
 
 	walk(direction, player,  ctx) {
 		this.animate(player, ctx, "walk", direction, this.walkTimer)
-		this.walkTimer.timer();
+		return (this.walkTimer.timer());
 	}
 
 	stop(direction, player,  ctx) {
 		this.animate(player, ctx, "idle", direction, this.stopTimer)
-		this.stopTimer.timer();
+		return (this.stopTimer.timer());
 	}
 
 	magic(direction, player,  ctx) {
 		this.animate(player, ctx, "magic", direction, this.magicTimer)
-		this.magicTimer.timer();
+		return (this.magicTimer.timer());
 	}
 
 	shoot(direction, player,  ctx) {
 			this.animate(player, ctx, "shoot", direction, this.shootTimer)
-			this.shootTimer.timer();
+			return (this.shootTimer.timer());
 	}
 
 	swing(direction, player,  ctx) {
 			this.animate(player, ctx, "swing", direction, this.swingTimer)
-			this.swingTimer.timer();
+			return (this.swingTimer.timer());
 	}
 
 	thrust(direction, player,  ctx) {
 			this.animate(player, ctx, "thrust", direction, this.thrustTimer)
-			this.thrustTimer.timer();
+			return (this.thrustTimer.timer());
 	}
 
 	rightHand(weapon, direction, player, timer, ctx) {

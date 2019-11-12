@@ -141,8 +141,8 @@ let settings = {
 			exponent : 1.2
 		},
 		walkVelocity : {
-			x : 1,
-			y: 1
+			x : 2,
+			y: 2
 		},
 
 		// attack of weapon divided by a divisor equals attack speed, higher divisor = lower speed

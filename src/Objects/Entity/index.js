@@ -1,5 +1,4 @@
 import RigidBody from '../../Helpers/rigidBody'
-
 import Skills from "./Skills"
 import Inventory from "../../Objects/Inventory"
 import Armor from './Armor'
@@ -12,6 +11,7 @@ import Status from './Status'
 export default class Entity {
 	
 	constructor(settings) {
+		this.target = false;
 		this.name = settings.name;
 		this.items = settings.items;
 		this.body = new RigidBody(settings.x, settings.y, settings.width, settings.height);
@@ -35,7 +35,6 @@ export default class Entity {
 		} else {
 			this.status.location = "lost";
 		}
-		// console.log("location", this.status.location)
 	}
 
 	setDestination() {
@@ -56,12 +55,10 @@ export default class Entity {
 		} else {
 			this.status.destination = "wild"
 		}
+
 	}
 
-
-
 	setAction(enemies, ores, trees, animals) {
-
 		if (enemies.length) {
 			this.status.action = "fighting";
 		} else if (this.status.actions.mine.state === true && ores.length) {
@@ -75,13 +72,23 @@ export default class Entity {
  		}
 	}
 
-
-
+	 setAnimationAction() {
+      if (this.status.action === "fighting") {
+      	this.body.action = "fight";
+      } else if (this.status.action === "mining") {
+      	this.body.action = "mine";
+      } else if (this.status.action === "woodCutting") {
+        this.body.action = "woodcut";
+      } else if (this.status.action === "hunting") {
+        this.body.action = "fight";
+      } else {
+      	this.body.action = "walk";
+      }
+   }
 
 
 	newLevel(x, y, map) {
 		this.body.setPos(x,y)
-		
 		this.status.currLevel++;
 		if (this.status.highestLevel < this.status.currLevel) {
 			this.status.highestLevel = this.status.currLevel;
@@ -103,6 +110,13 @@ export default class Entity {
 	nextLevel(x, y) {
 		this.body.setPos(x,y)
 		this.status.currLevel++;
+	}
+
+	display() {
+		console.log("location", this.status.location)
+		console.log("destination", this.status.destination)
+ 		console.log("action", this.status.action)
+ 		console.log("bodyAction", this.body.action)
 	}
 
 }

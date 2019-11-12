@@ -1,5 +1,5 @@
 import RigidBody from '../../Helpers/rigidBody'
-import Skills from '../../Helpers/Skills'
+// import Skills from '../../Helpers/Skills'
 import Inventory from "../../Objects/Inventory"
 import {trees, ore} from "../Animations/images";
 import ResourceAnimation from "../Animations/resourceAnimation"
@@ -20,8 +20,8 @@ export default class Resources {
 					name : items[settings.itemIndex].name,
 					x : randomInt(0, 450),
 					y : randomInt(0, 450),
-					width : 64,
-					height : 64,
+					width : settings.width,
+					height : settings.height,
 					startingGold : 0,
 					
 					status : {
@@ -104,7 +104,9 @@ export default class Resources {
 				health : 100,
 				animation : animation,
 				amount : amount,
-				type : "ore"
+				type : "ore",
+				width: 64,
+				height: 64
 			})
 		}
 
@@ -149,7 +151,9 @@ export default class Resources {
 				health : 100,
 				animation : animation,
 				amount : amount,
-				type : "tree"
+				type : "tree",
+				width : animation.image.pos.width,
+				height : animation.image.pos.height, 
 			})
 	}
 

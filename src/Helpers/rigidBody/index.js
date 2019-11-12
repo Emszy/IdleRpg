@@ -8,7 +8,7 @@ export default class RigidBody {
 		this.pos = new Vector2d(x,y);
 		this.size = new Vector2d(width, height);
 		this.collision = new Collision();
-		this.setVelocity(2,2);
+		this.setVelocity(3,3);
 		this.stop = false;
 		this.stopMining = true;
 		this.stopWoodCutting = true;
@@ -26,55 +26,6 @@ export default class RigidBody {
 	setPos(x,y) {
 		this.pos.x = x;
 		this.pos.y = y;
-	}
-
-	stopMoving() {
-		this.stop = true;
-	}
-
-	startMoving() {
-		this.stop = false;
-	}
-
-	stopMine() {
-		this.stopMining = true;
-	}
-
-	startMine() {
-		this.stopMining = false;
-	}
-
-	stopWoodCut() {
-		this.stopWoodCutting = true;
-	}
-
-	startWoodCut() {
-		this.stopWoodCutting = false;
-	}
-
-	stopHunt() {
-		this.stopHunting = true;
-	}
-
-	startHunting() {
-		this.stopHunting = false;
-	}
-
-
-	stopGoingHome() {
-		this.goHome = true;
-	}
-
-	startGoingHome() {
-		this.goHome = false;
-	}
-
-	stopFarm() {
-		this.goFarm = true;
-	}
-
-	startFarm() {
-		this.goFarm = false;
 	}
 
 	createPath(x, y) {

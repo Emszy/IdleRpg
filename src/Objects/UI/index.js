@@ -12,9 +12,12 @@ export default class UI {
 	constructor(items, player) {
     this.clickHandler = new ClickHandler();
     this.drawEntity = new DrawEntity();
+    this.draw = new Draw();
+
     let makeMenu = new MakeMenu();
 
 		this.currentHomeMenu = "none";
+    this.inventoryMenu = "inventory";
     this.magicMenu = makeMenu.magic();
     this.buyMenu = makeMenu.vendor(items, "buyable");
     this.craftMenu = makeMenu.vendor(items, "craftable");
@@ -22,15 +25,21 @@ export default class UI {
     this.inventoryMenuButtons = makeMenu.inventoryButtons()
     this.inventorySpaces = makeMenu.inventorySpaces();
 
-		this.actionButtons = {};
+		this.actionButtons = makeMenu.actionButtons(player);
 
-		this.armorButtons = [];
+		this.bankButtons = makeMenu.bank();
+		
+    this.armorButtons = [];
 
-		this.bankButtons = {
-      grid : false,			
-			page : 0,
-		};
+    this.mouseSwapItem = {
+                      swap : false,
+                      index : false,
+    };
 
+    this.mousePosition = {
+                  x: false,
+                  y: false,
+    }
     this.farmButtons = {
         spaces : [],
         controls: [],
@@ -63,15 +72,8 @@ export default class UI {
 
    
 		this.homeMenuButtons = [];
-		this.showItems = true;
-		this.showArmor = false;
-		this.showStats = false;
-		this.showMagic = false;
-		this.draw = new Draw();
 
-		this.makeCharacterActionButtons(player);
 		this.makeArmorMenu();
-		this.makeBankMenu();
 
 		this.makeHomeActionButtons(player);
     this.makeFarmButtons(player);
@@ -107,11 +109,6 @@ export default class UI {
         map.animation.drawImageLayer(tile.info.terrain, tile.info.type, tile.info.img, tile.body.pos, ctx)
       }
   }
-
-// drawing players
-
-
-
 
   drawMapInventory(inventory, ctx) {
     if (!inventory) {
@@ -171,14 +168,14 @@ export default class UI {
   }
 
 	drawInventory(player, ctx) { 
-		  if (this.showItems) {
+		  if (this.inventoryMenu === "inventory") {
 		    this.drawSpacesForInventory(player, ctx);
-		  } else if (this.showArmor) {
+		  } else if (this.inventoryMenu === "armor") {
 		    this.drawSpacesForArmor(ctx);
 		    this.drawPlayerArmor(player,ctx)
-		  } else if (this.showStats) {
+		  } else if (this.inventoryMenu === "stats") {
 		    this.drawPlayerStats(player, ctx)
-		  } else if (this.showMagic) {
+		  } else if (this.inventoryMenu === "magic") {
         this.draw.img(userInterface.stats, 360, 0,120,480, ctx)
         this.magicMenu.drawGrid(ctx);
       }
@@ -287,7 +284,6 @@ export default class UI {
     this.arrowArmorDrawCheck(player.armor.arrows, ctx);
 
 
-
 		this.draw.text("Attack Bonus: ", 360, 375, "10", ctx);
     this.draw.text(player.armor.attackBonus, 450, 375, "10", ctx);
 
@@ -323,11 +319,10 @@ export default class UI {
                 this.showMagicMenu();
               }
             }
-
 	}
 
   magicClick(mouse, player, canvas) {
-    if (!this.showMagic) {
+    if (this.inventoryMenu !== "magic") {
       return false;
     }
     let click = this.magicMenu.click(mouse, canvas)
@@ -433,8 +428,50 @@ export default class UI {
    
 	}
 
+  arrangeInventory(inventory, mouse, canvas) {
+    if (this.inventoryMenu !== "inventory") {
+        return false
+    }
+        this.mouseSwapItem.swap = false;
+        let click = this.inventorySpaces.click(mouse, canvas)
+        if (click.click) {
+          if (inventory.spaces[click.index].id !== -1) {
+            this.mouseSwapItem.index = click.index
+            this.mouseSwapItem.item = inventory.spaces[click.index];
+          }
+        }
+  }
+
+  swapInventory(inventory, mouse, canvas) {
+        if (this.inventoryMenu !== "inventory") {
+            return false
+        }
+
+        let click = this.inventorySpaces.click(mouse, canvas)
+        if (click.click) {
+            if (click.index !== this.mouseSwapItem.index) {
+              inventory.swap(this.mouseSwapItem.index, click.index);
+              this.mouseSwapItem.swap = true;
+            } else {
+              this.mouseSwapItem.swap = false;
+            }
+        }
+        this.mouseSwapItem.item = false;
+        this.mouseSwapItem.index = false
+  }
+
+  updateMouse(mouse,canvas) {
+    this.mousePosition = this.clickHandler.transformedCoordinate(mouse, canvas);
+  }
+
+  drawMouseSwapItem(ctx) {
+      if (this.mouseSwapItem.item && this.mousePosition.x && this.mousePosition.y && ctx) {
+        this.draw.inventoryItemImg(this.mouseSwapItem.item.img, this.mousePosition.x - 10, this.mousePosition.y - 10, ctx);
+      }
+  }
+
 	inventoryClick(mouse, player, canvas) {
-		if (!this.showItems) {
+		if (this.inventoryMenu !== "inventory" || this.mouseSwapItem.swap === true) {
 			return false
  		} 
 
@@ -859,7 +896,7 @@ export default class UI {
 
 
 	armorClick(mouse, player, canvas) {
-		if (!this.showArmor) {
+		if (this.inventoryMenu !== "armor") {
 			return false
 		}
 		let len = this.armorButtons.length
@@ -893,32 +930,19 @@ export default class UI {
 
 
 	showItemMenu() {
-		this.showItems = true;
-		this.showArmor = false;
-		this.showStats = false;
-		this.showMagic = false;
-
+    this.inventoryMenu = "inventory"
 	}
 
 	showArmorMenu() {
-		this.showItems = false;
-		this.showArmor = true;
-		this.showStats = false;
-		this.showMagic = false;
+		this.inventoryMenu = "armor"
 	}
 
 	showStatsMenu() {
-		this.showItems = false;
-		this.showArmor = false;
-		this.showStats = true;
-		this.showMagic = false;
+		this.inventoryMenu = "stats"
 	}
 
 	showMagicMenu() {
-		this.showItems = false;
-		this.showArmor = false;
-		this.showStats = false;
-		this.showMagic = true;
+		this.inventoryMenu = "magic"
 	}
 
 
@@ -951,39 +975,7 @@ export default class UI {
 		})
 	}
 
-	makeInventorySpaces() {
-    let background = {
-      img: userInterface.stats,
-      x : 360,
-      y : 0,
-      width : 120,
-      height : 480,
-   }
-
-
-   let img = {
-      image : userInterface.itemBorder,
-      repeat : true,
-   }
-
-  this.inventorySpaces = new Grid({
-                                  x: 365,
-                                  y: 120,
-                                  width : 3,
-                                  height : 8,
-                                  cellWidth : 40,
-                                  cellHeight: 40,
-                                  labelOffsetX : 5,
-                                  labelOffsetY : 5,
-                                  labelSize : 10,
-                                  imgs : img,
-                                  background : background,
-                                })
-
-
-
-	}
-
+	
 	makeArmorMenu() {
           this.armorButton(
     			  this.button(400, 135, 40, 40),
@@ -1065,253 +1057,6 @@ export default class UI {
 	}
 
 
-	makeCharacterActionButtons(player) {
-
-
-   let keys =  Object.keys(player.status.actions)
-   let imgs = [];
-   let labels = [];
-   for (var i = 0; i < keys.length; i++) {
-        imgs.push(player.status.actions[keys[i]].button());
-        labels.push(player.status.actions[keys[i]].label())
-   }
-
-   let background = {
-      img: userInterface.actionButtonBackGround,
-      x : 0,
-      y : 430,
-      width : 360,
-      height : 180,
-   }
-
-   this.actionButtons = new Grid({
-                                  x: 0,
-                                  y: 440,
-                                  width : keys.length,
-                                  height : 1,
-                                  cellWidth : 60,
-                                  cellHeight: 50,
-                                  labelOffsetX : 5,
-                                  labelOffsetY : 5,
-                                  labelSize : 10,
-                                  imgs : imgs,
-                                  labels :labels,
-                                  background : background,
-                                })
-	}
-
-	makeBankMenu() {
-
-  let background = {
-      img: userInterface.bankBackGround,
-      x : 10,
-      y : 30,
-      width : 320,
-      height : 430,
-   }
-
-
-   let img = {
-      image : userInterface.itemBorder,
-      repeat : true,
-   }
-
-   let controls = [
-                    {
-                        button : this.button(292, 390, 16, 16),
-                        img : userInterface.upArrow,
-                    },
-
-                    {
-                        button: this.button(292, 416, 16, 16),
-                        img : userInterface.downArrow,
-                    },
-
-                    {
-                        button: this.button(292, 45, 16, 16),
-                        img : userInterface.closeButton,
-                    },
-
-                    {
-                        button: this.button(292, 70, 16, 60),
-                        img : userInterface.bankScrollBar,
-                    },
-
-                  ];
-
-
-    this.bankButtons.grid = new Grid({
-                                  x: 40,
-                                  y: 40,
-                                  width : 5,
-                                  height : 10,
-                                  cellWidth : 45,
-                                  cellHeight: 40,
-                                  labelOffsetX : 5,
-                                  labelOffsetY : 5,
-                                  labelSize : 10,
-                                  imgs : img,
-                                  background : background,
-                                  controls : controls,
-                                })
-
-	}
-
-	makeMenu(items, menu, menuType) {
-
-
-
-     let background = {
-      img: userInterface.buyBackGround,
-      x : 25,
-      y : 25,
-      width : userInterface.buyBackGround.pos.width,
-      height : userInterface.buyBackGround.pos.height,
-    }
-
-    let categoryButtonImg = {
-      image : userInterface.aquaButton,
-      repeat : true,
-    }
-
-    let borderImg = {
-      image : userInterface.itemBorder,
-      repeat : true,
-    }
-  
-     let SubCategoryButtonImg = {
-      image : userInterface.greenButton,
-      repeat : true,
-    }
-
-    let controls = [
-                    {
-                        button : this.button(295, 39, 16, 16),
-                        img : userInterface.closeButton,
-                    },
-                  ];
-
-    
-    let labels = []
-   
-    let categoryCount = 0;
-    for (let x = 0; x < items.categories.length; x++) {
-      let categorySettings = items.returnCategorySettings(x)
-      if (categorySettings[menuType]) {
-          labels.push(items.categories[x].name);
-          categoryCount++;
-      }
-    }
-
-
-   menu.categoryGrid = new Grid({
-                                  x: 50,
-                                  y: 400,
-                                  width : categoryCount,
-                                  height : 1,
-                                  cellWidth : 70,
-                                  cellHeight: 50,
-                                  labelOffsetX : 5,
-                                  labelOffsetY : 30,
-                                  labelSize : 10,
-                                  imgs : categoryButtonImg,
-                                  labels : labels,
-                                  background : background,
-                                  controls : controls
-                                })
-
-    for (let x = 0; x < items.categories.length; x++) {
-      labels = [];
-      let subCategories = items.returnSubCategories(x);
-      let subCategoryCount = 0;
-      let categoryName = items.categories[x].name;
-      let subCategoryCheck = false;
-      let itemGrids = {};
-
-      for (let y = 0; y < subCategories.length; y++) {
-        let subCategorySettings = items.returnSubCategorySettings(x,y);
-        if (subCategorySettings[menuType]) {
-          subCategoryCheck = true
-          labels.push(subCategories[y].name);
-          subCategoryCount++;
-          let subcategoryItems = items.returnItems(x,y);
-
-          itemGrids[subCategories[y].name] = {
-                                          grid : new Grid({
-                                                x: 40,
-                                                y: 70,
-                                                width : 4,
-                                                height : 3,
-                                                cellCount : subcategoryItems.length,
-                                                cellWidth : 70,
-                                                cellHeight: 50,
-                                                labelOffsetX : 5,
-                                                labelOffsetY : 5,
-                                                labelSize : 10,
-                                                imgs : borderImg,
-                                              }),
-
-                                            items: subcategoryItems,
-          }
-
-        }
-
-      }
-      if (subCategoryCheck) {
-          menu.subCategoryGrids[categoryName] = {
-                                            first : labels[0],
-                                            grid:  new Grid({
-                                                x: 50,
-                                                y: 300,
-                                                width : 4,
-                                                height : 2,
-                                                cellCount : subCategoryCount,
-                                                cellWidth : 60,
-                                                cellHeight: 40,
-                                                labelOffsetX : 5,
-                                                labelOffsetY : 30,
-                                                labelSize : 10,
-                                                imgs : SubCategoryButtonImg,
-                                                labels : labels,
-                                              }),
-                                            itemGrids : itemGrids, 
-                                          }
-      }
-    }
-	 }
-
-   makeInventoryMenuButtons() {
-    let  menuLabels =  [   
-                      "Items",
-                      "Armor",
-                      "Stats",
-                      "Magic",
-                  ]
-
-
-    let menuImages = [
-                      userInterface.inventoryIcon,
-                      userInterface.armorIcon,
-                      userInterface.statsIcon,
-                      userInterface.magicIcon
-                    ]
-    this.inventoryMenuButtons = new Grid({
-                                  x: 365,
-                                  y: 440,
-                                  width : 4,
-                                  height : 1,
-                                  cellWidth : 30,
-                                  cellHeight: 40,
-                                  labelOffsetX : 2,
-                                  labelOffsetY : 20,
-                                  labelSize : 9,
-                                  imgs : menuImages
-                                })
-
-
-   }
-
-  
 
     makeRightClickButtons(menu, index, x, y) {
       

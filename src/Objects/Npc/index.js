@@ -16,10 +16,10 @@ export default class Npc {
 				let animalSettings = this.chooseAnimal(level)
 				let animal = new Entity({
 					name : animalSettings.name,
-					x : randomInt(0, 450),
-					y : randomInt(0, 450),
-					width : 64,
-					height : 64,
+					x : randomInt(0, 300),
+					y : randomInt(0, 300),
+					width : animalSettings.size,
+					height : animalSettings.size,
 					startingGold : 0,
 					
 					status : {
@@ -68,10 +68,11 @@ export default class Npc {
 		let name = "chicken";
 		let huntingLvl = 1;
 		let animation = new AnimalAnimation(npc.chicken);
-
+		let size = 64
 		if (level >= 0 && level < 20) {
   			 animal = npc.chicken
   			 name = "Chicken"
+  			 size = 32
 	  	}
 		else if (level >= 20 && level < 40) {
 			 animal = npc.cow
@@ -107,6 +108,7 @@ export default class Npc {
 				huntingLvl : huntingLvl,
 				health : 100,
 				animation : animation,
+				size : size,
 			})
 	}
 

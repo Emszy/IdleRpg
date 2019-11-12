@@ -1,6 +1,6 @@
 import React from "react"
 import Logic from "../../Objects/Logic"
-
+import {timer} from "../../Helpers/functions"
 export default class Draw extends React.Component {
 	 constructor() {
       super()
@@ -12,6 +12,8 @@ export default class Draw extends React.Component {
     }
 
     componentDidMount() {
+      let frameRate = 60
+      this.frameRateTimer = timer(1000 / frameRate);
       document.getElementById("canvas").focus();
       document.getElementById("canvas").style.cursor = "initial";
       const canvas = this.canvasRef.current;
@@ -35,43 +37,42 @@ export default class Draw extends React.Component {
 
     updateCanvas = () => {
 
-      const canvas = this.canvasRef.current;
-      const ctx = canvas.getContext('2d');
-
-      ctx.clearRect(0,0, 480, 480);
-
-     
-
       if (this.state.logic) {
-        this.updateLogic();
-        let player = this.state.logic.player;
-        let enemies = this.state.logic.enemies;
-        let map = this.state.logic.map;
-        let merchant = this.state.logic.merchant;
-        let ui = this.state.logic.UI;
+        if (this.frameRateTimer.check()) {
+          const canvas = this.canvasRef.current;
+          const ctx = canvas.getContext('2d');
+          ctx.clearRect(0,0, 480, 480);
+          this.updateLogic();
+          
+          let player = this.state.logic.player;
+          let enemies = this.state.logic.enemies;
+          let map = this.state.logic.map;
+          let merchant = this.state.logic.merchant;
+          let ui = this.state.logic.UI;
 
-        ui.drawMap(map, ctx);
-        ui.drawHomeDesign(player, merchant, ctx)
-        ui.drawInventory(player, ctx);
-        ui.drawMapInventory(map.inventory[player.status.currLevel - 1], ctx);
+          ui.drawMap(map, ctx);
+          ui.drawHomeDesign(player, merchant, ctx)
+          ui.drawInventory(player, ctx);
+          ui.drawMapInventory(map.inventory[player.status.currLevel - 1], ctx);
 
-        ui.drawFarm(player, ctx);
+          ui.drawFarm(player, ctx);
 
-        ui.drawEntity.handler({
-            player: player,
-            enemies: enemies,
-            merchant: merchant,
-            animals: this.state.logic.animals,
-            trees: this.state.logic.trees,
-            ore: this.state.logic.ore,
+          ui.drawEntity.handler({
+              player: player,
+              enemies: enemies,
+              merchant: merchant,
+              animals: this.state.logic.animals,
+              trees: this.state.logic.trees,
+              ore: this.state.logic.ore,
 
-        }, ctx)
-        // ui.drawPlayers(player, enemies, ctx);
-        ui.drawHome(player, this.state.logic.items, ctx);
+          }, ctx)
+          // ui.drawPlayers(player, enemies, ctx);
+          ui.drawHome(player, this.state.logic.items, ctx);
+          ui.drawMouseSwapItem(ctx)
 
+        }
+          this.rAF = requestAnimationFrame(this.updateCanvas);
       }
-         
-      this.rAF = requestAnimationFrame(this.updateCanvas);
   }
 
   handleClick = (e) => {
@@ -104,11 +105,10 @@ export default class Draw extends React.Component {
 
     handleMouseMove(e) {
         const canvas = this.canvasRef.current;
-
+        const ctx = canvas.getContext('2d');
         let player = this.state.logic.player
-
+        this.state.logic.UI.updateMouse(e, canvas);
         let map = this.state.logic.map;
-
         if (player.status.currLevel > 0) {
           this.state.logic.UI.mapInventoryClick(e, map.inventory[player.status.currLevel - 1], player ,canvas)
         }
@@ -173,6 +173,7 @@ export default class Draw extends React.Component {
                     }
                   }
                     onMouseMove = {(e) => {
+
                       this.handleMouseMove(e)
                     }
                   }
@@ -180,6 +181,22 @@ export default class Draw extends React.Component {
                   onClick = {(e) => {
                       this.handleClick(e)
 
+                    }
+                  }
+
+                  onMouseDown = {(e) => {
+                      const canvas = this.canvasRef.current;
+                      let player = this.state.logic.player
+
+                      this.state.logic.UI.arrangeInventory(player.inventory, e, canvas)
+                    }
+                  }
+
+                  onMouseUp = {(e) => {
+                      const canvas = this.canvasRef.current;
+                      let player = this.state.logic.player
+
+                      this.state.logic.UI.swapInventory(player.inventory, e, canvas)
                     }
                   }
             />

@@ -55,6 +55,8 @@ export default class Enemies {
 					items : this.items
 				})
 				enemy = this.addItems(enemy, level);
+				// enemy.body.setVelocity(4,4)
+
 			arr.push(enemy)
 		}
 		return (arr);
@@ -111,17 +113,17 @@ export default class Enemies {
 
 		lightDrake() {
 			let animation = new Animation(enemyImages.lightDrake)
-			animation.addShirt(enemyImages.lightDrakeTail);
-			animation.addPants(enemyImages.lightDrakeWings);
+			animation.add("shirt", enemyImages.lightDrakeTail);
+			animation.add("pants", enemyImages.lightDrakeWings);
 			return animation
 		}
 
 		blueDrake() {
 			let animation = new Animation(enemyImages.blueDrake)
-			animation.addShirt(enemyImages.blueDrakeTail);
-			animation.addPants(enemyImages.blueDrakeWings);
-			animation.addHair(enemyImages.blueDrakeWingsFront);
-			animation.addBoots(enemyImages.blueDrakeTailFront);
+			animation.add("shirt", enemyImages.blueDrakeTail);
+			animation.add("pants", enemyImages.blueDrakeWings);
+			animation.add("hair", enemyImages.blueDrakeWingsFront);
+			animation.add("boots", enemyImages.blueDrakeTailFront);
 			return animation
 		}
 		skeleton() {

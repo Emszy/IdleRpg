@@ -27,6 +27,7 @@ export default class Armor {
 		if (animation.singleImg) {
 			this.animation = animation.singleImg;
 		}
+
 		if (animation.body) {
 			this.animation = animation.body
 			this.animation.addShirt(animation.shirt)
@@ -54,7 +55,7 @@ export default class Armor {
 	addBonus() {
 		let defense = 0;
 		let attack = 0;
-
+		let attackSpeed = 200;
 		defense += this.helm.bonus
 		defense += this.chest.bonus
 		defense += this.legs.bonus
@@ -62,19 +63,25 @@ export default class Armor {
 		defense += this.shield.bonus
 
 		attack += this.weapon.bonus
-
+		if (this.weapon.id === -1) {
+			this.animation.swingTimer.defaultExpiration();
+		} else {
+			attackSpeed = this.weapon.speed;
+			this.animation.swingTimer.setExpiration(attackSpeed);
+		}
 		this.attackBonus = attack;
 		this.defenseBonus = defense;
-		this.attackSpeedBonus = Math.round(attack / 6);
+		this.attackSpeedBonus = attackSpeed;
 		this.rangeBonus = this.bow.bonus;
 		this.miningBonus = this.pickAxe.bonus;
 		this.woodCuttingBonus = this.axe.bonus;
+
 	}
 
 	removeHelm(inventory) {
 		if (inventory.add(this.helm)) {
 			this.helm = this.items.none();
-
+			this.animation.remove("helm")
 		}
 		this.addBonus();
 	}
@@ -82,14 +89,16 @@ export default class Armor {
 	removeChest(inventory) {
 		if (inventory.add(this.chest)) {
 			this.chest = this.items.none();
+			this.animation.remove("chest")
 
-		}
+		} 
 		this.addBonus();
 	}
 
 	removeLegs(inventory) {
 		if (inventory.add(this.legs)) {
 			this.legs = this.items.none();
+			this.animation.remove("legs")
 
 		}
 		this.addBonus();
@@ -98,6 +107,7 @@ export default class Armor {
 	removeFeet(inventory) {
 		if (inventory.add(this.feet)) {
 			this.feet = this.items.none();
+			this.animation.remove("feet")
 
 		}
 		this.addBonus();
@@ -106,6 +116,7 @@ export default class Armor {
 	removeWeapon(inventory) {
 		if (inventory.add(this.weapon)) {
 			this.weapon = this.items.none();
+			this.animation.remove("weapon")
 		}
 		this.addBonus();
 	}
@@ -113,6 +124,7 @@ export default class Armor {
 	removeShield(inventory) {
 		if (inventory.add(this.shield)) {
 			this.shield = this.items.none();
+			this.animation.remove("shield")
 
 		}
 		this.addBonus();
@@ -121,6 +133,7 @@ export default class Armor {
 	removePickAxe(inventory) {
 		if (inventory.add(this.pickAxe)) {
 			this.pickAxe = this.items.none();
+			this.animation.remove("pickaxe")
 
 		}
 		this.addBonus();
@@ -129,6 +142,8 @@ export default class Armor {
 	removeAxe(inventory) {
 		if (inventory.add(this.axe)) {
 			this.axe = this.items.none();
+			this.animation.remove("axe")
+
 		}
 		this.addBonus();
 	}
@@ -136,6 +151,8 @@ export default class Armor {
 	removeBow(inventory) {
 		if (inventory.add(this.bow)) {
 			this.bow = this.items.none();
+			this.animation.remove("bow")
+
 		}
 		this.addBonus();
 	}
@@ -143,13 +160,15 @@ export default class Armor {
 	removeArrows(inventory) {
 		if (inventory.addQuantity(this.arrows, this.arrows.quantity)) {
 			this.arrows = this.items.none();
+			this.animation.remove("arrows")
+
 		}
 		this.addBonus();
 	}
 
 	addHelm(helm) {
 		let tmp = this.helm.copy()
-		this.animation.addHelm(helm.img)
+		this.animation.add("helm", helm.img)
 
 		helm.setPos(400, 140);
 		this.helm = helm;
@@ -164,7 +183,7 @@ export default class Armor {
 
 	addChest(chest) {
 		let tmp = this.chest.copy()
-		this.animation.addChest(chest.img)
+		this.animation.add("chest", chest.img)
 
 		chest.setPos(400, 200);
 		this.chest = chest;
@@ -207,7 +226,7 @@ export default class Armor {
 
 	addWeapon(weapon) {
 		let tmp = this.weapon.copy()
-		this.animation.addWeapon(weapon.img)
+		this.animation.add("weapon", weapon.img)
 
 		weapon.setPos(360, 200);
 		this.weapon = weapon;
@@ -222,7 +241,7 @@ export default class Armor {
 
 	addShield(shield) {
 		let tmp = this.shield.copy()
-		this.animation.addShield(shield.img)
+		this.animation.add("shield", shield.img)
 
 		shield.setPos(440, 200)
 		this.shield = shield;
@@ -260,7 +279,7 @@ export default class Armor {
 
 	addBow(bow) {
 		let tmp = this.bow.copy()
-		this.animation.addBow(bow.img)
+		this.animation.add("bow", bow.img)
 
 		bow.setPos(440, 70)
 		this.bow = bow;
@@ -277,7 +296,7 @@ export default class Armor {
 
 	addPickAxe(pickAxe) {
 		let tmp = this.pickAxe.copy()
-		this.animation.addPickaxe(pickAxe.img)
+		this.animation.add("pickaxe", pickAxe.img)
 
 		pickAxe.setPos(360, 15)
 		this.pickAxe = pickAxe;
@@ -292,7 +311,7 @@ export default class Armor {
 
 	addAxe(axe) {
 		let tmp = this.axe.copy()
-		this.animation.addAxe(axe.img)
+		this.animation.add("axe", axe.img)
 
 		axe.setPos(360, 70)
 		this.axe = axe;

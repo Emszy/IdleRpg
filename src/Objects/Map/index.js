@@ -8,9 +8,21 @@ import {randomInt} from "../../Helpers/functions"
 export default class MapLogic {
 	
   constructor(items) {
-    this.end = new RigidBody(32 * 5,400, 5,5);
-    this.start = new RigidBody(32 * 5, -32, 1, 1);
-    this.middle = new RigidBody(5 * 32, 7 * 32, 1, 1);
+    this.end = {
+            name : "end",
+            body: new RigidBody(32 * 5,400, 1,1)
+          }
+    
+    this.start = {
+            name: "beginning",
+            body: new RigidBody(32 * 5, 0, 1, 1)
+          }
+    
+    this.middle = { 
+          name: "middle",
+          body: new RigidBody(5 * 32, 7 * 32, 1, 1)
+        }
+
     this.inventory = [];
     this.items = items;
     this.inventory.push(new Inventory(this.items, 250))

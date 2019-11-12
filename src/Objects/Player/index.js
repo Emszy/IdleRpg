@@ -7,11 +7,11 @@ export default class Player {
 	main (name, items) {
 		return (new Entity({
 				name : name,
-				x : 0,
-				y : 0,
+				x : 150,
+				y : 150,
 				width : 64,
 				height : 64,
-				startingGold : 100000000,
+				startingGold : 10000000,
 				
 				status : {
 					dead : false,
@@ -25,7 +25,7 @@ export default class Player {
 				
 				skills : {
 					attack : 1,
-					health : 500,
+					health : 100,
 					defense : 1,
 					attackSpeed : 1,
 					range : 1,
@@ -50,6 +50,14 @@ export default class Player {
 		)
 
 	}
+
+	player(name, items) {
+		let player = this.main(name, items);
+		player.body.action = "walk";
+		return player
+	}
+
+
 	merchant(items) {
 		let diamondArmor = items.returnItems(2,4)
 		let merchant = this.main("The Merchant", items);

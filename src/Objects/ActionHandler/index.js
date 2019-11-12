@@ -25,10 +25,6 @@ export default class ActionHandler {
 		}
 	}
 
-
-	
-
-	
 	isDead(player) {
 		if (player.skills.health.isZero() === true) {
 			player.armor.animation.deathTimer.done = false;
@@ -41,7 +37,8 @@ export default class ActionHandler {
 	xp(player, target) {
 		switch (target.status.type) {
           case "enemy" :
-                player.skills.attack.addXp(target.skills.health.get() * 15)
+                player.skills.attack.addXp(target.skills.health.get() * 4)
+                player.skills.attackSpeed.addXp(target.skills.health.get() * 2)
                 player.skills.health.addXp(target.skills.health.get() * 40)
                 break;
           case "ore" :
@@ -75,12 +72,16 @@ export default class ActionHandler {
 	}
 
 	fight(player, target) {
-		let skill = player.skills.attack;
-		let speedBonus = player.armor.attackSpeedBonus;
-		let attackBonus = player.armor.attackBonus;
-
+		let skill = false;
+		let speedBonus = false;
+		let attackBonus = false;
+		let hit = false;
+		let damage = 0;
 		switch (target.status.type) {
           case "enemy" :
+		        skill = player.skills.attack;
+				speedBonus = player.armor.attackSpeedBonus;
+				attackBonus = player.armor.attackBonus;
                 break;
           case "ore" :
           		skill = player.skills.mining;
@@ -101,11 +102,13 @@ export default class ActionHandler {
                 break
         }
 
+        if (player.armor.animation.swingTimer.done && skill) {
+          	player.armor.animation.swingTimer.done = false;
+          	damage = skill.hitDamage()
+			damage = damage + attackBonus
+        }
 
-		let damage = skill.timer(speedBonus)
-		if (damage > 0) {
-			 damage = damage + attackBonus
-		}
+		
 		return(this.takeDamage(target, damage));
 	}
 

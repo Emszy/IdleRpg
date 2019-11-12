@@ -21,18 +21,21 @@ export default class DrawEntity {
 	}
 
 	animationAction(player, direction, ctx) {
+
 	    if (player.body.action === "fight") {
-	         player.armor.animation.fight(direction, player,ctx)
+	        player.armor.animation.fight(direction, player, ctx)
 	      } else if (player.body.action === "archery") {
-	         player.armor.animation.range(direction, player, ctx)
+	        player.armor.animation.range(direction, player, ctx)
 	      } else if (player.body.action === "mine") {
-	         player.armor.animation.mine(direction, player, ctx)
+	        player.armor.animation.mine(direction, player, ctx)
 	      } else if (player.body.action === "woodcut") {
-	         player.armor.animation.woodcut(direction, player, ctx)
+	        player.armor.animation.woodcut(direction, player, ctx)
 	      } else if (player.body.action === "stop") {
-	         player.armor.animation.stop(direction, player, ctx)
+	        player.armor.animation.stop(direction, player, ctx)
 	      } else {
-	          player.armor.animation.walk(direction, player, ctx)
+			if (player.target && player.armor.animation.walk(direction, player, ctx)) {
+			    player.body.move_to(player.target.body.pos.x, player.target.body.pos.y)
+			}
 	      }
 	  }
 
@@ -42,7 +45,7 @@ export default class DrawEntity {
     if (player.status.dead === true) {
         player.armor.animation.death(player,ctx)
         return false
-      }
+    }
 
     if (player.body.currentDirection === "north") {
       this.animationAction(player, "up", ctx)
@@ -60,6 +63,8 @@ export default class DrawEntity {
     else if (player.body.currentDirection === "west") {
       this.animationAction(player, "left", ctx)
     }
+
+    
   }
 
 
@@ -85,23 +90,28 @@ export default class DrawEntity {
    animals(animals, ctx) {
     for (let i = 0; i < animals.length; i++) {
       
-        animals[i].body.followPath();
-
+        let move = false;
         if (animals[i].body.currentDirection === "north") {
-          animals[i].armor.animation.walk("up", animals[i], ctx)
+          move = animals[i].armor.animation.walk("up", animals[i], ctx)
         }
           
-        if (animals[i].body.currentDirection === "east") {
-          animals[i].armor.animation.walk("right", animals[i], ctx)
+        else if (animals[i].body.currentDirection === "east") {
+          move = animals[i].armor.animation.walk("right", animals[i], ctx)
         }
 
-        if (animals[i].body.currentDirection === "south") {
-          animals[i].armor.animation.walk("down", animals[i], ctx)
+        else if (animals[i].body.currentDirection === "south") {
+          move = animals[i].armor.animation.walk("down", animals[i], ctx)
         }
 
-        if (animals[i].body.currentDirection === "west") {
-          animals[i].armor.animation.walk("left", animals[i], ctx)
+        else if (animals[i].body.currentDirection === "west") {
+          move = animals[i].armor.animation.walk("left", animals[i], ctx)
         }
+        
+        if (move) {
+        	animals[i].body.followPath();
+        }
+
+
         this.drawHealthBar(animals[i], ctx);
     }
   }

@@ -7,6 +7,39 @@ export default class MakeMenu {
 
 	}
 
+	actionButtons(player) {
+	   let keys =  Object.keys(player.status.actions)
+	   let imgs = [];
+	   let labels = [];
+	   for (var i = 0; i < keys.length; i++) {
+	        imgs.push(player.status.actions[keys[i]].button());
+	        labels.push(player.status.actions[keys[i]].label())
+	   }
+
+	   let background = {
+	      img: userInterface.actionButtonBackGround,
+	      x : 0,
+	      y : 430,
+	      width : 360,
+	      height : 180,
+	   }
+
+	   let actionButtons = new Grid({
+	                                  x: 0,
+	                                  y: 440,
+	                                  width : keys.length,
+	                                  height : 1,
+	                                  cellWidth : 60,
+	                                  cellHeight: 50,
+	                                  labelOffsetX : 5,
+	                                  labelOffsetY : 5,
+	                                  labelSize : 10,
+	                                  imgs : imgs,
+	                                  labels :labels,
+	                                  background : background,
+	                                })
+	   	return (actionButtons)
+	}
 	
 	vendor(items, menuType) {
 		let menu = {
@@ -134,6 +167,71 @@ export default class MakeMenu {
 		}
 		return menu
 	}
+
+
+	bank() {
+
+		let bankButtons = {	
+			page : 0,
+		};
+
+		let background = {
+			img: userInterface.bankBackGround,
+			x : 10,
+			y : 30,
+			width : 320,
+			height : 430,
+		}
+
+
+		let img = {
+			image : userInterface.itemBorder,
+			repeat : true,
+		}
+
+		let controls = 	[
+							{
+								button : button(292, 390, 16, 16),
+								img : userInterface.upArrow,
+							},
+
+							{
+								button: button(292, 416, 16, 16),
+								img : userInterface.downArrow,
+							},
+
+							{
+								button: button(292, 45, 16, 16),
+								img : userInterface.closeButton,
+							},
+
+							{
+								button: button(292, 70, 16, 60),
+								img : userInterface.bankScrollBar,
+							},
+
+						];
+
+
+		bankButtons.grid = new Grid({
+		                              x: 40,
+		                              y: 40,
+		                              width : 5,
+		                              height : 10,
+		                              cellWidth : 45,
+		                              cellHeight: 40,
+		                              labelOffsetX : 5,
+		                              labelOffsetY : 5,
+		                              labelSize : 10,
+		                              imgs : img,
+		                              background : background,
+		                              controls : controls,
+		                            })
+		return bankButtons
+
+	}
+
+
 
 	inventorySpaces() {
 		let background = {

@@ -2,8 +2,6 @@ import {randomInt} from "../../../Helpers/functions"
 
 // skills have a value which is there level, and a current which is what
 // it is before and after boosts.
-// The only thing needed inside is whether you are dead or not. this is controlled by 
-// skills because it is where your hp is located
 
 export default class Skills {
 	
@@ -23,8 +21,6 @@ export default class Skills {
 
 		this.thirst.setDecayValue(settings.thirstDecay || 100); 
 		this.hunger.setDecayValue(settings.hungerDecay || 100);
-
-		// this.dead = false;
 	}
 
 	boostDecay() {
@@ -86,6 +82,12 @@ export default class Skills {
 					return(randomInt(this.get(), this.get() + accuracy + this.boost));
 				}
 				return (0);
+			},
+
+
+			hitDamage: function() {
+				let accuracy = 5;
+				return(randomInt(this.get(), this.get() + accuracy + this.boost));
 			},
 
 			decayTimer: function(boost) {
