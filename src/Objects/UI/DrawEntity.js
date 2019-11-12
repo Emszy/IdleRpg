@@ -138,7 +138,6 @@ export default class DrawEntity {
 
 
   drawPlayerStatsInCorner(player, ctx) {
-      const barHeight = 10;
       const xOffset = 35;
 
       this.draw.img(userInterface.emptyBar, xOffset, 0, 50, 15, ctx);

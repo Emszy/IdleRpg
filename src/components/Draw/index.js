@@ -16,8 +16,6 @@ export default class Draw extends React.Component {
       this.frameRateTimer = timer(1000 / frameRate);
       document.getElementById("canvas").focus();
       document.getElementById("canvas").style.cursor = "initial";
-      const canvas = this.canvasRef.current;
-      const ctx = canvas.getContext('2d');
 
 
       this.updateCanvas();
@@ -82,7 +80,6 @@ export default class Draw extends React.Component {
         
         let player = this.state.logic.player
         let merchant = this.state.logic.merchant
-        let map = this.state.logic.map;
         let ui = this.state.logic.UI;
 
         ui.menuClick(e, canvas);
@@ -126,34 +123,34 @@ export default class Draw extends React.Component {
 
                     tabIndex="0" 
                     onKeyPress={ (e) => {
-                        if (e.key == 1) {
+                        if (e.key === 1) {
                           this.state.logic.player.skills.attack.levelUpBy(2000);
                           this.state.logic.player.skills.attack.equalize();
 
                         }
 
-                        if (e.key == 2) {
+                        if (e.key === 2) {
                           this.state.logic.player.skills.attackSpeed.levelUpBy(2000);
                           this.state.logic.player.skills.attackSpeed.equalize();
 
                         }
 
-                        if (e.key == 3) {
+                        if (e.key === 3) {
                           this.state.logic.player.skills.health.levelUpBy(2000);
                           this.state.logic.player.skills.health.equalize();
 
                         }
-                         if (e.key == 4) {
+                         if (e.key === 4) {
                           this.state.logic.player.skills.mining.levelUpBy(2000);
                           this.state.logic.player.skills.mining.equalize();
 
                         }
-                        if (e.key == 5) {
+                        if (e.key === 5) {
                           this.state.logic.player.skills.woodcutting.levelUpBy(2000);
                           this.state.logic.player.skills.woodcutting.equalize();
                         }
 
-                        if (e.key == 6) {
+                        if (e.key === 6) {
                           this.state.logic.player.skills.hunting.levelUpBy(2000);
                           this.state.logic.player.skills.hunting.equalize();
                         }

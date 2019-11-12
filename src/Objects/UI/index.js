@@ -1,11 +1,10 @@
 import RigidBody from "../../Helpers/rigidBody"
 import Draw from "./draw"
-import Grid from "./grid"
 import DrawEntity from "./DrawEntity"
 import MakeMenu from "./MakeMenu"
 
 import ClickHandler from "../clickhandler"
-import {userInterface, magicImages} from "../../Objects/Animations/images"
+import {userInterface} from "../../Objects/Animations/images"
 
 
 export default class UI {
@@ -154,9 +153,9 @@ export default class UI {
 		let inventory = player.inventory
 
     let skillKeys = Object.keys(skills)
-		
+		let key = false;
     this.draw.img(userInterface.stats, 360, 0, 120,480, ctx)
-		for (const key of skillKeys) {
+		for (key of skillKeys) {
         this.draw.text(skills[key].show(), xOffset, yOffset += yIncrement, "10", ctx);
     		this.draw.text(skills[key].showXp(), xOffset + 10, yOffset += yXpIncrement, "8", ctx);
     }
@@ -205,7 +204,6 @@ export default class UI {
   }
 
 	drawHome(player, items, ctx) {
-		let home = player.home;
 		if (player.status.currLevel === 0) {
 
 			if (this.currentHomeMenu === "bank") {
@@ -853,7 +851,7 @@ export default class UI {
 
           let categories = this.craftMenu.categoryGrid
           let subCategory = this.craftMenu.subCategoryGrids[currentCategory];
-          let itemGrid = subCategory.itemGrids[this.craftMenu.currentSubcategory]
+          let itemGrid = subCategory.itemGrids[currentSubcategory]
 
             let click = categories.controlClick(mouse, canvas)    
             if (click.click)

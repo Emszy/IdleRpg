@@ -116,7 +116,7 @@ export default class Home {
 				let end = 10 * 32;
 				let width = 32;
 				let height = 32;
-				for (let i = 0; i < 96; i += 32) {
+				for (let i = 0; i < 96; i += height) {
 					for (let j = 0; j < end; j+= width) {
 						this.spaces.push(this.makeSeedSlot(x + j, i + y))
 					}
@@ -233,7 +233,6 @@ export default class Home {
 				if (this.level === 5) {
 					return (false);
 				}
-				console.log(this.getUpgradePrice())
 				if (inventory.gold > this.getUpgradePrice()) {
 					inventory.gold = inventory.gold - this.getUpgradePrice()
 					this.level++;

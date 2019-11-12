@@ -51,7 +51,7 @@ export default class Npc {
 								},
 					items : this.items
 				})
-				for (var i = 0; i < animalSettings.amount; i++) {
+				for (i = 0; i < animalSettings.amount; i++) {
 					animal.inventory.add(this.items.randomFood(level))
 
 				}

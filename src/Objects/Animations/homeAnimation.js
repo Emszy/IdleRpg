@@ -73,7 +73,7 @@ export default class HomeAnimation {
 		}
 
 
-		for (var i = 0; i < 5; i++) {
+		for (i = 0; i < 5; i++) {
 				this.draw(
 					this.img, 
 					this.resource.vertical.x,

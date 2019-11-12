@@ -47,7 +47,6 @@ export default class RigidBody {
 
 			newPath() {
 				let arr = []
-				let rand = new RigidBody()
 				for (let i = 0; i < 4; i++) {
 					let x = randomInt(0,50) * 5;
 					let y = randomInt(0,50) * 5;

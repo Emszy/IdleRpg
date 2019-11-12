@@ -154,7 +154,6 @@ export default class Inventory {
       for (let x = 0; x < this.max; x++) {
             if (this.spaces[x].id === item.id) {
               if (quantity > 0) {
-                console.log(this.spaces[x].quantity, quantity)
                return (this.spaces[x].quantity / quantity)
               }
             }

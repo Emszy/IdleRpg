@@ -1,6 +1,6 @@
 
 import Entity from '../Entity'
-import {playerImages, playerShirts, playerPants, playerHair, playerTools, playerWeapons, playerArmor} from "../Animations/images"
+import {playerImages, playerShirts, playerPants, playerHair} from "../Animations/images"
 import Animation from "../Animations"
 
 export default class Player {

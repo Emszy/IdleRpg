@@ -3,9 +3,6 @@ import {button} from "../../Helpers/functions"
 import Grid from "./grid"
 
 export default class MakeMenu {
-	constructor() {
-
-	}
 
 	actionButtons(player) {
 	   let keys =  Object.keys(player.status.actions)
@@ -267,14 +264,7 @@ export default class MakeMenu {
 	}
 
 	inventoryButtons() {
-    let  menuLabels =  [   
-                      "Items",
-                      "Armor",
-                      "Stats",
-                      "Magic",
-                  ]
-
-
+    
     let menuImages = [
                       userInterface.inventoryIcon,
                       userInterface.armorIcon,

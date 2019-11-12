@@ -1,4 +1,4 @@
-import { enemyImages, playerShirts, playerPants, playerHair, playerTools, playerWeapons, playerArmor } from "../Animations/images"
+import { enemyImages, playerShirts, playerPants, playerHair} from "../Animations/images"
 
 import Animation from "../../Objects/Animations"
 import {randomInt} from "../../Helpers/functions"

@@ -31,7 +31,7 @@ export default class Grid {
 		this.cell = new RigidBody(0, 0, cellWidth, cellHeight)
 		this.labelOffset = new RigidBody(labelOffsetX, labelOffsetY, labelSize, labelSize);
 		this.cellSpace = new RigidBody(0,0, xSpace, ySpace);
-		this.cellHalfSpace = new RigidBody(0,0, cellWidth, cellHalfHeight);
+		this.cellHalfSpace = new RigidBody(0,0, cellHalfWidth, cellHalfHeight);
 		this.cellCount = cellCount;
 		this.labels = labels
 		this.imgs = imgs;

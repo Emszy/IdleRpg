@@ -1,7 +1,3 @@
-import {playerImages, playerShirts, playerPants, playerHair, playerTools, playerWeapons, playerArmor} from "../../../Objects/Animations/images"
-import Animation from "../../../Objects/Animations"
-
-
 export default class Armor {
 
 	constructor(items, animation) {

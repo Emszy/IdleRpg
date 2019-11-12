@@ -105,7 +105,7 @@ export default class Draw {
           if (obj.label2.label.length) {
           let lines = obj.label2.label.split('\n');
 
-          for (var i = 0; i < lines.length; i++) {
+          for (i = 0; i < lines.length; i++) {
             ctx.strokeText(lines[i], obj.label2.body.pos.x, obj.label2.body.pos.y + i*15);
           } 
         }

@@ -1,6 +1,3 @@
-import RigidBody from '../../Helpers/rigidBody'
-// import Skills from '../../Helpers/Skills'
-import Inventory from "../../Objects/Inventory"
 import {trees, ore} from "../Animations/images";
 import ResourceAnimation from "../Animations/resourceAnimation"
 import {randomInt} from "../../Helpers/functions"
@@ -53,7 +50,7 @@ export default class Resources {
 								},
 					items : this.items
 				})
-				for (var i = 0; i < settings.amount; i++) {
+				for (i = 0; i < settings.amount; i++) {
 					resource.inventory.add(items[settings.itemIndex].copy())
 				}
 			arr.push(resource)
@@ -98,7 +95,7 @@ export default class Resources {
 
 			return ({
 				itemIndex : num,
-				miningLvl : level,
+				miningLvl : miningLvl,
 				woodCutLvl : 1,
 				huntingLvl : 1,
 				health : 100,

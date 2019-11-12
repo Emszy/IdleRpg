@@ -3,9 +3,6 @@ import Inventory from "../Inventory"
 import {settings} from "../../Helpers/settings"
 export default class ActionHandler {
 
-	constructor() {
-		
-	}
 
 	takeDamage(player, damage) {
 		if (damage === 0) {
@@ -73,29 +70,28 @@ export default class ActionHandler {
 
 	fight(player, target) {
 		let skill = false;
-		let speedBonus = false;
+		// let speedBonus = false;
 		let attackBonus = false;
-		let hit = false;
 		let damage = 0;
 		switch (target.status.type) {
           case "enemy" :
 		        skill = player.skills.attack;
-				speedBonus = player.armor.attackSpeedBonus;
+				// speedBonus = player.armor.attackSpeedBonus;
 				attackBonus = player.armor.attackBonus;
                 break;
           case "ore" :
           		skill = player.skills.mining;
-				speedBonus = player.armor.attackSpeedBonus;
+				// speedBonus = player.armor.attackSpeedBonus;
 				attackBonus = player.armor.miningBonus;
                 break;
           case "tree" : 
           		skill = player.skills.woodcutting;
-				speedBonus = player.armor.attackSpeedBonus;
+				// speedBonus = player.armor.attackSpeedBonus;
 				attackBonus = player.armor.woodCuttingBonus;
                 break;
           case "animal" : 
           		skill = player.skills.hunting;
-				speedBonus = player.armor.attackSpeedBonus;
+				// speedBonus = player.armor.attackSpeedBonus;
 				attackBonus = player.armor.attackBonus;
                 break;
           default : 

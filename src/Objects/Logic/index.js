@@ -9,9 +9,8 @@ import ClickHandler from "../clickhandler"
 import Resources from "../Resources"
 import Npc from "../Npc"
 
-import Entity from "../Entity"
 import ActionHandler from "../ActionHandler"
-import {randomInt, timer} from "../../Helpers/functions"
+import {timer} from "../../Helpers/functions"
 
 export default class Logic {
 
@@ -68,7 +67,7 @@ export default class Logic {
           this.player.target = this.map.middle;
         } else if (this.player.status.location === "farm") {
           this.player.target = this.map.end;
-        } else if (playerStatus.location == "wild" && playerStatus.currLevel > 0) {
+        } else if (playerStatus.location === "wild" && playerStatus.currLevel > 0) {
           this.player.target = this.map.start;
         }
     }
@@ -226,7 +225,7 @@ export default class Logic {
    }
 
    enemyFightOnWalkHome() {
-      if (this.player.status.location == "wild") {
+      if (this.player.status.location === "wild") {
           if (this.enemies.length) {
             this.enemyFight();
           }
@@ -247,7 +246,6 @@ export default class Logic {
    }
 
     goToBase() {
-      let playerStatus = this.player.status;
       this.moveThroughLevel()
       this.enemyFightOnWalkHome()
 
