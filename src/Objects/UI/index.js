@@ -18,8 +18,8 @@ export default class UI {
 		this.currentHomeMenu = "none";
     this.inventoryMenu = "inventory";
     this.magicMenu = makeMenu.magic();
-    this.buyMenu = makeMenu.vendor(items, "buyable");
-    this.craftMenu = makeMenu.vendor(items, "craftable");
+    this.buyMenu = makeMenu.vendor(items, "buyable", "Shop");
+    this.craftMenu = makeMenu.vendor(items, "craftable", "Craft");
 
     this.inventoryMenuButtons = makeMenu.inventoryButtons()
     this.inventorySpaces = makeMenu.inventorySpaces();
@@ -31,12 +31,13 @@ export default class UI {
     this.armorButtons = [];
 
     this.infoBox = {
-                  body : new RigidBody(150,150,50,50),
+                  body : new RigidBody(150,150,100,100),
                   draw : new Draw(),
                   infoItem: false,
-                  
+                  recipe : false,
+                  price : false,
                   timer : timer(500),
-
+                  titleFontSize: 10,
                   background : {
                     img: userInterface.itemInfoBackGround,
                     body : new RigidBody(150,150,50,50),
@@ -45,13 +46,17 @@ export default class UI {
 
                      setPos : function(x,y) {
                         this.body.setPos(x,y)
+                     },
+                     setSize : function(width, height) {
+                        this.body.size.x = width;
+                        this.body.size.y = height;
                      }
 
                   },
 
                   display : function(ctx) {
                       if (this.infoItem && this.timer.isDone()) {
-                        ctx.globalAlpha = 0.6;
+                        ctx.globalAlpha = 0.5;
                         this.draw.img(this.background.img, 
                                           this.background.body.pos.x-50,
                                           this.background.body.pos.y-50,
@@ -64,11 +69,55 @@ export default class UI {
                                           this.infoItem.info, 
                                           this.body.pos.x - 50, 
                                           this.body.pos.y - 40, 
+                                          this.titleFontSize,
+                                          ctx,
+                                          "white"
+                                        )
+                        if (this.price) {
+                          this.draw.text(
+                                          "price: " + this.price, 
+                                          this.body.pos.x - 50, 
+                                          this.body.pos.y - 20, 
+                                          10,
+                                          ctx,
+                                          "white"
+                                        )
+                        }
+                        if (this.recipe) {
+                          let x = -50;
+                          let imgY = -40;
+                          let y = -20
+                          for (var i = this.recipe.length - 1; i >= 0; i--) {
+                            
+                            this.draw.img(this.recipe[i].item.img, 
+                                          this.body.pos.x + x, 
+                                          this.body.pos.y + imgY, 
+                                          32,
+                                          32,
+                                          ctx,
+                                        );
+
+                            this.draw.text(
+                                          this.recipe[i].item.name, 
+                                          this.body.pos.x + x + 30, 
+                                          this.body.pos.y + y, 
                                           10,
                                           ctx,
                                           "white"
                                         )
 
+                             this.draw.text(
+                                          "Cost: " + this.recipe[i].quantity, 
+                                          this.body.pos.x + x + 40, 
+                                          this.body.pos.y + y + 10, 
+                                          10,
+                                          ctx,
+                                          "red"
+                                        )
+                            y+= 40
+                            imgY += 40
+                          }
+                        }
                       }
                   },
 
@@ -144,36 +193,38 @@ export default class UI {
     let buySettings = this.getMenuConfig(this.buyMenu)
     let buyClick = buySettings.items.grid.click(mouse, canvas);
 
-
     let craftSettings = this.getMenuConfig(this.craftMenu)
     let craftClick = craftSettings.items.grid.click(mouse, canvas);
 
     this.infoBox.timer.reset();
     if(inventoryClick.click) {
+      this.infoBox.background.setSize(50,50)
+      this.infoBox.titleFontSize = 10;
       this.infoBox.infoItem = menus.player.inventory.spaces[inventoryClick.index];
     } else if (bankClick.click && this.currentHomeMenu === "bank") {
+      this.infoBox.background.setSize(50,50)
+      this.infoBox.titleFontSize = 10;
       this.infoBox.infoItem = menus.bank.inventory.spaces[bankClick.index];
     } else if (buyClick.click && this.currentHomeMenu === "buy") {
+      this.infoBox.background.setSize(80,50)
+      this.infoBox.titleFontSize = 10;
       this.infoBox.infoItem = buySettings.items.items[buyClick.index];
+      this.infoBox.price = buySettings.items.items[buyClick.index].price
     } else if (craftClick.click && this.currentHomeMenu === "craft") {
       this.infoBox.infoItem = craftSettings.items.items[craftClick.index];
+      this.infoBox.titleFontSize = 15;
+      this.infoBox.recipe = craftSettings.items.items[craftClick.index].recipe;
+      let height = this.infoBox.recipe.length * 50;
+      this.infoBox.background.setSize(100,height)
     } else {
       this.infoBox.infoItem = false
+      this.infoBox.recipe = false
+      this.infoBox.price = false
+
     }
 
   }
 
-
-
-
-  // setMenuInfoBox(mouse, canvas, inventory, grid) {
-  //   let click = grid.click(mouse, canvas);
-  //   if(click.click) {
-  //     this.infoBox.infoItem = inventory.spaces[click.index];
-  //   } else {
-  //     this.infoBox.infoItem = false;
-  //   }
-  // }
 
   drawInfoBox(ctx) {
         this.infoBox.background.setPos(this.mousePosition.x, this.mousePosition.y)
@@ -577,9 +628,10 @@ export default class UI {
         }
         let click = this.bankButtons.grid.click(mouse, canvas)
         if (click.click) {
-            if (click.index !== this.mouseSwapItem.bank.index && this.mouseSwapItem.bank.item) {
+            if (click.index + this.bankButtons.page !== this.mouseSwapItem.bank.index && this.mouseSwapItem.bank.item) {
               inventory.swap(this.mouseSwapItem.bank.index, click.index + this.bankButtons.page);
               this.mouseSwapItem.bank.swap = true;
+        console.log(this.mouseSwapItem.bank.item)
             } else {
               this.mouseSwapItem.bank.swap = false;
             }
@@ -689,6 +741,7 @@ export default class UI {
       settings.items.grid.drawGrid(ctx);
       settings.items.grid.drawItems(settings.imgs, ctx);
       settings.categories.drawControls(ctx);
+      this.draw.text(menu.name, menu.categoryGrid.backGround.x + 125, menu.categoryGrid.backGround.y + 25, 20, ctx)
 
   }
 
@@ -852,6 +905,7 @@ export default class UI {
   }
 
 	bankButtonClick(mouse, player, canvas) {
+    console.log(this.mouseSwapItem.bank.swap)
 		if (this.currentHomeMenu !== "bank" || this.mouseSwapItem.bank.swap === true) {
 			return false
 		}

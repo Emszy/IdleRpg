@@ -18,7 +18,7 @@ export default class ItemTemplate {
                recipe : info.recipe || false,
                animation : info.animation || false,
                img: info.img || false,
-               info: info.name || false,
+               info: info.name,
 
                setId(id) {
                   this.id = id;

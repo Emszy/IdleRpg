@@ -106,9 +106,6 @@ export default class Draw extends React.Component {
         const canvas = this.canvasRef.current;
         let player = this.logic.player
         this.logic.UI.updateMouse(e, canvas);
-        // this.logic.UI.setInfoBox(e, canvas, player.inventory, this.logic.UI.inventorySpaces);
-        // this.logic.UI.setInfoBox(e, canvas, player.home.bank.inventory, this.logic.UI.bankButtons.grid, this.logic.UI.bankButtons.page);
-
         if (player.status.location === "home") {
             this.logic.UI.setInfoBox(
                                       e, 
@@ -125,7 +122,7 @@ export default class Draw extends React.Component {
 
                                       }
                                     );
-          
+
         }
 
         let map = this.logic.map;
@@ -208,8 +205,7 @@ export default class Draw extends React.Component {
                       let player = this.logic.player
 
                       this.logic.UI.arrangeInventory(player.inventory, e, canvas)
-                      //multiplePages not working for some reason. Debug
-                      // this.logic.UI.arrangeBank(player.home.bank.inventory, e, canvas)
+                      this.logic.UI.arrangeBank(player.home.bank.inventory, e, canvas)
 
                     }
                   }
@@ -219,8 +215,7 @@ export default class Draw extends React.Component {
                       let player = this.logic.player
 
                       this.logic.UI.swapInventory(player.inventory, e, canvas)
-                      //multiplePages not working for some reason. Debug
-                      // this.logic.UI.swapBank(player.home.bank.inventory, e, canvas)
+                      this.logic.UI.swapBank(player.home.bank.inventory, e, canvas)
 
                     }
                   }

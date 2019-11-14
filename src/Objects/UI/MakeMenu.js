@@ -38,8 +38,9 @@ export default class MakeMenu {
 	   	return (actionButtons)
 	}
 	
-	vendor(items, menuType) {
+	vendor(items, menuType, name) {
 		let menu = {
+			name : name,
 			categoryGrid  : false,
 			subCategoryGrids : {},
 			currentCategory : items.categories[0].name,

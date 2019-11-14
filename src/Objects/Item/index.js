@@ -84,11 +84,13 @@ export default class Items {
 	}
 
 	none() {
-      let noItem = new ItemTemplate("None", 0, function(skill) {
-         return ("No Item to Use");
-      })
+      let noItem = new ItemTemplate({ 
+      			name: "None", 
+				use: function(skill) {
+				 	return ("No Item to Use");
+				}
+			})
       noItem.setId(-1);
-      noItem.bonus = 0;
       return (noItem);
    }
 
