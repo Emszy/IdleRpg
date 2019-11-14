@@ -4,137 +4,257 @@ import {playerArmor} from "../../../Animations/images"
 
 let BronzeArmor = [
 	{
-		info : new ItemTemplate("Helm (B)", 10000,  false,playerArmor.bronzeHelm,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Bronze Helm", 
+		price: 10000, 
+		animation: false,
+		img: playerArmor.bronzeHelm,
+		use : function(playerArmor) {
 			this.bonus = 12;
 			return playerArmor.addHelm(this);	
-		}, [{item: Bar[0].info, quantity: 30}])
+		}, 
+		recipe : [
+					{item: Bar[0].info, quantity: 30}
+				]
+		})
 	},
 
 	{
-		info : new ItemTemplate("Chest (B)", 15000, false,playerArmor.bronzeChest,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Bronze Chest", 
+		price: 15000, 
+		animation: false,
+		img: playerArmor.bronzeChest,
+		use : function(playerArmor) {
 			this.bonus = 18;
 			return playerArmor.addChest(this)
 
-		}, [{item: Bar[0].info, quantity: 50}])
+		}, 
+		recipe : [
+					{item: Bar[0].info, quantity: 50}
+				]
+		})
 	},
 	{
-		info : new ItemTemplate("Legs (B)", 13000, false,false,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Bronze Legs", 
+		price: 13000, 
+		animation: false,
+		img: false,
+		use : function(playerArmor) {
 			this.bonus = 16;
 			return playerArmor.addLegs(this)
 			
 
-		}, [{item: Bar[0].info, quantity: 40}])
+		}, 
+		recipe : [
+					{item: Bar[0].info, quantity: 40}
+				]
+		})
 	},
 	{
-		info : new ItemTemplate("Boots (B)", 9000, false,false,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Bronze Boots", 
+		price: 9000, 
+		animation: false,
+		img: false,
+		use : function(playerArmor) {
 			this.bonus = 10;
 			return playerArmor.addFeet(this);
 			
 
-		}, [{item: Bar[0].info, quantity: 20}])
+		}, 
+		recipe : [
+					{item: Bar[0].info, quantity: 20}
+				]
+		})
 	},
 	{
-		info : new ItemTemplate("Shield (B)", 13000, false,playerArmor.bronzeShield,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Bronze Shield", 
+		price: 13000, 
+		animation: false,
+		img: playerArmor.bronzeShield,
+		use : function(playerArmor) {
 			this.bonus = 19;
 			return playerArmor.addShield(this);
 			
 
-		}, [{item: Bar[0].info, quantity: 30}])
+		}, 
+		recipe : [
+					{item: Bar[0].info, quantity: 30}
+				]
+		})
 	},
 
 ]
 
 let IronArmor = [
 	{
-		info : new ItemTemplate("Helm (I)", 50000, false,playerArmor.ironHelm,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Iron Helm", 
+		price: 50000, 
+		animation: false,
+		img: playerArmor.ironHelm,
+		use : function(playerArmor) {
 			this.bonus = 27;
 			return playerArmor.addHelm(this)
 
-		}, [{item: Bar[1].info, quantity: 50}])
+		}, 
+		recipe : [
+					{item: Bar[1].info, quantity: 50}
+				]
+		})
 	},
 
 	{
-		info : new ItemTemplate("Chest (I)", 65000, false,playerArmor.ironChest,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Iron Chest", 
+		price: 65000, 
+		animation: false,
+		img: playerArmor.ironChest,
+		use : function(playerArmor) {
 			this.bonus = 34;
 			return playerArmor.addChest(this)
 
-		}, [{item: Bar[1].info, quantity: 80}])
+		}, 
+		recipe : [
+					{item: Bar[1].info, quantity: 80}
+				]
+		})
 	},
 	{
-		info : new ItemTemplate("Legs (I)", 60000, false,false,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Iron Legs", 
+		price: 60000, 
+		animation: false,
+		img: false,
+		use : function(playerArmor) {
 			this.bonus = 32;
 			return playerArmor.addLegs(this)
 
-		}, [{item: Bar[1].info, quantity: 70}])
+		}, 
+		recipe : [
+					{item: Bar[1].info, quantity: 70}
+				]
+		})
 	},
 	{
-		info : new ItemTemplate("Boots (I)", 40000, false,false,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Iron Boots", 
+		price: 40000, 
+		animation: false,
+		img: false,
+		use : function(playerArmor) {
 			this.bonus = 25;
 			return playerArmor.addFeet(this);
 
-		}, [{item: Bar[1].info, quantity: 40}])
+		}, 
+		recipe : [
+					{item: Bar[1].info, quantity: 40}
+				]
+		})
 	},
 	{
-		info : new ItemTemplate("Shield (I)", 60000, false,playerArmor.ironShield,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Iron Shield", 
+		price: 60000, 
+		animation: false,
+		img: playerArmor.ironShield,
+		use : function(playerArmor) {
 			this.bonus = 29;
 			return playerArmor.addShield(this)
 
-		}, [{item: Bar[1].info, quantity: 60}])
+		}, 
+		recipe : [
+					{item: Bar[1].info, quantity: 60}
+				]
+		})
 	},
 ]
 
 
 let GoldArmor = [
 	{
-		info : new ItemTemplate("Helm (G)", 100000, false,playerArmor.goldHelm,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Gold Helm", 
+		price: 100000, 
+		animation: false,
+		img: playerArmor.goldHelm,
+		use : function(playerArmor) {
 			this.bonus = 47;
 			return playerArmor.addHelm(this)
 
-		}, [{item: Bar[2].info, quantity: 50}])
+		}, 
+		recipe : [
+					{item: Bar[2].info, quantity: 50}
+				]
+		})
 	},
 
 	{
-		info : new ItemTemplate("Chest (G)", 120000, false,playerArmor.goldChest,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Gold Chest", 
+		price: 120000, 
+		animation: false,
+		img: playerArmor.goldChest,
+		use : function(playerArmor) {
 			this.bonus = 56;
 			return playerArmor.addChest(this)
 
-		}, [{item: Bar[2].info, quantity: 80}])
+		}, 
+		recipe : [
+					{item: Bar[2].info, quantity: 80}
+				]
+		})
 	},
 	{
-		info : new ItemTemplate("Legs (G)", 110000, false,false,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Gold Legs", 
+		price: 110000, 
+		animation: false,
+		img: false,
+		use : function(playerArmor) {
 			this.bonus = 52;
 			return playerArmor.addLegs(this)
 
-		}, [{item: Bar[2].info, quantity: 70}])
+		}, 
+		recipe : [
+					{item: Bar[2].info, quantity: 70}
+				]
+		})
 	},
 	{
-		info : new ItemTemplate("Boots (G)", 90000, false,false,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Gold Boots", 
+		price: 90000, 
+		animation: false,
+		img: false,
+		use : function(playerArmor) {
 			this.bonus = 48;
 			return playerArmor.addFeet(this);
 
-		}, [{item: Bar[2].info, quantity: 40}])
+		}, 
+		recipe : [
+					{item: Bar[2].info, quantity: 40}
+				]
+		})
 	},
 	{
-		info : new ItemTemplate("Shield (G)", 112000, false,playerArmor.goldShield,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Gold Shield", 
+		price: 112000, 
+		animation: false,
+		img: playerArmor.goldShield,
+		use : function(playerArmor) {
 			this.bonus = 51;
 			return playerArmor.addShield(this)
 
-		}, [{item: Bar[2].info, quantity: 60}])
+		}, 
+		recipe : [
+					{item: Bar[2].info, quantity: 60}
+				]
+		})
 	},
 
 ]
@@ -142,85 +262,165 @@ let GoldArmor = [
 
 let PlatinumArmor = [
 	{
-		info : new ItemTemplate("Helm (P)", 200000, false, playerArmor.platinumHelm,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Platinum Helm", 
+		price: 200000, 
+		animation: false,
+		img: playerArmor.platinumHelm,
+		use : function(playerArmor) {
 			this.bonus = 68;
 			return playerArmor.addHelm(this)
 
-		}, [{item: Bar[3].info, quantity: 50}])
+		}, 
+		recipe : [
+					{item: Bar[3].info, quantity: 50}
+				]
+		})
 	},
 
 	{
-		info : new ItemTemplate("Chest (P)", 250000, false,playerArmor.platinumChest,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Platinum Chest", 
+		price: 250000, 
+		animation: false,
+		img: playerArmor.platinumChest,
+		use : function(playerArmor) {
 			this.bonus = 75;
 			return playerArmor.addChest(this)
 
-		}, [{item: Bar[3].info, quantity: 80}])
+		}, 
+		recipe : [
+					{item: Bar[3].info, quantity: 80}
+				]
+		})
 	},
 	{
-		info : new ItemTemplate("Legs (P)", 225000, false,false,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Platinum Legs", 
+		price: 225000, 
+		animation: false,
+		img: false,
+		use : function(playerArmor) {
 			this.bonus = 72;
 			return playerArmor.addLegs(this)
 
-		}, [{item: Bar[3].info, quantity: 70}])
+		}, 
+		recipe : [
+					{item: Bar[3].info, quantity: 70}
+				]
+		})
 	},
 	{
-		info : new ItemTemplate("Boots (P)", 190000, false,false,
-		function(playerArmor) {
+		info : new ItemTemplate({
+		name: "Platinum Boots", 
+		price: 190000, 
+		animation: false,
+		img: false,
+		use : function(playerArmor) {
 			this.bonus = 69;
 			return playerArmor.addFeet(this);
 
-		}, [{item: Bar[3].info, quantity: 40}])
+		}, 
+		recipe : [
+					{item: Bar[3].info, quantity: 40}
+				]
+		})
 	},
 	{
-		info : new ItemTemplate("Shield (P)", 230000, false,playerArmor.platinumShield,
-		function(playerArmor) {
-			this.bonus = 70;
-			return playerArmor.addShield(this)
+		info : new ItemTemplate({
+			name: "Platinum Shield", 
+			price: 230000, 
+			animation: false,
+			img: playerArmor.platinumShield,
+			use : function(playerArmor) {
+				this.bonus = 70;
+				return playerArmor.addShield(this)
 
-		}, [{item: Bar[3].info, quantity: 60}])
+			}, 
+			recipe : [
+						{item: Bar[3].info, quantity: 60}
+					]
+			})
 	},
 
 ]
 
 let DiamondArmor = [
 	{
-		info : new ItemTemplate("Helm (D)", 500000, false, playerArmor.diamondHelm,
-		function(playerArmor) {
-			this.bonus = 88;
-			return playerArmor.addHelm(this)
-		}, [{item: Bar[4].info, quantity: 100}])
+		info : new ItemTemplate({
+			name: "Diamond Helm", 
+			price: 500000, 
+			animation: false,
+			img: playerArmor.diamondHelm,
+			use : function(playerArmor) {
+				this.bonus = 88;
+				return playerArmor.addHelm(this)
+			}, 
+			recipe : [
+						{item: Bar[4].info, quantity: 100}
+					]
+			})
 	},
 
 	{
-		info : new ItemTemplate("Chest (D)", 750000, false, playerArmor.diamondChest,
-		function(playerArmor) {
-			this.bonus = 95;
-			return playerArmor.addChest(this)
-		}, [{item: Bar[4].info, quantity: 150}])
+		info : new ItemTemplate({
+			name: "Diamond Chest", 
+			price: 750000, 
+			animation: false,
+			img: playerArmor.diamondChest,
+			use : function(playerArmor) {
+				this.bonus = 95;
+				return playerArmor.addChest(this)
+			}, 
+			recipe : [
+						{item: Bar[4].info, quantity: 150}
+					]
+		})
 	},
 	{
-		info : new ItemTemplate("Legs (D)", 600000, false,false,
-		function(playerArmor) {
-			this.bonus = 91;
-			return playerArmor.addLegs(this)
-		}, [{item: Bar[4].info, quantity: 130}])
+		info : new ItemTemplate({
+			name: "Diamond Legs", 
+			price: 600000, 
+			animation: false,
+			img: false,
+			use : function(playerArmor) {
+				this.bonus = 91;
+				return playerArmor.addLegs(this)
+			}, 
+			recipe : [
+						{item: Bar[4].info, quantity: 130}
+					]
+		})
 	},
 	{
-		info : new ItemTemplate("Boots (D)", 450000, false,false,
-		function(playerArmor) {
-			this.bonus = 86;
-			return playerArmor.addFeet(this);
-		}, [{item: Bar[4].info, quantity: 80}])
+		info : new ItemTemplate({
+			name: "Diamond Boots", 
+			price: 450000, 
+			animation: false,
+			img: false,
+			use : function(playerArmor) {
+				this.bonus = 86;
+				return playerArmor.addFeet(this);
+			}, 
+			recipe : [
+						{item: Bar[4].info, quantity: 80}
+					]
+		})
 	},
 	{
-		info : new ItemTemplate("Shield (D)", 610000, false, playerArmor.diamondShield,
-		function(playerArmor) {
-			this.bonus = 90;
-			return playerArmor.addShield(this)
-		}, [{item: Bar[4].info, quantity: 120}])
+		info : new ItemTemplate({
+			name: "Diamond Shield", 
+			price: 610000, 
+			animation: false,
+			img: playerArmor.diamondShield,
+			use : function(playerArmor) {
+				this.bonus = 90;
+				return playerArmor.addShield(this)
+			}, 
+			recipe : [
+						{item: Bar[4].info, quantity: 120}
+					]
+		})
 	},
 
 ]

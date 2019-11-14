@@ -1,24 +1,24 @@
 import RigidBody from '../../../Helpers/rigidBody'
 
-
 export default class ItemTemplate {
-      constructor(name, price, animation, img, use, recipe = []) {
+   constructor(info) {
          return (
             {
-               name: name,
+               name: info.name,
                body: new RigidBody(0, 0, 20 ,40),
                id: 0,
                quantity: 1,
                maxStack: 99,
-               bonus : 0,
-               speed : 0,
-               price: price,
+               bonus : info.bonus || 0,
+               speed : info.speed || 0,
+               price: info.price || 0,
                wearable: false,
                magic: false,
-               use : use,
-               recipe : recipe,
-               animation : animation,
-               img: img,
+               use : info.use,
+               recipe : info.recipe || false,
+               animation : info.animation || false,
+               img: info.img || false,
+               info: info.name || false,
 
                setId(id) {
                   this.id = id;
@@ -68,11 +68,11 @@ export default class ItemTemplate {
                      setSize : this.setSize,
                      isWearable : this.isWearable,
                      setVelocity : this.setVelocity,
+                     info : this.info,
                      copy : this.copy
                   })
                }
             }
          )
       }
- 
    }

@@ -11,12 +11,12 @@ export default class Resources {
 
 	newResource(level, items, resourceFunc) {
 		let arr = [];
-		for (var i = 0; i < randomInt(1,4); i++) {
+		for (var i = 0; i < randomInt(1,5); i++) {
 				let settings = resourceFunc(level);
 				let resource = new Entity({
 					name : items[settings.itemIndex].name,
-					x : randomInt(0, 450),
-					y : randomInt(0, 450),
+					x : randomInt(0, 250),
+					y : randomInt(0, 250),
 					width : settings.width,
 					height : settings.height,
 					startingGold : 0,

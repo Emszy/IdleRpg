@@ -154,6 +154,9 @@ import icons from "../../assets/images/spriteSheets/UI/icons.png"
 import bankBackGround from "../../assets/images/spriteSheets/UI/bankBackGround.png"
 import itemBorder from "../../assets/images/spriteSheets/UI/itemBorder.png"
 
+import itemInfoBackGround from "../../assets/images/spriteSheets/UI/itemInfoBackGround.png"
+
+
 import actionButtonBackGround from "../../assets/images/spriteSheets/UI/actionButtonBackGround.png"
 
 import healthBar from "../../assets/images/spriteSheets/UI/healthBars/healthBar.png"
@@ -1666,6 +1669,11 @@ let userInterface = {
 
 	actionButtonBackGround : {
 		img : singleImage(actionButtonBackGround),
+		pos : mapTile(0, 0, 431, 196) 
+	},
+
+	itemInfoBackGround : {
+		img : singleImage(itemInfoBackGround),
 		pos : mapTile(0, 0, 431, 196) 
 	},
 

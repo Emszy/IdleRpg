@@ -6,41 +6,59 @@ import ResourceAnimation from "../../../Animations/resourceAnimation"
 
 let Ore = [
 	{
-		info : new ItemTemplate("Ore (T)", 0, false, itemImages.ore.tin,
-		function() {
-			return ({description: "Used to Craft Armor and Weapons", used: false});
+		info : new ItemTemplate({
+			name: "Ore (T)", 
+			img: itemImages.ore.tin,
+			use : function() {
+				return ({description: "Used to Craft Armor and Weapons", used: false});
+			}
 		})
 	},
 
 	{
-		info : new ItemTemplate("Ore (C)", 0, false, itemImages.ore.copper,
-		function() {
-			return ({description: "Used to Craft Armor and Weapons", used: false});
+		info : new ItemTemplate({
+			name: "Ore (C)", 
+			img: itemImages.ore.copper,
+			use : function() {
+				return ({description: "Used to Craft Armor and Weapons", used: false});
+			}
 		})
 	},
 
 	{
-		info : new ItemTemplate("Ore (I)", 0, false, itemImages.ore.iron,
-		function() {
-			return ({description: "Used to Craft Armor and Weapons", used: false});
+		info : new ItemTemplate({
+			name: "Ore (I)", 
+			img: itemImages.ore.iron,
+			use : function() {
+				return ({description: "Used to Craft Armor and Weapons", used: false});
+			}
 		})
 	},
 	{
-		info : new ItemTemplate("Ore (G)", 0, false, itemImages.ore.gold,
-		function() {
-			return ({description: "Used to Craft Armor and Weapons", used: false});
+		info : new ItemTemplate({
+			name: "Ore (G)", 
+			img: itemImages.ore.gold,
+			use : function() {
+				return ({description: "Used to Craft Armor and Weapons", used: false});
+			}
 		})
 	},
 	{
-		info : new ItemTemplate("Ore (P)", 0, false, itemImages.ore.platinum,
-		function() {
-			return ({description: "Used to Craft Armor and Weapons", used: false});
+		info : new ItemTemplate({
+			name: "Ore (P)", 
+			img: itemImages.ore.platinum,
+			use : function() {
+				return ({description: "Used to Craft Armor and Weapons", used: false});
+			}
 		})
 	},
 	{
-		info : new ItemTemplate("Diamond", 0, false, itemImages.ore.diamond,
-		function() {
-			return ({description: "Used To Craft The Best Armor and Weapons", used: false});
+		info : new ItemTemplate({
+			name: "Diamond", 
+			img: itemImages.ore.diamond,
+			use : function() {
+				return ({description: "Used To Craft The Best Armor and Weapons", used: false});
+			}
 		})
 	},
 
@@ -48,35 +66,55 @@ let Ore = [
 
 let Bar = [
 	{
-		info : new ItemTemplate("Bar (B)", 0, false, itemImages.bar.bronze,
-		function() {
-			return ({description: "Used To Create Armor and Weapons", used: false});
-		},[{item: Ore[0].info, quantity:5}, {item: Ore[1].info, quantity:5}])
+		info : new ItemTemplate({
+			name: "Bar (B)", 
+			img: itemImages.bar.bronze,
+			use : function() {
+				return ({description: "Used To Create Armor and Weapons", used: false});
+			},
+			recipe: [{item: Ore[0].info, quantity:5}, {item: Ore[1].info, quantity:5}]
+		})
 	},
 	{
-		info : new ItemTemplate("Bar (I)", 0, false, itemImages.bar.iron,
-		function() {
-			return ({description: "Used To Create Armor and Weapons", used: false});
-		},[{item: Ore[2].info, quantity: 10}])
+		info : new ItemTemplate({
+			name: "Bar (I)", 
+			img: itemImages.bar.iron,
+			use : function() {
+				return ({description: "Used To Create Armor and Weapons", used: false});
+			},
+			recipe: [{item: Ore[2].info, quantity: 10}]
+		})
 	},
 
 	{
-		info : new ItemTemplate("Bar (G)", 0, false, itemImages.bar.gold,
-		function() {
-			return ({description: "Used To Create Armor and Weapons", used: false});
-		},[{item: Ore[3].info, quantity: 10}])
+		info : new ItemTemplate({
+			name: "Bar (G)", 
+			img: itemImages.bar.gold,
+			use : function() {
+				return ({description: "Used To Create Armor and Weapons", used: false});
+			},
+			recipe: [{item: Ore[3].info, quantity: 10}]
+		})
 	},
 	{
-		info : new ItemTemplate("Bar (P)", 0, false, itemImages.bar.platinum,
-		function() {
-			return ({description: "Used To Create Armor and Weapons", used: false});
-		},[{item: Ore[4].info, quantity: 10}])
+		info : new ItemTemplate({
+			name: "Bar (P)", 
+			img: itemImages.bar.platinum,
+			use : function() {
+				return ({description: "Used To Create Armor and Weapons", used: false});
+			},
+			recipe: [{item: Ore[4].info, quantity: 10}]
+		})
 	},
 	{
-		info : new ItemTemplate("Diamond Brick", 0, false, itemImages.bar.diamond,
-		function() {
-			return ({description: "Used To Craft Diamond Armor", used: false});
-		},[{item: Ore[5].info, quantity:10}])
+		info : new ItemTemplate({
+			name: "Diamond Brick", 
+			img: itemImages.bar.diamond,
+			use : function() {
+				return ({description: "Used To Craft Diamond Armor", used: false});
+			},
+			recipe: [{item: Ore[5].info, quantity:10}]
+		})
 	},
 
 ]
@@ -84,34 +122,49 @@ let Bar = [
 
 let Wood = [
 	{
-		info : new ItemTemplate("Log (O)", 0, false, itemImages.wood.oak,
-		function() {
-            return ({description: "Used to Fletch weapon Handles", used: false});
+		info : new ItemTemplate({
+			name: "Log (O)", 
+			img: itemImages.wood.oak,
+			use : function() {
+            	return ({description: "Used to Fletch weapon Handles", used: false});
+			}
 		})
 	},
 
 	{
-		info : new ItemTemplate("Log (M)", 0, false, itemImages.wood.maple,
-		function() {
-            return ({description: "Used to Fletch weapon Handles", used: false});
+		info : new ItemTemplate({
+			name: "Log (M)", 
+			img: itemImages.wood.maple,
+			use : function() {
+            	return ({description: "Used to Fletch weapon Handles", used: false});
+			}
 		})
 	},
 	{
-		info : new ItemTemplate("Log (MO)", 0, false, itemImages.wood.mahogony,
-		function() {
-            return ({description: "Used to Fletch weapon Handles", used: false});
+		info : new ItemTemplate({
+			name: "Log (MO)", 
+			img: itemImages.wood.mahogony,
+			use : function() {
+            	return ({description: "Used to Fletch weapon Handles", used: false});
+			}
 		})
 	},
 	{
-		info : new ItemTemplate("Log (MA)", 0, false, itemImages.wood.magic,
-		function() {
-            return ({description: "Used to Fletch weapon Handles", used: false});
+		info : new ItemTemplate({
+			name: "Log (MA)", 
+			img: itemImages.wood.magic,
+			use : function() {
+            	return ({description: "Used to Fletch weapon Handles", used: false});
+			}
 		})
 	},
 	{
-		info : new ItemTemplate("Log (SU)", 0, false, itemImages.wood.super,
-		function() {
-            return ({description: "Used to Fletch weapon Handles", used: false});
+		info : new ItemTemplate({
+			name: "Log (SU)", 
+			img: itemImages.wood.super,
+			use : function() {
+            	return ({description: "Used to Fletch weapon Handles", used: false});
+			}
 		})
 	},
 
@@ -119,54 +172,78 @@ let Wood = [
 
 let Seeds = [
 	{
-		info : new ItemTemplate("Seeds (C)", 0, new ResourceAnimation(farmPlants.carrot), itemImages.seed.carrot,
-		function() {
-			let item = plants[0].info.copy();
-			item.quantity = 10;
-            return ({item : item, description: "Used For Farming carrots", used: false});
+		info : new ItemTemplate({
+			name: "Seeds (C)", 
+			animation: new ResourceAnimation(farmPlants.carrot), 
+			img: itemImages.seed.carrot,
+			use : function() {
+				let item = plants[0].info.copy();
+				item.quantity = 10;
+            	return ({item : item, description: "Used For Farming carrots", used: false});
+			}
 		})
 	},
 
 	{
-		info : new ItemTemplate("Seeds (P)", 0, new ResourceAnimation(farmPlants.potatoe), itemImages.seed.potato,
-		function() {
-			let item = plants[1].info.copy();
-			item.quantity = 10;
+		info : new ItemTemplate({
+			name: "Seeds (P)", 
+			animation: new ResourceAnimation(farmPlants.potatoe), 
+			img: itemImages.seed.potato,
+			use : function() {
+				let item = plants[1].info.copy();
+				item.quantity = 	10;	
 
             return ({item : item, description: "Used For Farming Potatoes", used: false});
+		}
 		})
 	},
 	{
-		info : new ItemTemplate("Seeds (CO)", 0, new ResourceAnimation(farmPlants.corn), itemImages.seed.corn,
-		function() {
-			let item = plants[2].info.copy();
-			item.quantity = 10;
-            return ({item : item, description: "Used For Farming Corn", used: false});
+		info : new ItemTemplate({
+			name: "Seeds (CO)", 
+			animation: new ResourceAnimation(farmPlants.corn), 
+			img: itemImages.seed.corn,
+			use : function() {
+				let item = plants[2].info.copy();
+				item.quantity = 10;
+            	return ({item : item, description: "Used For Farming Corn", used: false});
+			}
 		})
 	},
 	{
-		info : new ItemTemplate("Seeds (CU)", 0, new ResourceAnimation(farmPlants.cucumber), itemImages.seed.cucumber,
-		function() {
-			let item = plants[3].info.copy();
-			item.quantity = 10;
-            return ({item : item, description: "Used For Farming Cucumber", used: false});
+		info : new ItemTemplate({
+			name: "Seeds (CU)", 
+			animation: new ResourceAnimation(farmPlants.cucumber), 
+			img: itemImages.seed.cucumber,
+			use : function() {
+				let item = plants[3].info.copy();
+				item.quantity = 10;
+            	return ({item : item, description: "Used For Farming Cucumber", used: false});
+			}
 		})
 	},
 
 	{
-		info : new ItemTemplate("Seeds (T)", 0, new ResourceAnimation(farmPlants.tomato), itemImages.seed.tomato,
-		function() {
-			let item = plants[4].info.copy();
-			item.quantity = 10;
-            return ({item : item, description: "Used For Farming Tomatoes", used: false});
+		info : new ItemTemplate({
+			name: "Seeds (T)", 
+			animation: new ResourceAnimation(farmPlants.tomato), 
+			img: itemImages.seed.tomato,
+			use : function() {
+				let item = plants[4].info.copy();
+				item.quantity = 10;
+            	return ({item : item, description: "Used For Farming Tomatoes", used: false});
+			}
 		})
 	},
 	{
-		info : new ItemTemplate("Seeds (A)", 0, new ResourceAnimation(farmPlants.artichoke), itemImages.seed.artichoke,
-		function() {
-			let item = plants[5].info.copy();
-			item.quantity = 10;
-            return ({item : item, description: "Used For Farming Artichoke", used: false});
+		info : new ItemTemplate({
+			name: "Seeds (A)", 
+			animation: new ResourceAnimation(farmPlants.artichoke), 
+			img: itemImages.seed.artichoke,
+			use : function() {
+				let item = plants[5].info.copy();
+				item.quantity = 10;
+            	return ({item : item, description: "Used For Farming Artichoke", used: false});
+			}
 		})
 	},
 

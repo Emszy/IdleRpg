@@ -6,9 +6,9 @@ export default class Draw extends React.Component {
       super()
       
       this.canvasRef = React.createRef();
-      this.state = {
-        logic : new Logic()
-      }
+      
+        this.logic = new Logic()
+   
     }
 
     componentDidMount() {
@@ -28,25 +28,25 @@ export default class Draw extends React.Component {
 
 
     updateLogic() {
-      this.setState((prevState) => ({
-          logic: prevState.logic.play(),
-      }));   
+      
+          this.logic = this.logic.play()
+      
     }
 
     updateCanvas = () => {
 
-      if (this.state.logic) {
+      if (this.logic) {
         if (this.frameRateTimer.check()) {
           const canvas = this.canvasRef.current;
           const ctx = canvas.getContext('2d');
           ctx.clearRect(0,0, 480, 480);
           this.updateLogic();
           
-          let player = this.state.logic.player;
-          let enemies = this.state.logic.enemies;
-          let map = this.state.logic.map;
-          let merchant = this.state.logic.merchant;
-          let ui = this.state.logic.UI;
+          let player = this.logic.player;
+          let enemies = this.logic.enemies;
+          let map = this.logic.map;
+          let merchant = this.logic.merchant;
+          let ui = this.logic.UI;
 
           ui.drawMap(map, ctx);
           ui.drawHomeDesign(player, merchant, ctx)
@@ -59,15 +59,15 @@ export default class Draw extends React.Component {
               player: player,
               enemies: enemies,
               merchant: merchant,
-              animals: this.state.logic.animals,
-              trees: this.state.logic.trees,
-              ore: this.state.logic.ore,
+              animals: this.logic.animals,
+              trees: this.logic.trees,
+              ore: this.logic.ore,
 
           }, ctx)
-          // ui.drawPlayers(player, enemies, ctx);
-          ui.drawHome(player, this.state.logic.items, ctx);
+          ui.drawHome(player, this.logic.items, ctx);
           ui.drawMouseSwapItem("inventory", ctx)
           ui.drawMouseSwapItem("bank", ctx)
+          ui.drawInfoBox(ctx, player.inventory);
 
 
         }
@@ -78,9 +78,9 @@ export default class Draw extends React.Component {
   handleClick = (e) => {
         const canvas = this.canvasRef.current;
         
-        let player = this.state.logic.player
-        let merchant = this.state.logic.merchant
-        let ui = this.state.logic.UI;
+        let player = this.logic.player
+        let merchant = this.logic.merchant
+        let ui = this.logic.UI;
 
         ui.menuClick(e, canvas);
         ui.actionClick(e, player, canvas);
@@ -104,11 +104,33 @@ export default class Draw extends React.Component {
 
     handleMouseMove(e) {
         const canvas = this.canvasRef.current;
-        let player = this.state.logic.player
-        this.state.logic.UI.updateMouse(e, canvas);
-        let map = this.state.logic.map;
+        let player = this.logic.player
+        this.logic.UI.updateMouse(e, canvas);
+        // this.logic.UI.setInfoBox(e, canvas, player.inventory, this.logic.UI.inventorySpaces);
+        // this.logic.UI.setInfoBox(e, canvas, player.home.bank.inventory, this.logic.UI.bankButtons.grid, this.logic.UI.bankButtons.page);
+
+        if (player.status.location === "home") {
+            this.logic.UI.setInfoBox(
+                                      e, 
+                                      canvas, 
+                                      {
+                                        player: {
+                                                  inventory: player.inventory,
+                                                  grid : this.logic.UI.inventorySpaces,
+                                                },
+                                        bank : {
+                                                  inventory: player.home.bank.inventory,
+                                                  grid: this.logic.UI.bankButtons.grid
+                                        }
+
+                                      }
+                                    );
+          
+        }
+
+        let map = this.logic.map;
         if (player.status.currLevel > 0) {
-          this.state.logic.UI.mapInventoryClick(e, map.inventory[player.status.currLevel - 1], player ,canvas)
+          this.logic.UI.mapInventoryClick(e, map.inventory[player.status.currLevel - 1], player ,canvas)
         }
     }
 
@@ -124,35 +146,35 @@ export default class Draw extends React.Component {
                     tabIndex="0" 
                     onKeyPress={ (e) => {
                         if (e.key === 1) {
-                          this.state.logic.player.skills.attack.levelUpBy(2000);
-                          this.state.logic.player.skills.attack.equalize();
+                          this.logic.player.skills.attack.levelUpBy(2000);
+                          this.logic.player.skills.attack.equalize();
 
                         }
 
                         if (e.key === 2) {
-                          this.state.logic.player.skills.attackSpeed.levelUpBy(2000);
-                          this.state.logic.player.skills.attackSpeed.equalize();
+                          this.logic.player.skills.attackSpeed.levelUpBy(2000);
+                          this.logic.player.skills.attackSpeed.equalize();
 
                         }
 
                         if (e.key === 3) {
-                          this.state.logic.player.skills.health.levelUpBy(2000);
-                          this.state.logic.player.skills.health.equalize();
+                          this.logic.player.skills.health.levelUpBy(2000);
+                          this.logic.player.skills.health.equalize();
 
                         }
                          if (e.key === 4) {
-                          this.state.logic.player.skills.mining.levelUpBy(2000);
-                          this.state.logic.player.skills.mining.equalize();
+                          this.logic.player.skills.mining.levelUpBy(2000);
+                          this.logic.player.skills.mining.equalize();
 
                         }
                         if (e.key === 5) {
-                          this.state.logic.player.skills.woodcutting.levelUpBy(2000);
-                          this.state.logic.player.skills.woodcutting.equalize();
+                          this.logic.player.skills.woodcutting.levelUpBy(2000);
+                          this.logic.player.skills.woodcutting.equalize();
                         }
 
                         if (e.key === 6) {
-                          this.state.logic.player.skills.hunting.levelUpBy(2000);
-                          this.state.logic.player.skills.hunting.equalize();
+                          this.logic.player.skills.hunting.levelUpBy(2000);
+                          this.logic.player.skills.hunting.equalize();
                         }
                       } 
                     }
@@ -160,18 +182,17 @@ export default class Draw extends React.Component {
                     onContextMenu = {(e) => {
                       e.preventDefault()
                       const canvas = this.canvasRef.current;
-                      let player = this.state.logic.player
+                      let player = this.logic.player
 
                       
                       if (player.status.destination === "home" && player.status.currLevel === 0) {
-                        this.state.logic.UI.doubleClickHandler(player, e, canvas);
+                        this.logic.UI.doubleClickHandler(player, e, canvas);
 
                       }
 
                     }
                   }
                     onMouseMove = {(e) => {
-
                       this.handleMouseMove(e)
                     }
                   }
@@ -184,20 +205,22 @@ export default class Draw extends React.Component {
 
                   onMouseDown = {(e) => {
                       const canvas = this.canvasRef.current;
-                      let player = this.state.logic.player
+                      let player = this.logic.player
 
-                      this.state.logic.UI.arrangeInventory(player.inventory, e, canvas)
-                      this.state.logic.UI.arrangeBank(player.home.bank.inventory, e, canvas)
+                      this.logic.UI.arrangeInventory(player.inventory, e, canvas)
+                      //multiplePages not working for some reason. Debug
+                      // this.logic.UI.arrangeBank(player.home.bank.inventory, e, canvas)
 
                     }
                   }
 
                   onMouseUp = {(e) => {
                       const canvas = this.canvasRef.current;
-                      let player = this.state.logic.player
+                      let player = this.logic.player
 
-                      this.state.logic.UI.swapInventory(player.inventory, e, canvas)
-                      this.state.logic.UI.swapBank(player.home.bank.inventory, e, canvas)
+                      this.logic.UI.swapInventory(player.inventory, e, canvas)
+                      //multiplePages not working for some reason. Debug
+                      // this.logic.UI.swapBank(player.home.bank.inventory, e, canvas)
 
                     }
                   }

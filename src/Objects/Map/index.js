@@ -22,7 +22,7 @@ export default class MapLogic {
           name: "middle",
           body: new RigidBody(5 * 32, 7 * 32, 1, 1)
         }
-
+    this.drawUpdate = false;
     this.inventory = [];
     this.items = items;
     this.inventory.push(new Inventory(this.items, 250))
@@ -127,6 +127,8 @@ export default class MapLogic {
 	}
 
   create_layer(terrain, type) {
+    this.drawUpdate = true
+    // console.log(this.drawUpdate)
     let tiles = []
           let layerAmount = randomInt(5, 10);
           for (let x = 0; x < layerAmount; x++) {

@@ -29,6 +29,15 @@ function timer (time) {
 				this.expiration = newTime + this.time;
 			},
 
+			isDone() {
+				let date = new Date();
+				let newTime = date.getTime()
+				if (newTime > this.expiration) {
+					return (true)
+				}
+				return false;
+			},
+
 			check : function() {
 				let date = new Date();
 				let newTime = date.getTime()

@@ -2,7 +2,7 @@ import RigidBody from "../../Helpers/rigidBody"
 import Draw from "./draw"
 import DrawEntity from "./DrawEntity"
 import MakeMenu from "./MakeMenu"
-
+import {timer} from "../../Helpers/functions"
 import ClickHandler from "../clickhandler"
 import {userInterface} from "../../Objects/Animations/images"
 
@@ -30,6 +30,53 @@ export default class UI {
 		
     this.armorButtons = [];
 
+    this.infoBox = {
+                  body : new RigidBody(150,150,50,50),
+                  draw : new Draw(),
+                  infoItem: false,
+                  
+                  timer : timer(500),
+
+                  background : {
+                    img: userInterface.itemInfoBackGround,
+                    body : new RigidBody(150,150,50,50),
+                    width : userInterface.itemInfoBackGround.pos.width,
+                    height : userInterface.itemInfoBackGround.pos.height,
+
+                     setPos : function(x,y) {
+                        this.body.setPos(x,y)
+                     }
+
+                  },
+
+                  display : function(ctx) {
+                      if (this.infoItem && this.timer.isDone()) {
+                        ctx.globalAlpha = 0.6;
+                        this.draw.img(this.background.img, 
+                                          this.background.body.pos.x-50,
+                                          this.background.body.pos.y-50,
+                                          this.background.body.size.x,
+                                          this.background.body.size.y,
+                                          ctx,
+                                        );
+                        ctx.globalAlpha = 1
+                        this.draw.text(
+                                          this.infoItem.info, 
+                                          this.body.pos.x - 50, 
+                                          this.body.pos.y - 40, 
+                                          10,
+                                          ctx,
+                                          "white"
+                                        )
+
+                      }
+                  },
+
+                  setPos : function(x,y) {
+                    this.body.setPos(x,y)
+                  }
+    }
+
     this.mouseSwapItem = {
                       inventory : {
                               swap : false,
@@ -48,6 +95,7 @@ export default class UI {
                   x: false,
                   y: false,
     }
+
     this.farmButtons = {
         spaces : [],
         controls: [],
@@ -87,6 +135,52 @@ export default class UI {
     this.makeFarmButtons(player);
 
 	}
+
+  setInfoBox(mouse, canvas, menus) {
+    
+    let inventoryClick = menus.player.grid.click(mouse, canvas);
+    let bankClick = menus.bank.grid.click(mouse, canvas);
+    
+    let buySettings = this.getMenuConfig(this.buyMenu)
+    let buyClick = buySettings.items.grid.click(mouse, canvas);
+
+
+    let craftSettings = this.getMenuConfig(this.craftMenu)
+    let craftClick = craftSettings.items.grid.click(mouse, canvas);
+
+    this.infoBox.timer.reset();
+    if(inventoryClick.click) {
+      this.infoBox.infoItem = menus.player.inventory.spaces[inventoryClick.index];
+    } else if (bankClick.click && this.currentHomeMenu === "bank") {
+      this.infoBox.infoItem = menus.bank.inventory.spaces[bankClick.index];
+    } else if (buyClick.click && this.currentHomeMenu === "buy") {
+      this.infoBox.infoItem = buySettings.items.items[buyClick.index];
+    } else if (craftClick.click && this.currentHomeMenu === "craft") {
+      this.infoBox.infoItem = craftSettings.items.items[craftClick.index];
+    } else {
+      this.infoBox.infoItem = false
+    }
+
+  }
+
+
+
+
+  // setMenuInfoBox(mouse, canvas, inventory, grid) {
+  //   let click = grid.click(mouse, canvas);
+  //   if(click.click) {
+  //     this.infoBox.infoItem = inventory.spaces[click.index];
+  //   } else {
+  //     this.infoBox.infoItem = false;
+  //   }
+  // }
+
+  drawInfoBox(ctx) {
+        this.infoBox.background.setPos(this.mousePosition.x, this.mousePosition.y)
+        this.infoBox.setPos(this.mousePosition.x, this.mousePosition.y)
+        this.infoBox.display(ctx);
+  }
+
 
   getMenuConfig(menu) {
             let subCategory = menu.subCategoryGrids[menu.currentCategory];
@@ -435,6 +529,7 @@ export default class UI {
    
 	}
 
+  
   arrangeInventory(inventory, mouse, canvas) {
     if (this.inventoryMenu !== "inventory") {
         return false
@@ -782,7 +877,7 @@ export default class UI {
         }
 
             let click = this.bankButtons.grid.click(mouse, canvas);
-
+            console.log(page)
             if (click.click)
             { 
       				if (player.inventory.add(player.home.bank.inventory.spaces[click.index + page])) {

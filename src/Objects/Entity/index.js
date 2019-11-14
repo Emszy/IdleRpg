@@ -13,6 +13,7 @@ export default class Entity {
 	constructor(settings) {
 		this.target = false;
 		this.name = settings.name;
+		this.info = "information for the person";
 		this.items = settings.items;
 		this.body = new RigidBody(settings.x, settings.y, settings.width, settings.height);
 		this.skills = new Skills(settings.skills);
@@ -23,6 +24,14 @@ export default class Entity {
 		this.magic = new Magic(settings.items);
 		this.status = new Status(settings.status);
 		this.range = new Range();
+
+		this.redrawHome = true;
+	}
+
+	homeDrawUpdate() {
+		if (this.status.currLevel === 0) {
+			this.redrawHome = true;
+		}
 	}
 
 	setLocation() {
@@ -94,6 +103,8 @@ export default class Entity {
 			this.status.highestLevel = this.status.currLevel;
 			map.addInventory();
 		}
+		this.homeDrawUpdate();
+
 	}
 
 	teleLevel(x, y, map) {		
@@ -105,11 +116,13 @@ export default class Entity {
 	prevLevel(x, y) {
 		this.body.setPos(x,y)
 		this.status.currLevel--;
+		this.homeDrawUpdate();
 	}
 
 	nextLevel(x, y) {
 		this.body.setPos(x,y)
 		this.status.currLevel++;
+		this.homeDrawUpdate();
 	}
 
 	display() {

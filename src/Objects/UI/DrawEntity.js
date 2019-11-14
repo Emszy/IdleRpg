@@ -9,11 +9,11 @@ export default class DrawEntity {
 	}
 
 	handler (objList, ctx) {
-		this.player(objList.player, ctx)
 		this.enemies(objList.enemies, ctx);
 		this.animals(objList.animals, ctx);
 		this.resources(objList.trees, ctx);
 		this.resources(objList.ore, ctx);
+		this.player(objList.player, ctx)
 
 		if (objList.player.status.currLevel === 0) {
 			this.character(objList.merchant, ctx)
