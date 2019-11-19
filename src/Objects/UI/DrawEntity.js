@@ -9,19 +9,29 @@ export default class DrawEntity {
 	}
 
 	handler (objList, ctx) {
-		this.enemies(objList.enemies, ctx);
-		this.animals(objList.animals, ctx);
-		this.resources(objList.trees, ctx);
-		this.resources(objList.ore, ctx);
-		this.player(objList.player, ctx)
+    if (objList.enemies) {
+		  this.enemies(objList.enemies, ctx);
+    }
+    if (objList.animals) {
+		  this.animals(objList.animals, ctx);
+    }
+    if (objList.trees) {
+		  this.resources(objList.trees, ctx);
+    }
+    if (objList.ore) {
+		  this.resources(objList.ore, ctx);
 
-		if (objList.player.status.currLevel === 0) {
+    }
+    if (objList.player) {
+		  this.player(objList.player, ctx)
+    }
+
+		if (objList.merchant && objList.player.status.currLevel === 0) {
 			this.character(objList.merchant, ctx)
 		}
 	}
 
 	animationAction(player, direction, ctx) {
-
 	    if (player.body.action === "fight") {
 	        player.armor.animation.fight(direction, player, ctx)
 	      } else if (player.body.action === "archery") {
@@ -33,9 +43,9 @@ export default class DrawEntity {
 	      } else if (player.body.action === "stop") {
 	        player.armor.animation.stop(direction, player, ctx)
 	      } else {
-			if (player.target && player.armor.animation.walk(direction, player, ctx)) {
-			    player.body.move_to(player.target.body.pos.x, player.target.body.pos.y)
-			}
+    			if (player.target && player.armor.animation.walk(direction, player, ctx)) {
+    			    player.body.move_to(player.target.body.pos.x, player.target.body.pos.y)
+    			}
 	      }
 	  }
 
@@ -79,7 +89,18 @@ export default class DrawEntity {
 
     for (var i = 0; i < player.range.projectiles.active.length; i++) {
       if (player.range.projectiles.active[i]) {
-          this.draw.fillRect(player.range.projectiles.active[i].projectile, "blue", ctx);
+          if(player.range.projectiles.active[i].img) {
+            this.draw.img(
+                          player.range.projectiles.active[i].img, 
+                          player.range.projectiles.active[i].projectile.body.pos.x,
+                          player.range.projectiles.active[i].projectile.body.pos.y,
+                          64,
+                          64, 
+                          ctx
+                          )
+          } else {
+            this.draw.fillRect(player.range.projectiles.active[i].projectile, "blue", ctx);
+          }
       }
     }
 
@@ -151,7 +172,7 @@ export default class DrawEntity {
       this.draw.img(userInterface.thirstBar, xOffset, 15, scaledThirst, 15, ctx);
 
       let scaledHunger = scale(player.skills.hunger.getCurrent(), 0, player.skills.hunger.get(), 0 , 50)
-	  this.draw.img(userInterface.hungerBar, xOffset, 30, scaledHunger, 15, ctx);
+	     this.draw.img(userInterface.hungerBar, xOffset, 30, scaledHunger, 15, ctx);
 
       this.draw.text("HP:", 0, 8, "8", ctx, "purple")
       this.draw.text("Thirst:", 0, 24, "8", ctx, "purple")

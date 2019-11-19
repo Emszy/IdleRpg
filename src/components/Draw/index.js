@@ -1,14 +1,22 @@
 import React from "react"
 import Logic from "../../Objects/Logic"
 import {timer} from "../../Helpers/functions"
+import GameStartScreen from "../../Objects/UI/gameStartScreen"
+
+// import RigidBody from "../../Helpers/rigidBody"
+
+// import ClickHandler from "../../Objects/clickhandler"
+
 export default class Draw extends React.Component {
 	 constructor() {
       super()
       
       this.canvasRef = React.createRef();
-      
-        this.logic = new Logic()
-   
+      this.gameStartScreen = new GameStartScreen();
+      this.logic = new Logic();
+      this.gameStart = false;
+      // this.clickHandler = new ClickHandler();
+      this.testTimer = timer(100);
     }
 
     componentDidMount() {
@@ -16,7 +24,6 @@ export default class Draw extends React.Component {
       this.frameRateTimer = timer(1000 / frameRate);
       document.getElementById("canvas").focus();
       document.getElementById("canvas").style.cursor = "initial";
-
 
       this.updateCanvas();
     }
@@ -34,19 +41,29 @@ export default class Draw extends React.Component {
     }
 
     updateCanvas = () => {
-
-      if (this.logic) {
-        if (this.frameRateTimer.check()) {
           const canvas = this.canvasRef.current;
           const ctx = canvas.getContext('2d');
+
+
+          let player = this.logic.player;
+          let ui = this.logic.UI;
+
+          if (!this.gameStart && this.testTimer.check() ) {
+            this.gameStartScreen.display(player, ctx);
+            ui.drawEntity.handler({
+                player: player,
+            }, ctx)
+          }
+
+
+      if (this.logic && this.gameStart) {
+        if (this.frameRateTimer.check()) {
           ctx.clearRect(0,0, 480, 480);
           this.updateLogic();
           
-          let player = this.logic.player;
           let enemies = this.logic.enemies;
           let map = this.logic.map;
           let merchant = this.logic.merchant;
-          let ui = this.logic.UI;
 
           ui.drawMap(map, ctx);
           ui.drawHomeDesign(player, merchant, ctx)
@@ -71,16 +88,35 @@ export default class Draw extends React.Component {
 
 
         }
-          this.rAF = requestAnimationFrame(this.updateCanvas);
       }
+          this.rAF = requestAnimationFrame(this.updateCanvas);
   }
 
   handleClick = (e) => {
         const canvas = this.canvasRef.current;
-        
+       
+
         let player = this.logic.player
+
+        if (!this.gameStart) {
+          this.gameStartScreen.clickHandler(player,e,canvas);          
+          this.gameStart = this.gameStartScreen.startGame;
+          
+          if (this.gameStart) {
+            this.gameStartScreen = null;
+          }
+          return false;
+        } 
+
         let merchant = this.logic.merchant
         let ui = this.logic.UI;
+
+          // fire arrow with mouse, might implement this as main way to shoot arrows; 
+
+          // let mouse = this.clickHandler.transformedCoordinate(e, canvas)
+          // mouse = {body: new RigidBody(mouse.x, mouse.y, 1,1)};
+          // player.range.shoot(player, mouse, 20);
+
 
         ui.menuClick(e, canvas);
         ui.actionClick(e, player, canvas);
@@ -88,7 +124,8 @@ export default class Draw extends React.Component {
           ui.inventoryClick(e, player, canvas);
         }
         ui.armorClick(e, player, canvas);
-        ui.magicClick(e, player, canvas)
+        ui.magicClick(e, player, canvas);
+
         if (player.status.destination === "home" && player.status.currLevel === 0) {
           ui.bankButtonClick(e, player, canvas);
           ui.homeButtonClick(e, player, merchant, canvas);
@@ -103,11 +140,16 @@ export default class Draw extends React.Component {
     }
 
     handleMouseMove(e) {
+
+        if (!this.gameStart) {
+          return false;
+        } 
+
         const canvas = this.canvasRef.current;
         let player = this.logic.player
         this.logic.UI.updateMouse(e, canvas);
         if (player.status.location === "home") {
-            this.logic.UI.setInfoBox(
+            this.logic.UI.setHomeInfoBox(
                                       e, 
                                       canvas, 
                                       {
@@ -118,9 +160,25 @@ export default class Draw extends React.Component {
                                         bank : {
                                                   inventory: player.home.bank.inventory,
                                                   grid: this.logic.UI.bankButtons.grid
-                                        }
+                                        },
+                                        merchant : this.logic.merchant,
 
-                                      }
+                                      }, 
+                                      player
+                                    );
+
+        }
+
+        if (player.status.location === "wild") {
+            this.logic.UI.setWildInfoBox(
+                                      e, 
+                                      canvas, 
+                                      {
+                                        enemies : this.logic.enemies,
+                                        ore : this.logic.ore,
+                                        trees : this.logic.trees,
+                                        animals : this.logic.animals,
+                                      }, 
                                     );
 
         }
@@ -142,37 +200,6 @@ export default class Draw extends React.Component {
 
                     tabIndex="0" 
                     onKeyPress={ (e) => {
-                        if (e.key === 1) {
-                          this.logic.player.skills.attack.levelUpBy(2000);
-                          this.logic.player.skills.attack.equalize();
-
-                        }
-
-                        if (e.key === 2) {
-                          this.logic.player.skills.attackSpeed.levelUpBy(2000);
-                          this.logic.player.skills.attackSpeed.equalize();
-
-                        }
-
-                        if (e.key === 3) {
-                          this.logic.player.skills.health.levelUpBy(2000);
-                          this.logic.player.skills.health.equalize();
-
-                        }
-                         if (e.key === 4) {
-                          this.logic.player.skills.mining.levelUpBy(2000);
-                          this.logic.player.skills.mining.equalize();
-
-                        }
-                        if (e.key === 5) {
-                          this.logic.player.skills.woodcutting.levelUpBy(2000);
-                          this.logic.player.skills.woodcutting.equalize();
-                        }
-
-                        if (e.key === 6) {
-                          this.logic.player.skills.hunting.levelUpBy(2000);
-                          this.logic.player.skills.hunting.equalize();
-                        }
                       } 
                     }
 

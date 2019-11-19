@@ -8,7 +8,7 @@ export default class RigidBody {
 		this.pos = new Vector2d(x,y);
 		this.size = new Vector2d(width, height);
 		this.collision = new Collision();
-		this.setVelocity(3,3);
+		this.setVelocity(5,5);
 		this.stop = false;
 		this.stopMining = true;
 		this.stopWoodCutting = true;
@@ -107,12 +107,12 @@ export default class RigidBody {
 		 	return (true);
 		}
 
-		if(this.pos.x < x) {
+		if(this.pos.x <= x) {
 			this.move_right()
 			this.currentDirection = "east"
 		}
 
-		if (this.pos.y < y) {
+		if (this.pos.y <= y) {
 			this.move_down()
 			this.currentDirection = "south"
 		}

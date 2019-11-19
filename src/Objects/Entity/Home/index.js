@@ -191,6 +191,7 @@ export default class Home {
 
 		let waterWell = {
 			items : items.returnItems(0,2),
+			info : "Click to \nCollect Water",
 			body : new RigidBody(230,60,70, 100),
 			level : 0,
 			time : 0,
@@ -257,6 +258,7 @@ export default class Home {
 		let inventory = new Inventory(items, 200);
 		let bank = {
 			body : new RigidBody(40,60,100, 50),
+			info: "Click For Bank",
 			animation : new HomeAnimation(mapAtlas.home.chest),
 			inventory : inventory
 		}
@@ -302,6 +304,7 @@ export default class Home {
 	makeBuyMenu(items) {
 		let buyMenu = {
 			body : new RigidBody(50,170,50, 100),
+			info : "Click Here To Craft Items",
 			items : items,
 			animation: new HomeAnimation(mapAtlas.home.craft)
 		}

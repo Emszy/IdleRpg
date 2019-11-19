@@ -4,15 +4,28 @@ export default class ClickHandler {
 
 	click(mouse, obj, canvas) {
 
+		var transformedClickX = mouse.pageX - canvas.offsetLeft;
+   		var transformedClickY = mouse.pageY - canvas.offsetTop;
+		let point = new RidgidBody(transformedClickX, transformedClickY, 1,1)
+		if (point.collide(obj.body)) {
+			return true
+		}
+		return false
+	}
+
+	clickArr(mouse, arr, canvas) {
+
 
 		var transformedClickX = mouse.pageX - canvas.offsetLeft;
    		var transformedClickY = mouse.pageY - canvas.offsetTop;
 		let point = new RidgidBody(transformedClickX, transformedClickY, 1,1)
 
-		if (point.collide(obj.body)) {
-			return true
+		for (var x = arr.length - 1; x >= 0; x--) {
+			if (point.collide(arr[x].body)) {
+				return ({click: true, index : x})
+			}
 		}
-		return false
+		return ({click: false, index : -1})
 	}
 
 	transformedCoordinate(mouse, canvas) {

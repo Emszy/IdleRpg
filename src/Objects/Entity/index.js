@@ -13,7 +13,7 @@ export default class Entity {
 	constructor(settings) {
 		this.target = false;
 		this.name = settings.name;
-		this.info = "information for the person";
+		this.info = settings.info || settings.name || "FRED";
 		this.items = settings.items;
 		this.body = new RigidBody(settings.x, settings.y, settings.width, settings.height);
 		this.skills = new Skills(settings.skills);
@@ -23,7 +23,7 @@ export default class Entity {
 		this.inventory.addGold(settings.startingGold);
 		this.magic = new Magic(settings.items);
 		this.status = new Status(settings.status);
-		this.range = new Range();
+		this.range = new Range(settings.items);
 
 		this.redrawHome = true;
 	}
@@ -83,7 +83,11 @@ export default class Entity {
 
 	 setAnimationAction() {
       if (this.status.action === "fighting") {
-      	this.body.action = "fight";
+      		if (this.armor.arrows.id !== -1 && this.armor.bow.id !== -1) {
+      			this.body.action = "archery"
+      		} else {
+      			this.body.action = "fight";
+      		}
       } else if (this.status.action === "mining") {
       	this.body.action = "mine";
       } else if (this.status.action === "woodCutting") {

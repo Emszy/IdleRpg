@@ -21,7 +21,7 @@ export default class Npc {
 					width : animalSettings.size,
 					height : animalSettings.size,
 					startingGold : 0,
-					
+					info: animalSettings.name,
 					status : {
 						dead : false,
 						deaths : 0,

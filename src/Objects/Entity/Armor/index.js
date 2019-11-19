@@ -65,6 +65,9 @@ export default class Armor {
 			attackSpeed = this.weapon.speed;
 			this.animation.swingTimer.setExpiration(attackSpeed);
 		}
+
+
+		
 		this.attackBonus = attack;
 		this.defenseBonus = defense;
 		this.attackSpeedBonus = attackSpeed;

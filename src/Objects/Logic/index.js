@@ -10,7 +10,6 @@ import Resources from "../Resources"
 import Npc from "../Npc"
 
 import ActionHandler from "../ActionHandler"
-import {timer} from "../../Helpers/functions"
 
 export default class Logic {
 
@@ -30,11 +29,8 @@ export default class Logic {
       this.npcs = new Npc(this.items);
       
       this.merchant = this.players.merchant(this.items);
-      
-      this.timer = timer(5000);
 
-
-      this.player = this.players.player("Emszy", this.items);
+      this.player = this.players.player("", this.items);
 
 	   	this.map.create_base(this.player.status.currLevel);
 
@@ -50,9 +46,9 @@ export default class Logic {
 
    }
 
-  targetSelectLogic(arr) {
-      if (arr[0].status.dead) {
-        arr.splice(0,1);
+  targetSelectLogic(arr, index = 0) {
+      if (arr[index].status.dead) {
+        arr.splice(index,1);
       }
       if (arr.length) {
         this.player.target = arr[0];
@@ -87,7 +83,7 @@ export default class Logic {
       } 
 
       if (this.player.status.action === "fighting" && this.enemies.length) {
-          this.targetSelectLogic(this.enemies);
+        this.targetSelectLogic(this.enemies);
       }   
       else if (this.player.status.action === "mining" && this.ore.length)
       {
@@ -114,15 +110,18 @@ export default class Logic {
 
    fight() {
 
+        this.player.setAnimationAction();
+        if (this.player.armor.arrows.quantity <= 0) {
+          this.player.armor.arrows = this.items.none();
+        }
         if (this.player.armor.arrows.id !== -1 && this.player.armor.bow.id !== -1) {
-
+            let shot = this.actionHandler.fightRange(this.player, this.player.target)
+            if (shot.fired === true) {
+              this.player.range.shoot(this.player, this.player.target, shot.damage);
+            }
         } else {
 
-
-       		if (this.player.body.at_destination(this.player.target.body.pos.x, this.player.target.body.pos.y)) {
-
-                this.player.setAnimationAction();
-                
+       		if (this.player.body.at_destination(this.player.target.body.pos.x, this.player.target.body.pos.y)) {                
                 let enemyDrop = this.actionHandler.fight(this.player, this.player.target);
 
                 if (this.actionHandler.isDead(this.player.target)) {
@@ -281,12 +280,27 @@ export default class Logic {
             console.log("SPOOFEM");
           } 
 
-        // this.player.range.moveFiredArrows();
         this.actionHandler.skillDecay(this.player);
         this.player.home.farm.timer();
-        this.timer.check()
-        // this.player.range.checkCollision(this.enemies);
+        this.player.range.projectiles.moveFiredArrows();
+        
+        let arrowCollision = this.player.range.checkCollision(this.enemies);
+        if (arrowCollision.hit) {
+          this.player.skills.range.addXp(arrowCollision.damage * 4)
+          let enemyDrop = this.actionHandler.takeDamage(this.enemies[arrowCollision.index], arrowCollision.damage)
+                if (this.actionHandler.isDead(this.enemies[arrowCollision.index])) {
+                    this.player.skills.health.addXp(this.enemies[arrowCollision.index].skills.health.get() * 40)
+                    this.player.body.action = "walk"
+                    if (enemyDrop) {
+                        this.map.inventory[this.player.status.currLevel - 1].addInventoryToMap(enemyDrop, this.enemies[arrowCollision.index])
+                        this.player.inventory.addGold(enemyDrop.gold)
+                    }
+                    this.targetSelectLogic(this.enemies, arrowCollision.index)
+                }
 
+
+
+        }
    		return this
    }
 

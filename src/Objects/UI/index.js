@@ -36,7 +36,7 @@ export default class UI {
                   infoItem: false,
                   recipe : false,
                   price : false,
-                  timer : timer(500),
+                  timer : timer(700),
                   titleFontSize: 10,
                   background : {
                     img: userInterface.itemInfoBackGround,
@@ -123,6 +123,12 @@ export default class UI {
 
                   setPos : function(x,y) {
                     this.body.setPos(x,y)
+                  },
+
+                  clear() {
+                      this.infoItem = false
+                      this.recipe = false
+                      this.price = false
                   }
     }
 
@@ -185,8 +191,12 @@ export default class UI {
 
 	}
 
-  setInfoBox(mouse, canvas, menus) {
+  setHomeInfoBox(mouse, canvas, menus, player) {
     
+    let bank = player.home.bank;
+    let craft = player.home.buyMenu;
+    let waterWell = player.home.waterWell
+
     let inventoryClick = menus.player.grid.click(mouse, canvas);
     let bankClick = menus.bank.grid.click(mouse, canvas);
     
@@ -196,31 +206,96 @@ export default class UI {
     let craftSettings = this.getMenuConfig(this.craftMenu)
     let craftClick = craftSettings.items.grid.click(mouse, canvas);
 
-    this.infoBox.timer.reset();
-    if(inventoryClick.click) {
-      this.infoBox.background.setSize(50,50)
-      this.infoBox.titleFontSize = 10;
-      this.infoBox.infoItem = menus.player.inventory.spaces[inventoryClick.index];
-    } else if (bankClick.click && this.currentHomeMenu === "bank") {
-      this.infoBox.background.setSize(50,50)
-      this.infoBox.titleFontSize = 10;
-      this.infoBox.infoItem = menus.bank.inventory.spaces[bankClick.index];
-    } else if (buyClick.click && this.currentHomeMenu === "buy") {
-      this.infoBox.background.setSize(80,50)
-      this.infoBox.titleFontSize = 10;
-      this.infoBox.infoItem = buySettings.items.items[buyClick.index];
-      this.infoBox.price = buySettings.items.items[buyClick.index].price
-    } else if (craftClick.click && this.currentHomeMenu === "craft") {
-      this.infoBox.infoItem = craftSettings.items.items[craftClick.index];
-      this.infoBox.titleFontSize = 15;
-      this.infoBox.recipe = craftSettings.items.items[craftClick.index].recipe;
-      let height = this.infoBox.recipe.length * 50;
-      this.infoBox.background.setSize(100,height)
-    } else {
-      this.infoBox.infoItem = false
-      this.infoBox.recipe = false
-      this.infoBox.price = false
+    let merchantClick = this.clickHandler.click(mouse, menus.merchant, canvas);
+    let playerClick = this.clickHandler.click(mouse, player, canvas);
+    let bankOpenClick = this.clickHandler.click(mouse, bank, canvas);
+    let craftOpenClick = this.clickHandler.click(mouse, craft, canvas);
+    let waterWellOpenClick = this.clickHandler.click(mouse, waterWell, canvas);
 
+
+
+
+    this.infoBox.timer.reset();
+    if(inventoryClick.click && this.inventoryMenu === "inventory") {
+        if (menus.player.inventory.spaces[inventoryClick.index].id === -1) {
+          this.infoBox.clear();
+        } else {
+          this.infoBox.background.setSize(50,50)
+          this.infoBox.titleFontSize = 10;
+          this.infoBox.infoItem = menus.player.inventory.spaces[inventoryClick.index];
+        }
+    } else if (bankClick.click && this.currentHomeMenu === "bank") {
+        if (menus.bank.inventory.spaces[bankClick.index + this.bankButtons.page].id === -1) {
+          this.infoBox.clear();
+        } else {
+          this.infoBox.background.setSize(50,50)
+          this.infoBox.titleFontSize = 10;
+          this.infoBox.infoItem = menus.bank.inventory.spaces[bankClick.index + this.bankButtons.page];
+        }
+    } else if (buyClick.click && this.currentHomeMenu === "buy") {
+          this.infoBox.background.setSize(80,50)
+          this.infoBox.titleFontSize = 10;
+          this.infoBox.infoItem = buySettings.items.items[buyClick.index];
+          this.infoBox.price = buySettings.items.items[buyClick.index].price
+    } else if (craftClick.click && this.currentHomeMenu === "craft") {
+          this.infoBox.infoItem = craftSettings.items.items[craftClick.index];
+          this.infoBox.titleFontSize = 15;
+          this.infoBox.recipe = craftSettings.items.items[craftClick.index].recipe;
+          let height = this.infoBox.recipe.length * 50;
+          this.infoBox.background.setSize(100,height)
+    } else if(merchantClick && this.currentHomeMenu === "none") {
+          this.infoBox.infoItem = menus.merchant;
+          this.infoBox.background.setSize(this.infoBox.infoItem.info.length * 5,50)
+
+    } else if(playerClick && this.currentHomeMenu === "none") {
+          this.infoBox.infoItem = player;
+          this.infoBox.background.setSize(this.infoBox.infoItem.info.length * 6,50)
+
+    } else if (bankOpenClick && this.currentHomeMenu === "none") {
+          this.infoBox.infoItem = bank;
+          this.infoBox.background.setSize(this.infoBox.infoItem.info.length * 6,50)
+
+    } else if (craftOpenClick && this.currentHomeMenu === "none") {
+          this.infoBox.infoItem = craft;
+          this.infoBox.background.setSize(this.infoBox.infoItem.info.length * 6,50)
+
+    } else if (waterWellOpenClick && this.currentHomeMenu === "none") {
+          this.infoBox.infoItem = waterWell;
+          this.infoBox.background.setSize(this.infoBox.infoItem.info.length * 6,50)
+    } else {
+          this.infoBox.clear();
+    }
+
+  }
+
+
+   setWildInfoBox(mouse, canvas, menus) {
+
+    let enemyIndex = this.clickHandler.clickArr(mouse, menus.enemies, canvas);
+    let oreIndex = this.clickHandler.clickArr(mouse, menus.ore, canvas);
+    let treeIndex = this.clickHandler.clickArr(mouse, menus.trees, canvas);
+    let animalIndex = this.clickHandler.clickArr(mouse, menus.animals, canvas);
+
+    this.infoBox.timer.reset();
+    
+    if(enemyIndex.click) {
+          this.infoBox.infoItem = menus.enemies[enemyIndex.index];
+          this.infoBox.background.setSize(this.infoBox.infoItem.info.length * 5,50)
+
+    } else if(oreIndex.click) {
+          this.infoBox.infoItem = menus.ore[oreIndex.index];
+          this.infoBox.background.setSize(this.infoBox.infoItem.info.length * 6,50)
+
+    } else if (treeIndex.click) {
+          this.infoBox.infoItem = menus.trees[treeIndex.index];
+          this.infoBox.background.setSize(this.infoBox.infoItem.info.length * 6,50)
+
+    } else if (animalIndex.click) {
+          this.infoBox.infoItem = menus.animals[animalIndex.index];
+          this.infoBox.background.setSize(this.infoBox.infoItem.info.length * 6,50)
+
+    } else {
+          this.infoBox.clear();
     }
 
   }
@@ -269,7 +344,11 @@ export default class UI {
     }
     for (let i = 0; i < inventory.spaces.length; i++) {
         if (inventory.spaces[i].id !== -1) {
-          this.draw.inventoryItemImg(inventory.spaces[i].img, inventory.spaces[i].body.pos.x - 12, inventory.spaces[i].body.pos.y - 12, ctx)
+          if (inventory.spaces[i].img) {
+            this.draw.inventoryItemImg(inventory.spaces[i].img, inventory.spaces[i].body.pos.x - 12, inventory.spaces[i].body.pos.y - 12, ctx)
+          } else {
+            this.draw.text(inventory.spaces[i].name, inventory.spaces[i].body.pos.x - 12, inventory.spaces[i].body.pos.y - 12, 10, ctx)
+          }
         }
     }
   }
@@ -602,6 +681,7 @@ export default class UI {
             if (click.index !== this.mouseSwapItem.inventory.index && this.mouseSwapItem.inventory.item) {
               inventory.swap(this.mouseSwapItem.inventory.index, click.index);
               this.mouseSwapItem.inventory.swap = true;
+              this.infoBox.clear();
             } else {
               this.mouseSwapItem.inventory.swap = false;
             }
@@ -631,7 +711,7 @@ export default class UI {
             if (click.index + this.bankButtons.page !== this.mouseSwapItem.bank.index && this.mouseSwapItem.bank.item) {
               inventory.swap(this.mouseSwapItem.bank.index, click.index + this.bankButtons.page);
               this.mouseSwapItem.bank.swap = true;
-        console.log(this.mouseSwapItem.bank.item)
+              this.infoBox.clear();
             } else {
               this.mouseSwapItem.bank.swap = false;
             }

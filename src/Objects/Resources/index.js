@@ -20,7 +20,7 @@ export default class Resources {
 					width : settings.width,
 					height : settings.height,
 					startingGold : 0,
-					
+					info: items[settings.itemIndex].name,
 					status : {
 						dead : false,
 						deaths : 0,

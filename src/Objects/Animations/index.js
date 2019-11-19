@@ -24,7 +24,7 @@ export default class Animation {
 		this.walkTimer = this.makeTimer(this.player.images.walk.directions.up.end, 40);
 		this.stopTimer = this.makeTimer(this.player.images.idle.directions.up.end, 50);
 		this.magicTimer = this.makeTimer(this.player.images.magic.directions.up.end, 200)
-		this.shootTimer = this.makeTimer(this.player.images.shoot.directions.up.end, 200)
+		this.shootTimer = this.makeTimer(this.player.images.shoot.directions.up.end - 3, 100)
 		this.swingTimer = this.makeTimer(this.player.images.swing.directions.up.end, 200)
 		this.thrustTimer = this.makeTimer(this.player.images.thrust.directions.up.end, 250)
 	}
@@ -37,8 +37,9 @@ export default class Animation {
 		this[article] = false;
 	}
 
-
-	
+	changePlayer(player) {
+		this.player = player;
+	}
 
 	// need item assets for boots and legs
 
@@ -94,6 +95,10 @@ export default class Animation {
 		let playerY = player.body.pos.y
 
 		this.draw(this.player.images[animation].img, size * timer.index, clipY, size, playerX, playerY, ctx)
+		
+		if (animation === "shoot") {
+			this.draw(this.player.images.arrows.img, size * timer.index, clipY, size, playerX, playerY, ctx)
+		}
 		
 		if (this.shirt) {
 			this.draw(this.shirt.images[animation].img, size * timer.index, clipY, size, playerX, playerY, ctx)

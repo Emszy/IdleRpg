@@ -12,16 +12,15 @@ export default class Enemies {
 
 	basic(level) {
 		let arr = [];
-		for (var i = 0; i < randomInt(1,4); i++) {
-			
+		for (var i = 0; i < randomInt(8,10); i++) {
 				let enemy = new Entity({
 					name : this.randomName(),
-					x : randomInt(0, 450),
-					y : randomInt(0, 450),
+					x : randomInt(0, 250),
+					y : randomInt(0, 250),
 					width : 64,
 					height : 64,
 					startingGold : this.getGold(level),
-					
+					info: this.name,
 					status : {
 						dead : false,
 						deaths : 0,
@@ -55,7 +54,6 @@ export default class Enemies {
 					items : this.items
 				})
 				enemy = this.addItems(enemy, level);
-				// enemy.body.setVelocity(4,4)
 
 			arr.push(enemy)
 		}
@@ -85,20 +83,23 @@ export default class Enemies {
 	}
 
 	randomEnemy(level) {
+
 			let animation = new Animation(enemyImages.lightDrake)
+			let chance = randomInt(1,100);
+
 			if (level >= 0 && level < 20) {
-				animation = this.blueDrake();
+				chance < 50 ? animation = this.blueDrake() : animation = this.skeleton(); 
 			}
 			else if (level >= 20 && level < 40) {
-				animation = this.skeleton();
+				chance < 50 ? animation = this.blueDrake() : animation = this.skeleton(); 
 			}
 
 			else if (level >= 40 && level < 60) {
-				animation = this.lightDrake();
+				chance < 50 ? animation = this.lightDrake() : animation = this.skeleton(); 
 			}
 
 		    else if (level >= 60 && level < 80) {
-				animation = this.maleor();
+				chance < 50 ? animation = this.maleor() : animation = this.skeleton(); 
 			}
 
 		    else if (level >= 80 && level < 100) {
@@ -148,10 +149,5 @@ export default class Enemies {
 	    	let j = randomInt(0, nouns.length);
 	    	return (adjectives[i] + " " + nouns[j]);
 		}
-
-
-
-
-
 
 }

@@ -7,8 +7,8 @@ export default class Player {
 	main (name, items) {
 		return (new Entity({
 				name : name,
-				x : 150,
-				y : 150,
+				x : 200,
+				y : 330,
 				width : 64,
 				height : 64,
 				startingGold : 10000000,
@@ -25,7 +25,7 @@ export default class Player {
 				
 				skills : {
 					attack : 1,
-					health : 100,
+					health : 50,
 					defense : 1,
 					attackSpeed : 1,
 					range : 1,
@@ -39,7 +39,7 @@ export default class Player {
 					thirstDecay : 100,
 				},
 				animation : {
-						body : new Animation(playerImages.coffee),
+						body : new Animation(playerImages.sienna),
 						shirt : playerShirts.black,
 						pants : playerPants.black,
 						hair : playerHair.black,
@@ -53,7 +53,9 @@ export default class Player {
 
 	player(name, items) {
 		let player = this.main(name, items);
-		player.body.action = "walk";
+		player.body.action = "stop";
+		player.body.currentDirection = "south";
+		player.info = name;
 		return player
 	}
 
@@ -67,6 +69,7 @@ export default class Player {
 		merchant.armor.addHelm(diamondArmor[0])
 		merchant.armor.addChest(diamondArmor[1])
 		merchant.armor.addShield(diamondArmor[4])
+		merchant.info = merchant.name + ":\n I Buy and Sell Things";
 		return merchant
 	}
 }

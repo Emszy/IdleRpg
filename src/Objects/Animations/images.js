@@ -1,4 +1,6 @@
 
+
+//skin
 import playerCoffeeHurt from "../../assets/images/spriteSheets/Player/partSheets/bases/Coffee/hurt.png"
 import playerCoffeeIdle from "../../assets/images/spriteSheets/Player/partSheets/bases/Coffee/idle.png"
 import playerCoffeeMagic from "../../assets/images/spriteSheets/Player/partSheets/bases/Coffee/magic.png"
@@ -6,6 +8,64 @@ import playerCoffeeShoot from "../../assets/images/spriteSheets/Player/partSheet
 import playerCoffeeSwing from "../../assets/images/spriteSheets/Player/partSheets/bases/Coffee/swing.png"
 import playerCoffeeThrust from "../../assets/images/spriteSheets/Player/partSheets/bases/Coffee/thrust.png"
 import playerCoffeeWalk from "../../assets/images/spriteSheets/Player/partSheets/bases/Coffee/walk.png"
+
+import playerCometHurt from "../../assets/images/spriteSheets/Player/partSheets/bases/Comet/hurt.png"
+import playerCometIdle from "../../assets/images/spriteSheets/Player/partSheets/bases/Comet/idle.png"
+import playerCometMagic from "../../assets/images/spriteSheets/Player/partSheets/bases/Comet/magic.png"
+import playerCometShoot from "../../assets/images/spriteSheets/Player/partSheets/bases/Comet/shoot.png"
+import playerCometSwing from "../../assets/images/spriteSheets/Player/partSheets/bases/Comet/swing.png"
+import playerCometThrust from "../../assets/images/spriteSheets/Player/partSheets/bases/Comet/thrust.png"
+import playerCometWalk from "../../assets/images/spriteSheets/Player/partSheets/bases/Comet/walk.png"
+
+import playerCopperHurt from "../../assets/images/spriteSheets/Player/partSheets/bases/Copper/hurt.png"
+import playerCopperIdle from "../../assets/images/spriteSheets/Player/partSheets/bases/Copper/idle.png"
+import playerCopperMagic from "../../assets/images/spriteSheets/Player/partSheets/bases/Copper/magic.png"
+import playerCopperShoot from "../../assets/images/spriteSheets/Player/partSheets/bases/Copper/shoot.png"
+import playerCopperSwing from "../../assets/images/spriteSheets/Player/partSheets/bases/Copper/swing.png"
+import playerCopperThrust from "../../assets/images/spriteSheets/Player/partSheets/bases/Copper/thrust.png"
+import playerCopperWalk from "../../assets/images/spriteSheets/Player/partSheets/bases/Copper/walk.png"
+
+
+import playerDoveHurt from "../../assets/images/spriteSheets/Player/partSheets/bases/Dove/hurt.png"
+import playerDoveIdle from "../../assets/images/spriteSheets/Player/partSheets/bases/Dove/idle.png"
+import playerDoveMagic from "../../assets/images/spriteSheets/Player/partSheets/bases/Dove/magic.png"
+import playerDoveShoot from "../../assets/images/spriteSheets/Player/partSheets/bases/Dove/shoot.png"
+import playerDoveSwing from "../../assets/images/spriteSheets/Player/partSheets/bases/Dove/swing.png"
+import playerDoveThrust from "../../assets/images/spriteSheets/Player/partSheets/bases/Dove/thrust.png"
+import playerDoveWalk from "../../assets/images/spriteSheets/Player/partSheets/bases/Dove/walk.png"
+
+import playerGoldHurt from "../../assets/images/spriteSheets/Player/partSheets/bases/Gold/hurt.png"
+import playerGoldIdle from "../../assets/images/spriteSheets/Player/partSheets/bases/Gold/idle.png"
+import playerGoldMagic from "../../assets/images/spriteSheets/Player/partSheets/bases/Gold/magic.png"
+import playerGoldShoot from "../../assets/images/spriteSheets/Player/partSheets/bases/Gold/shoot.png"
+import playerGoldSwing from "../../assets/images/spriteSheets/Player/partSheets/bases/Gold/swing.png"
+import playerGoldThrust from "../../assets/images/spriteSheets/Player/partSheets/bases/Gold/thrust.png"
+import playerGoldWalk from "../../assets/images/spriteSheets/Player/partSheets/bases/Gold/walk.png"
+
+import playerGrayHurt from "../../assets/images/spriteSheets/Player/partSheets/bases/Gray/hurt.png"
+import playerGrayIdle from "../../assets/images/spriteSheets/Player/partSheets/bases/Gray/idle.png"
+import playerGrayMagic from "../../assets/images/spriteSheets/Player/partSheets/bases/Gray/magic.png"
+import playerGrayShoot from "../../assets/images/spriteSheets/Player/partSheets/bases/Gray/shoot.png"
+import playerGraySwing from "../../assets/images/spriteSheets/Player/partSheets/bases/Gray/swing.png"
+import playerGrayThrust from "../../assets/images/spriteSheets/Player/partSheets/bases/Gray/thrust.png"
+import playerGrayWalk from "../../assets/images/spriteSheets/Player/partSheets/bases/Gray/walk.png"
+
+
+import playerIvoryHurt from "../../assets/images/spriteSheets/Player/partSheets/bases/Ivory/hurt.png"
+import playerIvoryIdle from "../../assets/images/spriteSheets/Player/partSheets/bases/Ivory/idle.png"
+import playerIvoryMagic from "../../assets/images/spriteSheets/Player/partSheets/bases/Ivory/magic.png"
+import playerIvoryShoot from "../../assets/images/spriteSheets/Player/partSheets/bases/Ivory/shoot.png"
+import playerIvorySwing from "../../assets/images/spriteSheets/Player/partSheets/bases/Ivory/swing.png"
+import playerIvoryThrust from "../../assets/images/spriteSheets/Player/partSheets/bases/Ivory/thrust.png"
+import playerIvoryWalk from "../../assets/images/spriteSheets/Player/partSheets/bases/Ivory/walk.png"
+
+import playerSiennaHurt from "../../assets/images/spriteSheets/Player/partSheets/bases/Sienna/hurt.png"
+import playerSiennaIdle from "../../assets/images/spriteSheets/Player/partSheets/bases/Sienna/idle.png"
+import playerSiennaMagic from "../../assets/images/spriteSheets/Player/partSheets/bases/Sienna/magic.png"
+import playerSiennaShoot from "../../assets/images/spriteSheets/Player/partSheets/bases/Sienna/shoot.png"
+import playerSiennaSwing from "../../assets/images/spriteSheets/Player/partSheets/bases/Sienna/swing.png"
+import playerSiennaThrust from "../../assets/images/spriteSheets/Player/partSheets/bases/Sienna/thrust.png"
+import playerSiennaWalk from "../../assets/images/spriteSheets/Player/partSheets/bases/Sienna/walk.png"
 
 
 import blackShirtHurt from "../../assets/images/spriteSheets/Player/partSheets/shirts/Black/hurt.png"
@@ -16,6 +76,66 @@ import blackShirtSwing from "../../assets/images/spriteSheets/Player/partSheets/
 import blackShirtThrust from "../../assets/images/spriteSheets/Player/partSheets/shirts/Black/thrust.png"
 import blackShirtWalk from "../../assets/images/spriteSheets/Player/partSheets/shirts/Black/walk.png"
 
+//shirts
+
+import blueShirtIdle from "../../assets/images/spriteSheets/Player/partSheets/shirts/Blue/idle.png"
+import blueShirtHurt from "../../assets/images/spriteSheets/Player/partSheets/shirts/Blue/hurt.png"
+import blueShirtMagic from "../../assets/images/spriteSheets/Player/partSheets/shirts/Blue/magic.png"
+import blueShirtShoot from "../../assets/images/spriteSheets/Player/partSheets/shirts/Blue/shoot.png"
+import blueShirtSwing from "../../assets/images/spriteSheets/Player/partSheets/shirts/Blue/swing.png"
+import blueShirtThrust from "../../assets/images/spriteSheets/Player/partSheets/shirts/Blue/thrust.png"
+import blueShirtWalk from "../../assets/images/spriteSheets/Player/partSheets/shirts/Blue/walk.png"
+
+import forestShirtHurt from "../../assets/images/spriteSheets/Player/partSheets/shirts/Forest/hurt.png"
+import forestShirtIdle from "../../assets/images/spriteSheets/Player/partSheets/shirts/Forest/idle.png"
+import forestShirtMagic from "../../assets/images/spriteSheets/Player/partSheets/shirts/Forest/magic.png"
+import forestShirtShoot from "../../assets/images/spriteSheets/Player/partSheets/shirts/Forest/shoot.png"
+import forestShirtSwing from "../../assets/images/spriteSheets/Player/partSheets/shirts/Forest/swing.png"
+import forestShirtThrust from "../../assets/images/spriteSheets/Player/partSheets/shirts/Forest/thrust.png"
+import forestShirtWalk from "../../assets/images/spriteSheets/Player/partSheets/shirts/Forest/walk.png"
+
+import grayShirtHurt from "../../assets/images/spriteSheets/Player/partSheets/shirts/Gray/hurt.png"
+import grayShirtIdle from "../../assets/images/spriteSheets/Player/partSheets/shirts/Gray/idle.png"
+import grayShirtMagic from "../../assets/images/spriteSheets/Player/partSheets/shirts/Gray/magic.png"
+import grayShirtShoot from "../../assets/images/spriteSheets/Player/partSheets/shirts/Gray/shoot.png"
+import grayShirtSwing from "../../assets/images/spriteSheets/Player/partSheets/shirts/Gray/swing.png"
+import grayShirtThrust from "../../assets/images/spriteSheets/Player/partSheets/shirts/Gray/thrust.png"
+import grayShirtWalk from "../../assets/images/spriteSheets/Player/partSheets/shirts/Gray/walk.png"
+
+import greenShirtHurt from "../../assets/images/spriteSheets/Player/partSheets/shirts/Green/hurt.png"
+import greenShirtIdle from "../../assets/images/spriteSheets/Player/partSheets/shirts/Green/idle.png"
+import greenShirtMagic from "../../assets/images/spriteSheets/Player/partSheets/shirts/Green/magic.png"
+import greenShirtShoot from "../../assets/images/spriteSheets/Player/partSheets/shirts/Green/shoot.png"
+import greenShirtSwing from "../../assets/images/spriteSheets/Player/partSheets/shirts/Green/swing.png"
+import greenShirtThrust from "../../assets/images/spriteSheets/Player/partSheets/shirts/Green/thrust.png"
+import greenShirtWalk from "../../assets/images/spriteSheets/Player/partSheets/shirts/Green/walk.png"
+
+import lavenderShirtHurt from "../../assets/images/spriteSheets/Player/partSheets/shirts/Lavender/hurt.png"
+import lavenderShirtIdle from "../../assets/images/spriteSheets/Player/partSheets/shirts/Lavender/idle.png"
+import lavenderShirtMagic from "../../assets/images/spriteSheets/Player/partSheets/shirts/Lavender/magic.png"
+import lavenderShirtShoot from "../../assets/images/spriteSheets/Player/partSheets/shirts/Lavender/shoot.png"
+import lavenderShirtSwing from "../../assets/images/spriteSheets/Player/partSheets/shirts/Lavender/swing.png"
+import lavenderShirtThrust from "../../assets/images/spriteSheets/Player/partSheets/shirts/Lavender/thrust.png"
+import lavenderShirtWalk from "../../assets/images/spriteSheets/Player/partSheets/shirts/Lavender/walk.png"
+
+import skyShirtHurt from "../../assets/images/spriteSheets/Player/partSheets/shirts/Sky/hurt.png"
+import skyShirtIdle from "../../assets/images/spriteSheets/Player/partSheets/shirts/Sky/idle.png"
+import skyShirtMagic from "../../assets/images/spriteSheets/Player/partSheets/shirts/Sky/magic.png"
+import skyShirtShoot from "../../assets/images/spriteSheets/Player/partSheets/shirts/Sky/shoot.png"
+import skyShirtSwing from "../../assets/images/spriteSheets/Player/partSheets/shirts/Sky/swing.png"
+import skyShirtThrust from "../../assets/images/spriteSheets/Player/partSheets/shirts/Sky/thrust.png"
+import skyShirtWalk from "../../assets/images/spriteSheets/Player/partSheets/shirts/Sky/walk.png"
+
+import tealShirtHurt from "../../assets/images/spriteSheets/Player/partSheets/shirts/Teal/hurt.png"
+import tealShirtIdle from "../../assets/images/spriteSheets/Player/partSheets/shirts/Teal/idle.png"
+import tealShirtMagic from "../../assets/images/spriteSheets/Player/partSheets/shirts/Teal/magic.png"
+import tealShirtShoot from "../../assets/images/spriteSheets/Player/partSheets/shirts/Teal/shoot.png"
+import tealShirtSwing from "../../assets/images/spriteSheets/Player/partSheets/shirts/Teal/swing.png"
+import tealShirtThrust from "../../assets/images/spriteSheets/Player/partSheets/shirts/Teal/thrust.png"
+import tealShirtWalk from "../../assets/images/spriteSheets/Player/partSheets/shirts/Teal/walk.png"
+
+//pants
+
 import blackPantsHurt from "../../assets/images/spriteSheets/Player/partSheets/pants/Black/hurt.png"
 import blackPantsIdle from "../../assets/images/spriteSheets/Player/partSheets/pants/Black/idle.png"
 import blackPantsMagic from "../../assets/images/spriteSheets/Player/partSheets/pants/Black/magic.png"
@@ -24,34 +144,111 @@ import blackPantsSwing from "../../assets/images/spriteSheets/Player/partSheets/
 import blackPantsThrust from "../../assets/images/spriteSheets/Player/partSheets/pants/Black/thrust.png"
 import blackPantsWalk from "../../assets/images/spriteSheets/Player/partSheets/pants/Black/walk.png"
 
-import blackMessyHair from "../../assets/images/spriteSheets/Player/fullSheet/Clothes01/HalfMessy_black.png"
 
+import bluePantsIdle from "../../assets/images/spriteSheets/Player/partSheets/pants/Blue/idle.png"
+import bluePantsHurt from "../../assets/images/spriteSheets/Player/partSheets/pants/Blue/hurt.png"
+import bluePantsMagic from "../../assets/images/spriteSheets/Player/partSheets/pants/Blue/magic.png"
+import bluePantsShoot from "../../assets/images/spriteSheets/Player/partSheets/pants/Blue/shoot.png"
+import bluePantsSwing from "../../assets/images/spriteSheets/Player/partSheets/pants/Blue/swing.png"
+import bluePantsThrust from "../../assets/images/spriteSheets/Player/partSheets/pants/Blue/thrust.png"
+import bluePantsWalk from "../../assets/images/spriteSheets/Player/partSheets/pants/Blue/walk.png"
+
+import forestPantsHurt from "../../assets/images/spriteSheets/Player/partSheets/pants/Forest/hurt.png"
+import forestPantsIdle from "../../assets/images/spriteSheets/Player/partSheets/pants/Forest/idle.png"
+import forestPantsMagic from "../../assets/images/spriteSheets/Player/partSheets/pants/Forest/magic.png"
+import forestPantsShoot from "../../assets/images/spriteSheets/Player/partSheets/pants/Forest/shoot.png"
+import forestPantsSwing from "../../assets/images/spriteSheets/Player/partSheets/pants/Forest/swing.png"
+import forestPantsThrust from "../../assets/images/spriteSheets/Player/partSheets/pants/Forest/thrust.png"
+import forestPantsWalk from "../../assets/images/spriteSheets/Player/partSheets/pants/Forest/walk.png"
+
+import grayPantsHurt from "../../assets/images/spriteSheets/Player/partSheets/pants/Gray/hurt.png"
+import grayPantsIdle from "../../assets/images/spriteSheets/Player/partSheets/pants/Gray/idle.png"
+import grayPantsMagic from "../../assets/images/spriteSheets/Player/partSheets/pants/Gray/magic.png"
+import grayPantsShoot from "../../assets/images/spriteSheets/Player/partSheets/pants/Gray/shoot.png"
+import grayPantsSwing from "../../assets/images/spriteSheets/Player/partSheets/pants/Gray/swing.png"
+import grayPantsThrust from "../../assets/images/spriteSheets/Player/partSheets/pants/Gray/thrust.png"
+import grayPantsWalk from "../../assets/images/spriteSheets/Player/partSheets/pants/Gray/walk.png"
+
+import greenPantsHurt from "../../assets/images/spriteSheets/Player/partSheets/pants/Green/hurt.png"
+import greenPantsIdle from "../../assets/images/spriteSheets/Player/partSheets/pants/Green/idle.png"
+import greenPantsMagic from "../../assets/images/spriteSheets/Player/partSheets/pants/Green/magic.png"
+import greenPantsShoot from "../../assets/images/spriteSheets/Player/partSheets/pants/Green/shoot.png"
+import greenPantsSwing from "../../assets/images/spriteSheets/Player/partSheets/pants/Green/swing.png"
+import greenPantsThrust from "../../assets/images/spriteSheets/Player/partSheets/pants/Green/thrust.png"
+import greenPantsWalk from "../../assets/images/spriteSheets/Player/partSheets/pants/Green/walk.png"
+
+import lavenderPantsHurt from "../../assets/images/spriteSheets/Player/partSheets/pants/Lavender/hurt.png"
+import lavenderPantsIdle from "../../assets/images/spriteSheets/Player/partSheets/pants/Lavender/idle.png"
+import lavenderPantsMagic from "../../assets/images/spriteSheets/Player/partSheets/pants/Lavender/magic.png"
+import lavenderPantsShoot from "../../assets/images/spriteSheets/Player/partSheets/pants/Lavender/shoot.png"
+import lavenderPantsSwing from "../../assets/images/spriteSheets/Player/partSheets/pants/Lavender/swing.png"
+import lavenderPantsThrust from "../../assets/images/spriteSheets/Player/partSheets/pants/Lavender/thrust.png"
+import lavenderPantsWalk from "../../assets/images/spriteSheets/Player/partSheets/pants/Lavender/walk.png"
+
+import skyPantsHurt from "../../assets/images/spriteSheets/Player/partSheets/pants/Sky/hurt.png"
+import skyPantsIdle from "../../assets/images/spriteSheets/Player/partSheets/pants/Sky/idle.png"
+import skyPantsMagic from "../../assets/images/spriteSheets/Player/partSheets/pants/Sky/magic.png"
+import skyPantsShoot from "../../assets/images/spriteSheets/Player/partSheets/pants/Sky/shoot.png"
+import skyPantsSwing from "../../assets/images/spriteSheets/Player/partSheets/pants/Sky/swing.png"
+import skyPantsThrust from "../../assets/images/spriteSheets/Player/partSheets/pants/Sky/thrust.png"
+import skyPantsWalk from "../../assets/images/spriteSheets/Player/partSheets/pants/Sky/walk.png"
+
+import tealPantsHurt from "../../assets/images/spriteSheets/Player/partSheets/pants/Teal/hurt.png"
+import tealPantsIdle from "../../assets/images/spriteSheets/Player/partSheets/pants/Teal/idle.png"
+import tealPantsMagic from "../../assets/images/spriteSheets/Player/partSheets/pants/Teal/magic.png"
+import tealPantsShoot from "../../assets/images/spriteSheets/Player/partSheets/pants/Teal/shoot.png"
+import tealPantsSwing from "../../assets/images/spriteSheets/Player/partSheets/pants/Teal/swing.png"
+import tealPantsThrust from "../../assets/images/spriteSheets/Player/partSheets/pants/Teal/thrust.png"
+import tealPantsWalk from "../../assets/images/spriteSheets/Player/partSheets/pants/Teal/walk.png"
+
+
+
+//hairs
+
+import blackMessyHair from "../../assets/images/spriteSheets/Player/fullSheet/Clothes01/HalfMessy_black.png"
+import brownMessyHair from "../../assets/images/spriteSheets/Player/fullSheet/Clothes01/HalfMessy_brunette.png"
+import goldMessyHair from "../../assets/images/spriteSheets/Player/fullSheet/Clothes01/HalfMessy_gold.png"
+import redMessyHair from "../../assets/images/spriteSheets/Player/fullSheet/Clothes01/HalfMessy_red.png"
+import darkRedMessyHair from "../../assets/images/spriteSheets/Player/fullSheet/Clothes01/HalfMessy_red0.png"
+
+
+//axes
 import bronzeAxe from "../../assets/images/spriteSheets/Player/fullSheet/axes/bronze.png"
 import ironAxe from "../../assets/images/spriteSheets/Player/fullSheet/axes/iron.png"
 import goldAxe from "../../assets/images/spriteSheets/Player/fullSheet/axes/gold.png"
 import platinumAxe from "../../assets/images/spriteSheets/Player/fullSheet/axes/platinum.png"
 import diamondAxe from "../../assets/images/spriteSheets/Player/fullSheet/axes/diamond.png"
 
+//pickaxes
 import bronzePickaxe from "../../assets/images/spriteSheets/Player/fullSheet/pickaxes/bronze.png"
 import ironPickaxe from "../../assets/images/spriteSheets/Player/fullSheet/pickaxes/iron.png"
 import goldPickaxe from "../../assets/images/spriteSheets/Player/fullSheet/pickaxes/gold.png"
 import platinumPickaxe from "../../assets/images/spriteSheets/Player/fullSheet/pickaxes/platinum.png"
 import diamondPickaxe from "../../assets/images/spriteSheets/Player/fullSheet/pickaxes/diamond.png"
 
+//swords
 import bronzeSword from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/slash/bronze.png"
 import ironSword from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/slash/iron.png"
 import goldSword from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/slash/gold.png"
 import platinumSword from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/slash/platinum.png"
 import diamondSword from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/slash/diamond.png"
 
-
+//bows
 import oakBow from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/shoot/oak.png"
 import mapleBow from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/shoot/maple.png"
 import mahogonyBow from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/shoot/mahogony.png"
 import magicBow from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/shoot/magic.png"
 import superBow from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/shoot/super.png"
 
+//arrows
+import arrows from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/shoot/arrow.png"
+import bronzeArrows from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/shoot/bronzeArrow.png"
+import ironArrows from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/shoot/ironArrow.png"
+import goldArrows from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/shoot/goldArrow.png"
+import platinumArrows from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/shoot/platinumArrow.png"
+import diamondArrows from "../../assets/images/spriteSheets/Player/fullSheet/weapons/male/shoot/diamondArrow.png"
 
+//armor
 import bronzeShield from "../../assets/images/spriteSheets/Player/fullSheet/shields/bronze.png"
 import ironShield from "../../assets/images/spriteSheets/Player/fullSheet/shields/iron.png"
 import goldShield from "../../assets/images/spriteSheets/Player/fullSheet/shields/gold.png"
@@ -93,11 +290,12 @@ import blueImpAttack from "../../assets/images/spriteSheets/enemies/imp/blue/att
 import blueImpDeath from "../../assets/images/spriteSheets/enemies/imp/blue/death.png"
 
 
+//trees and ores
 
 import treesSprite from "../../assets/images/spriteSheets/resources/treeSheet.png"
 import oreImages from "../../assets/images/spriteSheets/resources/oreResource.png"
 
-
+//NPC
 import chickenWalk from "../../assets/images/spriteSheets/npc/chicken_walk.png"
 import cowWalk from "../../assets/images/spriteSheets/npc/cow_walk.png"
 import llamaWalk from "../../assets/images/spriteSheets/npc/llama_walk.png"
@@ -107,6 +305,7 @@ import chickenEat from "../../assets/images/spriteSheets/npc/chicken_eat.png"
 import pigEat from "../../assets/images/spriteSheets/npc/pig_eat.png"
 
 
+//farm and map
 import farmSoil from "../../assets/images/spriteSheets/terrain/plowed_soil.png"
 
 import plantImages from "../../assets/images/spriteSheets/resources/plants.png"
@@ -134,7 +333,6 @@ import cookedFood from "../../assets/images/spriteSheets/resources/food.png"
 import magicStones from "../../assets/images/spriteSheets/Player/partSheets/magic/magicStones.png"
 
 // start of UI
-
 
 import inventoryUI from "../../assets/images/spriteSheets/UI/inventoryUI2.png"
 import armorUI from "../../assets/images/spriteSheets/UI/armorUI.png"
@@ -256,7 +454,11 @@ function partSheetImage(srcs) {
 		walk : {
 			img : new Image(),
 			directions : directions(7)
+		},
 
+		arrows : {
+			img : new Image(),
+			directions : directions(0, 1, 2, 3, 8)
 		},
 	}
 
@@ -267,6 +469,8 @@ function partSheetImage(srcs) {
 	imgObject.swing.img.src = srcs.swing
 	imgObject.thrust.img.src = srcs.thrust
 	imgObject.walk.img.src = srcs.walk
+	imgObject.arrows.img.src = srcs.arrows
+
 	return (imgObject)
 }
 
@@ -331,6 +535,7 @@ function fullSheetImage(src) {
 			img : new Image(),
 			directions : directions(8, 9, 10, 11, 7)
 		},
+		
 	}
 
 	imgObject.hurt.img.src = src
@@ -340,6 +545,7 @@ function fullSheetImage(src) {
 	imgObject.swing.img.src = src
 	imgObject.thrust.img.src = src
 	imgObject.walk.img.src = src
+
 	return (imgObject)
 }
 
@@ -349,6 +555,32 @@ function singleImage(img) {
 	image.src = img;
 
 	return image;
+}
+
+function createImg(img, size, mapTile) {
+	return ({
+		size : size,
+		img : singleImage(img),
+		pos : mapTile,
+	})
+}
+
+function arrowImgs(img) {
+
+	
+	let arrow = {
+		north: createImg(img, 64, mapTile(0, 0, 64, 64)),
+		west: createImg(img, 64, mapTile(0, 64, 64, 64)),
+		south: createImg(img, 64, mapTile(0, 128, 64, 64)),
+		east: createImg(img, 64, mapTile(0, 192, 64, 64)),
+		northWest : createImg(img, 64, mapTile(0, 320, 64, 64)),
+		southWest : createImg(img, 64, mapTile(0, 384, 64, 64)),
+		northEast : createImg(img, 64, mapTile(0, 256, 64, 64)),
+		southEast : createImg(img, 64, mapTile(0, 448, 64, 64)),
+	}
+
+	return (arrow);
+
 }
 
 
@@ -363,8 +595,100 @@ let playerImages = {
 						swing : playerCoffeeSwing,
 						thrust : playerCoffeeThrust,
 						walk : playerCoffeeWalk,
+						arrows : arrows,
 				})
-	}
+	},
+	comet : {
+		size : 64,
+		images : partSheetImage({
+						hurt : playerCometHurt,
+						idle : playerCometIdle,
+						magic : playerCometMagic,
+						shoot : playerCometShoot,
+						swing : playerCometSwing,
+						thrust : playerCometThrust,
+						walk : playerCometWalk,
+						arrows : arrows,
+				})
+	},
+	copper : {
+		size : 64,
+		images : partSheetImage({
+						hurt : playerCopperHurt,
+						idle : playerCopperIdle,
+						magic : playerCopperMagic,
+						shoot : playerCopperShoot,
+						swing : playerCopperSwing,
+						thrust : playerCopperThrust,
+						walk : playerCopperWalk,
+						arrows : arrows,
+				})
+	},
+	dove : {
+		size : 64,
+		images : partSheetImage({
+						hurt : playerDoveHurt,
+						idle : playerDoveIdle,
+						magic : playerDoveMagic,
+						shoot : playerDoveShoot,
+						swing : playerDoveSwing,
+						thrust : playerDoveThrust,
+						walk : playerDoveWalk,
+						arrows : arrows,
+				})
+	},
+	gold : {
+		size : 64,
+		images : partSheetImage({
+						hurt : playerGoldHurt,
+						idle : playerGoldIdle,
+						magic : playerGoldMagic,
+						shoot : playerGoldShoot,
+						swing : playerGoldSwing,
+						thrust : playerGoldThrust,
+						walk : playerGoldWalk,
+						arrows : arrows,
+				})
+	},
+	gray : {
+		size : 64,
+		images : partSheetImage({
+						hurt : playerGrayHurt,
+						idle : playerGrayIdle,
+						magic : playerGrayMagic,
+						shoot : playerGrayShoot,
+						swing : playerGraySwing,
+						thrust : playerGrayThrust,
+						walk : playerGrayWalk,
+						arrows : arrows,
+				})
+	},
+	ivory : {
+		size : 64,
+		images : partSheetImage({
+						hurt : playerIvoryHurt,
+						idle : playerIvoryIdle,
+						magic : playerIvoryMagic,
+						shoot : playerIvoryShoot,
+						swing : playerIvorySwing,
+						thrust : playerIvoryThrust,
+						walk : playerIvoryWalk,
+						arrows : arrows,
+				})
+	},
+	sienna : {
+		size : 64,
+		images : partSheetImage({
+						hurt : playerSiennaHurt,
+						idle : playerSiennaIdle,
+						magic : playerSiennaMagic,
+						shoot : playerSiennaShoot,
+						swing : playerSiennaSwing,
+						thrust : playerSiennaThrust,
+						walk : playerSiennaWalk,
+						arrows : arrows,
+				})
+	},
 }
 
 
@@ -441,7 +765,104 @@ let playerShirts = {
 						thrust : blackShirtThrust,
 						walk : blackShirtWalk,
 				})
-	}
+	},
+
+	blue: {
+		size : 64,
+		images : partSheetImage({
+						hurt : blueShirtHurt,
+						idle : blueShirtIdle,
+						magic : blueShirtMagic,
+						shoot : blueShirtShoot,
+						swing : blueShirtSwing,
+						thrust : blueShirtThrust,
+						walk : blueShirtWalk,
+				})
+						
+	},
+	forest: {
+		size : 64,
+		images : partSheetImage({
+						hurt : forestShirtHurt,
+						idle : forestShirtIdle,
+						magic : forestShirtMagic,
+						shoot : forestShirtShoot,
+						swing : forestShirtSwing,
+						thrust : forestShirtThrust,
+						walk : forestShirtWalk,
+				})
+						
+	},
+
+	gray: {
+		size : 64,
+		images : partSheetImage({
+						hurt : grayShirtHurt,
+						idle : grayShirtIdle,
+						magic : grayShirtMagic,
+						shoot : grayShirtShoot,
+						swing : grayShirtSwing,
+						thrust : grayShirtThrust,
+						walk : grayShirtWalk,
+				})
+						
+	},
+
+	green: {
+		size : 64,
+		images : partSheetImage({
+						hurt : greenShirtHurt,
+						idle : greenShirtIdle,
+						magic : greenShirtMagic,
+						shoot : greenShirtShoot,
+						swing : greenShirtSwing,
+						thrust : greenShirtThrust,
+						walk : greenShirtWalk,
+				})
+						
+	},
+
+	lavender: {
+		size : 64,
+		images : partSheetImage({
+						hurt : lavenderShirtHurt,
+						idle : lavenderShirtIdle,
+						magic : lavenderShirtMagic,
+						shoot : lavenderShirtShoot,
+						swing : lavenderShirtSwing,
+						thrust : lavenderShirtThrust,
+						walk : lavenderShirtWalk,
+				})
+						
+	},
+
+	sky: {
+		size : 64,
+		images : partSheetImage({
+						hurt : skyShirtHurt,
+						idle : skyShirtIdle,
+						magic : skyShirtMagic,
+						shoot : skyShirtShoot,
+						swing : skyShirtSwing,
+						thrust : skyShirtThrust,
+						walk : skyShirtWalk,
+				})
+						
+	},
+
+	teal: {
+		size : 64,
+		images : partSheetImage({
+						hurt : tealShirtHurt,
+						idle : tealShirtIdle,
+						magic : tealShirtMagic,
+						shoot : tealShirtShoot,
+						swing : tealShirtSwing,
+						thrust : tealShirtThrust,
+						walk : tealShirtWalk,
+				})
+						
+	},
 }
 
 
@@ -457,13 +878,128 @@ let playerPants = {
 						thrust : blackPantsThrust,
 						walk : blackPantsWalk,
 				})
-	}
+						
+	},
+
+	blue: {
+		size : 64,
+		images : partSheetImage({
+						hurt : bluePantsHurt,
+						idle : bluePantsIdle,
+						magic : bluePantsMagic,
+						shoot : bluePantsShoot,
+						swing : bluePantsSwing,
+						thrust : bluePantsThrust,
+						walk : bluePantsWalk,
+				})
+						
+	},
+	forest: {
+		size : 64,
+		images : partSheetImage({
+						hurt : forestPantsHurt,
+						idle : forestPantsIdle,
+						magic : forestPantsMagic,
+						shoot : forestPantsShoot,
+						swing : forestPantsSwing,
+						thrust : forestPantsThrust,
+						walk : forestPantsWalk,
+				})
+						
+	},
+
+	gray: {
+		size : 64,
+		images : partSheetImage({
+						hurt : grayPantsHurt,
+						idle : grayPantsIdle,
+						magic : grayPantsMagic,
+						shoot : grayPantsShoot,
+						swing : grayPantsSwing,
+						thrust : grayPantsThrust,
+						walk : grayPantsWalk,
+				})
+						
+	},
+
+	green: {
+		size : 64,
+		images : partSheetImage({
+						hurt : greenPantsHurt,
+						idle : greenPantsIdle,
+						magic : greenPantsMagic,
+						shoot : greenPantsShoot,
+						swing : greenPantsSwing,
+						thrust : greenPantsThrust,
+						walk : greenPantsWalk,
+				})
+						
+	},
+
+	lavender: {
+		size : 64,
+		images : partSheetImage({
+						hurt : lavenderPantsHurt,
+						idle : lavenderPantsIdle,
+						magic : lavenderPantsMagic,
+						shoot : lavenderPantsShoot,
+						swing : lavenderPantsSwing,
+						thrust : lavenderPantsThrust,
+						walk : lavenderPantsWalk,
+				})
+						
+	},
+
+	sky: {
+		size : 64,
+		images : partSheetImage({
+						hurt : skyPantsHurt,
+						idle : skyPantsIdle,
+						magic : skyPantsMagic,
+						shoot : skyPantsShoot,
+						swing : skyPantsSwing,
+						thrust : skyPantsThrust,
+						walk : skyPantsWalk,
+				})
+						
+	},
+
+	teal: {
+		size : 64,
+		images : partSheetImage({
+						hurt : tealPantsHurt,
+						idle : tealPantsIdle,
+						magic : tealPantsMagic,
+						shoot : tealPantsShoot,
+						swing : tealPantsSwing,
+						thrust : tealPantsThrust,
+						walk : tealPantsWalk,
+				})
+						
+	},
+
 }
 
 let playerHair = {
 	black: {
 		size : 64,
 		images : fullSheetImage(blackMessyHair)
+	},
+	brown: {
+		size : 64,
+		images : fullSheetImage(brownMessyHair)
+	},
+	gold: {
+		size : 64,
+		images : fullSheetImage(goldMessyHair)
+	},
+	red: {
+		size : 64,
+		images : fullSheetImage(redMessyHair)
+	},
+	darkRed: {
+		size : 64,
+		images : fullSheetImage(darkRedMessyHair)
 	}
 }
 
@@ -631,10 +1167,10 @@ let playerWeapons = {
 						thrust : diamondSword,
 						walk : diamondSword,
 				})
+
+
+
 	},
-
-
-
 
 
 	oakBow: {
@@ -707,7 +1243,42 @@ let playerWeapons = {
 						thrust : superBow,
 						walk : superBow,
 				})
-	}
+	},
+
+	firedArrows: {
+					bronze: arrowImgs(bronzeArrows),
+					iron: arrowImgs(ironArrows),
+					gold: arrowImgs(goldArrows),
+					platinum: arrowImgs(platinumArrows),
+					diamond: arrowImgs(diamondArrows),
+				},
+	arrows : {
+			bronze: {
+				size : 64,
+				img : singleImage(bronzeArrows),
+				pos : mapTile(0, 0, 64, 64),
+			},
+			iron: {
+				size : 64,
+				img : singleImage(ironArrows),
+				pos : mapTile(0, 0, 64, 64),
+			},
+			gold: {
+				size : 64,
+				img : singleImage(goldArrows),
+				pos : mapTile(0, 0, 64, 64),
+			},
+			platinum: {
+				size : 64,
+				img : singleImage(platinumArrows),
+				pos : mapTile(0, 0, 64, 64),
+			},
+			diamond: {
+				size : 64,
+				img : singleImage(diamondArrows),
+				pos : mapTile(0, 0, 64, 64),
+			}
+	},
 }
 
 let playerArmor = {

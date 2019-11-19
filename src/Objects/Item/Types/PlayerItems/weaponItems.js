@@ -461,7 +461,8 @@ let arrows = [
 			name : "Bronze Arrow", 
 			price : 200, 
 			bonus : 7,
-			img : false,
+			img : playerWeapons.arrows.bronze,
+			animation : playerWeapons.firedArrows.bronze,
 			use : function(playerArmor) {
 				return playerArmor.addArrows(this);
 			}, 
@@ -476,7 +477,8 @@ let arrows = [
 			name : "Iron Arrow", 
 			price : 500, 
 			bonus : 17,
-			img : false,
+			img : playerWeapons.arrows.iron,
+			animation : playerWeapons.firedArrows.iron,
 			use : function(playerArmor) {
 				return playerArmor.addArrows(this);
 			}, 
@@ -491,7 +493,8 @@ let arrows = [
 			name : "Gold Arrow", 
 			price : 2000, 
 			bonus : 31,
-			img : false,
+			img : playerWeapons.arrows.gold,
+			animation : playerWeapons.firedArrows.gold,
 			use : function(playerArmor) {
 				return playerArmor.addArrows(this);
 			}, 
@@ -506,7 +509,8 @@ let arrows = [
 			name : "Platinum Arrow", 
 			price : 5000, 
 			bonus : 43,
-			img : false,
+			img : playerWeapons.arrows.platinum,
+			animation : playerWeapons.firedArrows.platinum,
 			use : function(playerArmor) {
 				return playerArmor.addArrows(this);
 			}, 
@@ -521,7 +525,8 @@ let arrows = [
 			name : "Diamond Arrow", 
 			price : 10000, 
 			bonus : 55,
-			img : false,
+			img : playerWeapons.arrows.diamond,
+			animation : playerWeapons.firedArrows.diamond,
 			use : function(playerArmor) {
 				return playerArmor.addArrows(this);
 			}, 

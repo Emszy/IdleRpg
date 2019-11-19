@@ -68,30 +68,58 @@ export default class ActionHandler {
 
 	}
 
+	fightRange(player, target) {
+		let skill = false;
+		
+		let attackBonus = false;
+		let damage = 0;
+		let shot = {fired: false, damage : 0}
+		if (!target.status) {
+			return false;
+		}
+		switch (target.status.type) {
+          case "enemy" :
+		        skill = player.skills.range;
+				attackBonus = player.armor.rangeBonus;
+                break;
+          default : 
+                break
+        }
+
+        if (player.armor.animation.shootTimer.done && skill) {
+          	player.armor.animation.shootTimer.done = false;
+          	damage = skill.hitDamage()
+			damage = damage + attackBonus
+			shot.fired = true;
+			shot.damage = damage + attackBonus;
+        }
+
+		
+		return(shot);
+	}
+
+
 	fight(player, target) {
 		let skill = false;
 		// let speedBonus = false;
+				// speedBonus = player.armor.attackSpeedBonus;
 		let attackBonus = false;
 		let damage = 0;
 		switch (target.status.type) {
           case "enemy" :
 		        skill = player.skills.attack;
-				// speedBonus = player.armor.attackSpeedBonus;
 				attackBonus = player.armor.attackBonus;
                 break;
           case "ore" :
           		skill = player.skills.mining;
-				// speedBonus = player.armor.attackSpeedBonus;
 				attackBonus = player.armor.miningBonus;
                 break;
           case "tree" : 
           		skill = player.skills.woodcutting;
-				// speedBonus = player.armor.attackSpeedBonus;
 				attackBonus = player.armor.woodCuttingBonus;
                 break;
           case "animal" : 
           		skill = player.skills.hunting;
-				// speedBonus = player.armor.attackSpeedBonus;
 				attackBonus = player.armor.attackBonus;
                 break;
           default : 
