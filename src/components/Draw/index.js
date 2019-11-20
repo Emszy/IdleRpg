@@ -191,7 +191,7 @@ export default class Draw extends React.Component {
 
     render() {
          return (
-          <div>
+          <div style={{width:480, height: 480}}>
             <canvas ref={this.canvasRef} 
                     width={480} 
                     height={480}

@@ -4,19 +4,12 @@ import React from "react"
 // import SkillsTest from "../../Test/Skills"
 // import InventoryTest from "../../Test/Inventory"
 // import Euphori from "../../assets/sounds/Euphori.mp3"
-import Draw from "../Draw"
 // import EntityTest from "../../Test/Entity"
+import Draw from "../Draw"
 
 export default class Game extends React.Component {
   
-  constructor() {
-    super();
-    this.state = {
-
-
-    }
-  }
-
+ 
   componentDidMount() {
     //test the rigid body before using
     // new RigidBodyTest();
@@ -30,9 +23,9 @@ export default class Game extends React.Component {
 
   render() {
     return (
-      <div>
+      <span style ={{width: 480, height: 480}}>
         <Draw />
-      </div>
+      </span>
     )
   }
 
