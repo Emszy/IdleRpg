@@ -25,9 +25,15 @@ export default class Draw extends React.Component {
           playerLoaded : false,
           inventoryLoaded : false,
           skillsLoaded : false,
+          armorLoaded : false,
+
 
           gameStart : function() {
-              if (this.bankLoaded && this.playerLoaded && this.inventoryLoaded && this.skillsLoaded) {
+              if (this.bankLoaded && 
+                  this.playerLoaded && 
+                  this.inventoryLoaded && 
+                  this.skillsLoaded &&
+                  this.armorLoaded) {
                 return true
               } else {
                 return false
@@ -134,12 +140,44 @@ export default class Draw extends React.Component {
         })
     }
 
+    savePlayerArmor() {
+      console.log(this.logic.player.armor.getEquipment());
+       axios.post(`/saveArmor`, { 
+                                    armor : this.logic.player.armor.getEquipment()
+                                }
+                  )
+        .then(res => {
+          
+        })
+    }
+
+     updatePlayerArmor() {
+       axios.post(`/updateArmor`, { 
+                                    armor : this.logic.player.armor.getEquipment()
+                                }
+                  )
+        .then(res => {
+          
+        })
+    }
+
+     getPlayerArmor() {
+      axios.get(`/armor`)
+        .then(res => {
+          this.logic.player = this.playerUpdater.updateArmor(this.logic.player, res.data.armor)
+          this.loadHandler.armorLoaded = true;
+
+        })
+
+    }
+
     saveCharacter() {
       
       this.savePlayerInfo();
       this.updatePlayerSkills();
       this.savePlayerInventory();
       this.savePlayerBank();
+      this.updatePlayerArmor();
 
 
     }
@@ -158,10 +196,12 @@ export default class Draw extends React.Component {
           this.getPlayerSkills();
           this.getPlayerInventory();
           this.getPlayerBank();
+          this.getPlayerArmor();
           this.loadHandler.playerLoaded = true;
           
         } if (res.data.code === 2) {
           this.savePlayerSkills();
+          this.savePlayerArmor();
           this.logic.player.password = null;
           this.gameStartScreen.page = "characterSelect"
           this.gameStartScreen.open = true

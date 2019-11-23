@@ -2,6 +2,7 @@ export default class Armor {
 
 	constructor(items, animation) {
 		this.items = items;
+
 		this.helm = this.items.none()
 		this.chest = this.items.none()
 		this.legs = this.items.none()
@@ -30,6 +31,52 @@ export default class Armor {
 			this.animation.addPants(animation.pants)
 			this.animation.addHair(animation.hair)
 		}
+	}
+
+	getEquipment() {
+		let id = 0;
+		return ({
+			helm : {
+				item : this.helm,
+				id : id++,
+			},
+			chest : {
+				item : this.chest,
+				id : id++,
+			},
+			legs: {
+				item : this.legs,
+				id : id++,
+			},
+			feet: {
+				item : this.feet,
+				id : id++,
+			},
+			weapon: {
+				item : this.weapon,
+				id : id++,
+			},
+			shield : {
+				item : this.shield,
+				id : id++,
+			},
+			bow : {
+				item : this.bow,
+				id : id++,
+			},
+			arrows: {
+				item : this.arrows,
+				id : id++,
+			},
+			pickaxe: {
+				item : this.pickAxe,
+				id : id++,
+			},
+			axe: {
+				item : this.axe,
+				id : id++,
+			},
+		})
 	}
 
 	logBonus() {

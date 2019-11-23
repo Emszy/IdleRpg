@@ -23,15 +23,19 @@ db.users = require('./models/user.js')(sequelize, Sequelize);
 db.inventoryItems = require('./models/inventory.js')(sequelize, Sequelize);
 db.skills = require('./models/skills.js')(sequelize, Sequelize);
 db.bankItems = require('./models/bank.js')(sequelize, Sequelize);
+db.armorItems = require('./models/armor.js')(sequelize, Sequelize);
 
 
 db.inventoryItems.belongsTo(db.users);
 db.skills.belongsTo(db.users);
 db.bankItems.belongsTo(db.users);
+db.armorItems.belongsTo(db.users);
+
 
 db.users.hasMany(db.inventoryItems);
 db.users.hasMany(db.skills);
 db.users.hasMany(db.bankItems);
+db.users.hasMany(db.armorItems);
 
 
 sequelize.sync({
@@ -41,19 +45,19 @@ sequelize.sync({
 .then(() => {
   // seed(db)
   // .then(() => {
-      db.users.findOne({
-      where : {id:1},
-      include: [
-        {
-          model: db.inventoryItems,
-        },
-        {
-          model: db.skills,
-        }
-      ]
-    }).then(users => {
-      console.log(users)
-    });
+    //   db.users.findOne({
+    //   where : {id:1},
+    //   include: [
+    //     {
+    //       model: db.inventoryItems,
+    //     },
+    //     {
+    //       model: db.skills,
+    //     }
+    //   ]
+    // }).then(users => {
+    //   console.log(users)
+    // });
       console.log(`Database & tables created!`)
   // })
 

@@ -16,6 +16,7 @@ const userRoute = require("./routes/user");
 const skillsRoute = require("./routes/skills");
 const inventoryRoute = require("./routes/inventory");
 const bankRoute = require("./routes/bank");
+const armorRoute = require("./routes/armor");
 
 app.use(session({
 	  	genid: function(req) {
@@ -34,6 +35,7 @@ userRoute(app, db);
 skillsRoute(app, db);
 inventoryRoute(app, db);
 bankRoute(app, db);
+armorRoute(app, db);
 
 
 

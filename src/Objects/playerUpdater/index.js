@@ -34,4 +34,20 @@ export default class playerUpdater {
 		}
 		return player
 	}
+
+	updateArmor(player, armor) {
+		console.log(armor);
+		for (var i = 0; i < armor.length; i++) {
+			if (armor[i].item_id !== -1) {
+			let item = this.items.returnOneItem(
+													armor[i].category_id, 
+													armor[i].subCategory_id, 
+													armor[i].item_index
+												)
+			item.use(player.armor);
+			}
+
+		}
+		return player
+	}
 }
