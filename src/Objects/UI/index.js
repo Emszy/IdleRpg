@@ -985,7 +985,6 @@ export default class UI {
   }
 
 	bankButtonClick(mouse, player, canvas) {
-    console.log(this.mouseSwapItem.bank.swap)
 		if (this.currentHomeMenu !== "bank" || this.mouseSwapItem.bank.swap === true) {
 			return false
 		}
@@ -1011,7 +1010,6 @@ export default class UI {
         }
 
             let click = this.bankButtons.grid.click(mouse, canvas);
-            console.log(page)
             if (click.click)
             { 
       				if (player.inventory.add(player.home.bank.inventory.spaces[click.index + page])) {

@@ -10,7 +10,7 @@ export default class ItemCategory {
 	}
 	
 	addSubCategory(name, id, settings) {
-		this.subcategory.push(new ItemSubCategory(name, id, settings));
+		this.subcategory.push(new ItemSubCategory(name, id, settings, this.id));
 	}
 
 	listSubCategories() {

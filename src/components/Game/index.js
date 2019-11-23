@@ -11,7 +11,7 @@ export default class Game extends React.Component {
   
  
   componentDidMount() {
-    //test the rigid body before using
+    // test the rigid body before using
     // new RigidBodyTest();
     // let Player = new PlayerTest();
     // Player.log();

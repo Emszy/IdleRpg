@@ -1,8 +1,10 @@
 import React from "react"
 import Logic from "../../Objects/Logic"
+import PlayerUpdater from "../../Objects/playerUpdater"
+
 import {timer} from "../../Helpers/functions"
 import GameStartScreen from "../../Objects/UI/gameStartScreen"
-
+import axios from "axios"
 // import RigidBody from "../../Helpers/rigidBody"
 
 // import ClickHandler from "../../Objects/clickhandler"
@@ -10,13 +12,32 @@ import GameStartScreen from "../../Objects/UI/gameStartScreen"
 export default class Draw extends React.Component {
 	 constructor() {
       super()
-      
+      this.state = {
+        greeting : ""
+      }
       this.canvasRef = React.createRef();
       this.gameStartScreen = new GameStartScreen();
       this.logic = new Logic();
+
       this.gameStart = false;
-      // this.clickHandler = new ClickHandler();
-      this.testTimer = timer(100);
+      this.loadHandler = {
+          bankLoaded : false,
+          playerLoaded : false,
+          inventoryLoaded : false,
+          skillsLoaded : false,
+
+          gameStart : function() {
+              if (this.bankLoaded && this.playerLoaded && this.inventoryLoaded && this.skillsLoaded) {
+                return true
+              } else {
+                return false
+              }
+          }
+      }
+
+      this.playerUpdater = new PlayerUpdater(this.logic.items);
+      this.gameStartTimer = timer(100);
+      this.saveTimer = timer (4000);
     }
 
     componentDidMount() {
@@ -32,7 +53,126 @@ export default class Draw extends React.Component {
       cancelAnimationFrame(this.rAF);
     }
 
+    savePlayerInfo() {
+       axios.post(`/save`, { 
+                                player : {
+                                          name: this.logic.player.name,
+                                          info : this.logic.player.name,
+                                        },
+                                gold : this.logic.player.inventory.gold
+                              }
+                )
+      .then(res => {
+      })
+    }
 
+    savePlayerSkills() {
+        axios.post(`/saveSkills`, { 
+                                    skills : this.logic.player.skills
+                                }
+                  )
+        .then(res => {
+        })
+    }
+
+    updatePlayerSkills() {
+        axios.post(`/updateSkills`, { 
+                                    skills : this.logic.player.skills
+                                }
+                  )
+        .then(res => {
+        })
+    }
+
+    getPlayerSkills() {
+      axios.get(`/skills`)
+        .then(res => {
+          this.logic.player = this.playerUpdater.updateSkills(this.logic.player, res.data.skills);
+          this.loadHandler.skillsLoaded = true;
+        })
+    }
+
+    getPlayerInventory() {
+      axios.get(`/inventory`)
+        .then(res => {
+          this.logic.player = this.playerUpdater.updateInventory(this.logic.player, res.data.inventory)
+          this.loadHandler.inventoryLoaded = true;
+
+        })
+
+    }
+
+    savePlayerInventory() {
+       axios.post(`/saveInventory`, { 
+                                    inventory : this.logic.player.inventory.spaces
+                                }
+                  )
+        .then(res => {
+        })
+    }
+
+    getPlayerBank() {
+      axios.get(`/bank`)
+        .then(res => {
+          if (res.data.code === 1) {
+            this.logic.player = this.playerUpdater.updateBank(this.logic.player, res.data.bank)
+            this.loadHandler.bankLoaded = true;
+
+            
+          }
+        })
+        
+    }
+
+    savePlayerBank() {
+       axios.post(`/saveBank`, { 
+                                    bank : this.logic.player.home.bank.inventory.spaces
+                                }
+                  )
+        .then(res => {
+          
+        })
+    }
+
+    saveCharacter() {
+      
+      this.savePlayerInfo();
+      this.updatePlayerSkills();
+      this.savePlayerInventory();
+      this.savePlayerBank();
+
+
+    }
+
+    login() {
+      axios.post(`/register`, { 
+                                name: this.logic.player.name,
+                                password: this.logic.player.password,
+                              }
+                )
+      .then(res => {
+        if (res.data.code === 1) {
+          this.logic.player.password = null;
+          //load DATA HERE
+          this.logic.player = this.playerUpdater.update(this.logic.player, res.data.user)
+          this.getPlayerSkills();
+          this.getPlayerInventory();
+          this.getPlayerBank();
+          this.loadHandler.playerLoaded = true;
+          
+        } if (res.data.code === 2) {
+          this.savePlayerSkills();
+          this.logic.player.password = null;
+          this.gameStartScreen.page = "characterSelect"
+          this.gameStartScreen.open = true
+        } else {
+          this.gameStartScreen.open = true
+
+          this.gameStartScreen.page = "choosePassword"
+        }
+
+      })
+    }
 
     updateLogic() {
       
@@ -48,7 +188,11 @@ export default class Draw extends React.Component {
           let player = this.logic.player;
           let ui = this.logic.UI;
 
-          if (!this.gameStart && this.testTimer.check() ) {
+          if (!this.gameStart && this.gameStartTimer.check() ) {
+            if (this.loadHandler.gameStart()) {
+              this.gameStartScreen.open = false;
+              this.gameStart = true
+            }
             this.gameStartScreen.display(player, ctx);
             ui.drawEntity.handler({
                 player: player,
@@ -57,6 +201,9 @@ export default class Draw extends React.Component {
 
 
       if (this.logic && this.gameStart) {
+        if (this.saveTimer.check()) {
+            this.saveCharacter()
+        }
         if (this.frameRateTimer.check()) {
           ctx.clearRect(0,0, 480, 480);
           this.updateLogic();
@@ -102,8 +249,9 @@ export default class Draw extends React.Component {
           this.gameStartScreen.clickHandler(player,e,canvas);          
           this.gameStart = this.gameStartScreen.startGame;
           
-          if (this.gameStart) {
-            this.gameStartScreen = null;
+          if (this.gameStartScreen.open === false) {
+            let res = this.login()
+
           }
           return false;
         } 
@@ -192,6 +340,7 @@ export default class Draw extends React.Component {
     render() {
          return (
           <div style={{width:480, height: 480}}>
+            {this.state.greeting}
             <canvas ref={this.canvasRef} 
                     width={480} 
                     height={480}

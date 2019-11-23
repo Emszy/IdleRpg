@@ -11,7 +11,7 @@ export default class Resources {
 
 	newResource(level, items, resourceFunc) {
 		let arr = [];
-		for (var i = 0; i < randomInt(1,5); i++) {
+		for (var i = 0; i < randomInt(3,7); i++) {
 				let settings = resourceFunc(level);
 				let resource = new Entity({
 					name : items[settings.itemIndex].name,

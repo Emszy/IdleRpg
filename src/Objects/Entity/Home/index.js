@@ -12,7 +12,7 @@ export default class Home {
 	constructor(items) {
 		this.waterWell = this.makeWaterWell(items);
 		this.bank = this.makeBank(items);
-		this.fillBank(items);
+		// this.fillBank(items);
 		this.buyMenu = this.makeBuyMenu();
 		this.farm = this.makeFarm(items);
 		this.floorAnimation = new HomeAnimation(mapAtlas.home.floor)

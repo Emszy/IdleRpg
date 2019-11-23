@@ -13,6 +13,7 @@ export default class Entity {
 	constructor(settings) {
 		this.target = false;
 		this.name = settings.name;
+		this.password = "";
 		this.info = settings.info || settings.name || "FRED";
 		this.items = settings.items;
 		this.body = new RigidBody(settings.x, settings.y, settings.width, settings.height);

@@ -11,7 +11,7 @@ export default class Player {
 				y : 330,
 				width : 64,
 				height : 64,
-				startingGold : 10000000,
+				startingGold : 100,
 				
 				status : {
 					dead : false,

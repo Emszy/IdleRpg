@@ -1,7 +1,8 @@
 export default class ItemSubCategory {
-	constructor(name, id, settings) {
+	constructor(name, id, settings, category_id) {
 		this.name = name;
 		this.id = id;
+		this.category_id = category_id;
 		this.items = [];
 		this.settings = settings
 	}
@@ -14,6 +15,9 @@ export default class ItemSubCategory {
 		let count = itemArr.length;
 		for (let x = 0; x < count; x++) {
 			itemArr[x].info.setId(id);
+			itemArr[x].info.item_index = x;
+			itemArr[x].info.subCategory_id = this.id;
+			itemArr[x].info.category_id = this.category_id;
 			this.items.push(itemArr[x]);
 			id++;
 		}
@@ -27,6 +31,9 @@ export default class ItemSubCategory {
 			itemArr[x].info.isWearable()
 			itemArr[x].info.setId(id);
 
+			itemArr[x].info.item_index = x;
+			itemArr[x].info.subCategory_id = this.id;
+			itemArr[x].info.category_id = this.category_id;
 			this.items.push(itemArr[x]);
 			id++;
 		}
@@ -41,6 +48,9 @@ export default class ItemSubCategory {
 			itemArr[x].info.magic = true;
 			itemArr[x].info.setId(id);
 
+			itemArr[x].info.item_index = x;
+			itemArr[x].info.subCategory_id = this.id;
+			itemArr[x].info.category_id = this.category_id;
 			this.items.push(itemArr[x]);
 			id++;
 		}

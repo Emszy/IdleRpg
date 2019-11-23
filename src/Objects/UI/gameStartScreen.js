@@ -9,7 +9,7 @@ export default class GameStartScreen {
 		
 		this.page = "start";
 		this.startGame = false;
-
+		this.open = true;
 		this.background = {
 			img : userInterface.bankBackGround,
 			body : new RigidBody(0,0,480,480),
@@ -203,6 +203,111 @@ export default class GameStartScreen {
 			delete : function(player, mouse,canvas) {
 				if (this.deleteButton.onClick(mouse, canvas)) {
 					player.name = player.name.substring(0, player.name.length - 1);
+					return false
+				}
+				return false
+			},
+
+			onClick : function(player, mouse,canvas) {
+				for (let x = 0; x < this.letters.length; x++) {
+					let currLetter = this.letters[x].onClick(mouse,canvas);
+					if (currLetter) {
+						this.add(player, currLetter);
+						return true
+					}
+				}
+				return false
+			},
+
+			startButton : {
+				img : userInterface.greenButton,
+				body : new RigidBody(240, 400, 100,50),
+				info : "Next",
+				draw : new Draw(),
+				clickHandler : new ClickHandler(),
+				display : function(ctx) {
+					this.draw.img(this.img, this.body.pos.x, this.body.pos.y, this.body.size.x, this.body.size.y, ctx);
+					this.draw.text(this.info, this.body.pos.x + 20, this.body.pos.y + 30, 20, ctx, "purple")
+				},
+
+				onClick : function(mouse,canvas) {
+					let click = this.clickHandler.click(mouse, this, canvas);
+					if (click) {
+						return "choosePassword";
+					}
+					return false;
+				},
+			},
+
+			backButton : {
+				img : userInterface.redButton,
+				body : new RigidBody(130, 400, 100,50),
+				info : "Back",
+				draw : new Draw(),
+				clickHandler : new ClickHandler(),
+				display : function(ctx) {
+					this.draw.img(this.img, this.body.pos.x, this.body.pos.y, this.body.size.x, this.body.size.y, ctx);
+					this.draw.text(this.info, this.body.pos.x + 20, this.body.pos.y + 30, 20, ctx, "purple")
+				},
+
+				onClick : function(mouse,canvas) {
+					let click = this.clickHandler.click(mouse, this, canvas);
+					if (click) {
+						return "start";
+					}
+					return false;
+				},
+			},
+
+			deleteButton : {
+				img : userInterface.redButton,
+				body : new RigidBody(390, 247, 80,40),
+				info : "Delete",
+				draw : new Draw(),
+				clickHandler : new ClickHandler(),
+
+				display : function(ctx) {
+					this.draw.img(this.img, this.body.pos.x, this.body.pos.y, this.body.size.x, this.body.size.y, ctx);
+					this.draw.text(this.info, this.body.pos.x + 20, this.body.pos.y + 25, 15, ctx, "purple")
+				},
+
+				onClick : function(mouse, canvas) {
+					let click = this.clickHandler.click(mouse, this, canvas);
+					if (click) {
+						return (true)
+					}
+					return(false);
+				}
+			}
+
+		}
+
+
+		this.choosePassword = {
+			label : "Pass :",
+			letters : this.makeLetterButtons(),
+			password: "",
+			draw: new Draw(),
+
+			display(player, ctx) {
+				this.draw.text(this.label, 120, 330, 35, ctx, "blue");
+				this.draw.text(this.password, 240, 330, 35, ctx, "blue");
+				for (let x = 0; x < this.letters.length; x++) {
+					this.letters[x].display(ctx)
+				}
+			},
+
+			add : function(player, letter) {
+				player.password = player.password += letter;
+				this.password += '*';
+
+			},
+
+			delete : function(player, mouse,canvas) {
+				if (this.deleteButton.onClick(mouse, canvas)) {
+					player.password = player.password.substring(0, player.password.length - 1);
+					this.password = this.password.substring(0, this.password.length - 1);
+
 					return false
 				}
 				return false
@@ -733,6 +838,9 @@ export default class GameStartScreen {
 	
 
 	display(player,ctx) {
+			if (this.open === false) {
+				return false;
+			}
 		  this.background.display(ctx);
           if (this.page === "start") {
 	          this.start.startButton.display(ctx);
@@ -743,6 +851,12 @@ export default class GameStartScreen {
           	this.chooseName.deleteButton.display(ctx);
           	this.chooseName.startButton.display(ctx);
           	this.chooseName.backButton.display(ctx);
+
+          } else if (this.page === "choosePassword") {
+          	this.choosePassword.display(player, ctx);
+          	this.choosePassword.deleteButton.display(ctx);
+          	this.choosePassword.startButton.display(ctx);
+          	this.choosePassword.backButton.display(ctx);
 
           } else if (this.page === "options") {
 	          this.options.backButton.display(ctx);
@@ -765,7 +879,7 @@ export default class GameStartScreen {
 	}
 
 	characterSelectClick(player, mouse, canvas) {
-
+			
 			this.choosePlayer.skin.onClick(player,mouse,canvas);
 			this.choosePlayer.hair.onClick(player,mouse,canvas);
 			this.choosePlayer.shirt.onClick(player,mouse,canvas);
@@ -776,6 +890,9 @@ export default class GameStartScreen {
 	}
 
 	clickHandler(player, mouse,canvas) {
+		if (this.open === false) {
+			return false;
+		}
 		let click = false;
 		if (this.page === "start") {
 
@@ -811,6 +928,31 @@ export default class GameStartScreen {
 				return false;
 			}
 			this.page = "chooseName"
+		}
+
+		else if (this.page === "choosePassword") {
+			click = this.choosePassword.onClick(player,mouse,canvas);
+			if (click) {
+				return false;
+			}
+
+			click = this.choosePassword.delete(player,mouse,canvas);
+			if (click) {
+				return false;
+			}
+
+			click = this.choosePassword.backButton.onClick(mouse,canvas);
+			if (click) {
+				this.page = click;
+				return false;
+			}
+			click = this.page = this.choosePassword.startButton.onClick(mouse,canvas)
+			if (click) {
+				this.page = click;
+				this.open = false;
+				return false;
+			}
+			this.page = "choosePassword"
 		}
 
 		if (this.page === "options") {

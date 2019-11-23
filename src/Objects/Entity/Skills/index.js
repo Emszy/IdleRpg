@@ -6,18 +6,18 @@ import {randomInt} from "../../../Helpers/functions"
 export default class Skills {
 	
 	constructor(settings) {
-
-		this.health = this.createSkill(settings.health, "Health");
-		this.attack = this.createSkill(settings.attack, "Attack");
-		this.defense = this.createSkill(settings.defense,"Defense")
-		this.attackSpeed = this.createSkill(settings.attackSpeed, "Attack Speed");
-		this.range = this.createSkill(settings.range, "Range");
-		this.magic = this.createSkill(settings.magic, "Magic");
-		this.thirst = this.createSkill(settings.thirst, "Thirst");
-		this.hunger = this.createSkill(settings.hunger, "Hunger");
-		this.mining = this.createSkill(settings.mining, "Mining");
-		this.woodcutting = this.createSkill(settings.woodcutting, "Woodcutting");
-		this.hunting = this.createSkill(settings.hunting, "Hunting");
+		let skill_id = 0;
+		this.health = this.createSkill(settings.health, "Health", skill_id++);
+		this.attack = this.createSkill(settings.attack, "Attack", skill_id++);
+		this.defense = this.createSkill(settings.defense,"Defense", skill_id++)
+		this.attackSpeed = this.createSkill(settings.attackSpeed, "Attack Speed", skill_id++);
+		this.range = this.createSkill(settings.range, "Range", skill_id++);
+		this.magic = this.createSkill(settings.magic, "Magic", skill_id++);
+		this.thirst = this.createSkill(settings.thirst, "Thirst", skill_id++);
+		this.hunger = this.createSkill(settings.hunger, "Hunger", skill_id++);
+		this.mining = this.createSkill(settings.mining, "Mining", skill_id++);
+		this.woodcutting = this.createSkill(settings.woodcutting, "Woodcutting", skill_id++);
+		this.hunting = this.createSkill(settings.hunting, "Hunting", skill_id++);
 
 		this.thirst.setDecayValue(settings.thirstDecay || 100); 
 		this.hunger.setDecayValue(settings.hungerDecay || 100);
@@ -36,8 +36,9 @@ export default class Skills {
 		this.hunting.boostTimer();
 	}
 
-	createSkill(value, name) {
+	createSkill(value, name, id) {
 		return ({
+			skill_id : id,
 			value: value,
 			time: 0,
 			boostTime: 0,

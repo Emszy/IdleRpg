@@ -352,33 +352,34 @@ export default class Items {
 			craftable : false
 		}
 
-		this.categories[0].addSubCategory("Potion", this.totalSubCategories++, potionSettings);
-		this.categories[0].addSubCategory("Food", this.totalSubCategories++, foodSettings);
-		this.categories[0].addSubCategory("Water", this.totalSubCategories++, foodSettings);
-		this.categories[0].addSubCategory("Cooked Food", this.totalSubCategories++, cookFoodSettings);
-		this.categories[0].addSubCategory("Plants", this.totalSubCategories++, foodSettings);
+		let sub_id = 0;
+		this.categories[0].addSubCategory("Potion", sub_id++, potionSettings);
+		this.categories[0].addSubCategory("Food", sub_id++, foodSettings);
+		this.categories[0].addSubCategory("Water", sub_id++, foodSettings);
+		this.categories[0].addSubCategory("Cooked Food", sub_id++, cookFoodSettings);
+		this.categories[0].addSubCategory("Plants", sub_id++, foodSettings);
+		sub_id = 0;
+		this.categories[1].addSubCategory("Ores", sub_id++, resourceSettings);
+		this.categories[1].addSubCategory("WoodCutting", sub_id++, resourceSettings);
+		this.categories[1].addSubCategory("Gathering", sub_id++, resourceSettings);
+		this.categories[1].addSubCategory("Bars", sub_id++, barSettings);
+		sub_id = 0;
 
-		this.categories[1].addSubCategory("Ores", this.totalSubCategories++, resourceSettings);
-		this.categories[1].addSubCategory("WoodCutting", this.totalSubCategories++, resourceSettings);
-		this.categories[1].addSubCategory("Gathering", this.totalSubCategories++, resourceSettings);
-		this.categories[1].addSubCategory("Bars", this.totalSubCategories++, barSettings);
-
-
-		this.categories[2].addSubCategory("Bronze", this.totalSubCategories++, armorSettings);
-		this.categories[2].addSubCategory("Iron", this.totalSubCategories++, armorSettings);
-		this.categories[2].addSubCategory("Gold", this.totalSubCategories++, armorSettings);
-		this.categories[2].addSubCategory("Platinum", this.totalSubCategories++, armorSettings);
-		this.categories[2].addSubCategory("Diamond", this.totalSubCategories++, armorSettings);
-
-		this.categories[3].addSubCategory("Bronze", this.totalSubCategories++, weaponSettings);
-		this.categories[3].addSubCategory("Iron", this.totalSubCategories++, weaponSettings);
-		this.categories[3].addSubCategory("Gold", this.totalSubCategories++, weaponSettings);
-		this.categories[3].addSubCategory("Platinum", this.totalSubCategories++, weaponSettings);
-		this.categories[3].addSubCategory("Diamond", this.totalSubCategories++, weaponSettings);
-		this.categories[3].addSubCategory("Bow", this.totalSubCategories++, weaponSettings);
-		this.categories[3].addSubCategory("Arrows", this.totalSubCategories++, weaponSettings);
-
-		this.categories[4].addSubCategory("Magic", this.totalSubCategories++, magicSettings);
+		this.categories[2].addSubCategory("Bronze", sub_id++, armorSettings);
+		this.categories[2].addSubCategory("Iron", sub_id++, armorSettings);
+		this.categories[2].addSubCategory("Gold", sub_id++, armorSettings);
+		this.categories[2].addSubCategory("Platinum", sub_id++, armorSettings);
+		this.categories[2].addSubCategory("Diamond", sub_id++, armorSettings);
+		sub_id = 0;
+		this.categories[3].addSubCategory("Bronze", sub_id++, weaponSettings);
+		this.categories[3].addSubCategory("Iron", sub_id++, weaponSettings);
+		this.categories[3].addSubCategory("Gold", sub_id++, weaponSettings);
+		this.categories[3].addSubCategory("Platinum", sub_id++, weaponSettings);
+		this.categories[3].addSubCategory("Diamond", sub_id++, weaponSettings);
+		this.categories[3].addSubCategory("Bow", sub_id++, weaponSettings);
+		this.categories[3].addSubCategory("Arrows", sub_id++, weaponSettings);
+		sub_id = 0;
+		this.categories[4].addSubCategory("Magic", sub_id++, magicSettings);
 
 	}
 

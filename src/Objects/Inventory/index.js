@@ -175,7 +175,6 @@ export default class Inventory {
    craft(item, amount) {
 
       //check to see if we have to craft cost in inventory
-      console.log(item, amount)
       for (var i = item.recipe.length - 1; i >= 0; i--) {
          let canCraft = this.craftFind(item.recipe[i].item, item.recipe[i].quantity, amount)
          if (canCraft === false) {
