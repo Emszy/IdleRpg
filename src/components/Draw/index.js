@@ -290,8 +290,7 @@ export default class Draw extends React.Component {
           this.gameStart = this.gameStartScreen.startGame;
           
           if (this.gameStartScreen.open === false) {
-            let res = this.login()
-
+            this.login()
           }
           return false;
         } 
