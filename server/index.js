@@ -40,8 +40,8 @@ armorRoute(app, db);
 
 
 
-app.get('*', (req, res) => {
-  
+app.get('/', (req, res) => {
+  res.json(start: "APP STARTED");
 });
 
 
