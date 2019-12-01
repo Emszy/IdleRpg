@@ -44,5 +44,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "main": "index.js",
+  "repository": "git@github.com:Emszy/IdleRpg.git",
+  "author": "Emszy <bucheiteric@gmail.com>",
+  "license": "MIT"
 }
