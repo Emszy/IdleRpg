@@ -102,7 +102,7 @@ directory for credits is src/assets/images/spriteSheets/credit
 Big thanks to them!
 
 
-
+![Home Screen Image](https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.23.30%20PM.png?raw=true)
 
 
 
