@@ -2,28 +2,16 @@ const Sequelize = require('sequelize')
 const uuidv4 = require('uuid/v4');
 const {seed} = require("./seed");
 
-var database = process.env.DATABASE_URL || 'idle_forest'
-
-
-if (process.env.DATABASE_URL) {
-  // the application is executed on Heroku ... use the postgres database
-  const sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect:  'postgres',
-    protocol: 'postgres'
-  })
-} else {
-  const sequelize = new Sequelize(database, 'postgres', 'postgres', {
-    host: 'localhost',
-    dialect: 'postgres',
-    pool: {
-      max: 10,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    }
-  })  
-}
-
+const sequelize = new Sequelize('idle_forest', 'postgres', 'postgres', {
+  host: 'localhost',
+  dialect: 'postgres',
+  pool: {
+    max: 10,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  }
+})
 
 
 const db = {};
