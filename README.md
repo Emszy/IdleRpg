@@ -2,6 +2,7 @@
 Idle Rpg Game to make a twist to your natural idle and Rpgs
 
 
+<h3> BUILD </h3>
 Built with Yarn package manager, so you will need yarn installed
 
 cd into repository, yarn install
@@ -19,7 +20,7 @@ A list of future updates will be listed at the bottom.
 
 Going to go live at some Point just needs a major overhaul, but if you can get it to work on your machine.. its a good couple of days of fun. ;)
 
-Basic Structure -
+<h3>Basic Structure -</h3>
 The game has 3 main classes, logic, a draw component, and a UI class.
 Most interaction and instantiation happens in the logic class.
 Logic class is instatiated and updated in the draw Component.
@@ -31,7 +32,7 @@ in case i wanted the npcs/animals to fight back, have enemies use range, or make
 It also make drawing and instantiating a new entity very easy because they are all the same.
 
 
-Basic GamePlay-
+<h3>Basic GamePlay-</h3>
 
 You are a character that fights automatically as you progress through levels
 you can toggle buttons to make him mine, woodcut, and hunt in which every resource and kill drops items 
@@ -63,7 +64,7 @@ saves and loads all data except for the farm so be sure to harvest before you cl
 
 
 
-Future updates - 
+<h3>Future updates - </h3>
 
 Refactor Some of the bigger classes, some got pretty big.
 Refactor the file structure, some things aren't as organized as I would like.
@@ -73,9 +74,6 @@ Refactor the Animations/Images file because it got huge, also create a standard
 add armor legs and boots and weapon mace, as of now it is just text because i dont have the sprites.
 
 Make difficulty level actually count from the main screen
-
-Add credits, If you pull, please check that folder, I couldnt have done it without the people at openGameArt, 
-the LPC Project helped me tremendously.
 
 Add a logout button so that you dont refresh to logout, lol
 
@@ -95,12 +93,20 @@ as I knock them off the list I will update this read-me.
 
 
 
+
+
+<h4>
+Add credits into the GameScreen, If you pull, please check that folder, I couldnt have done it without the people at openGameArt,
+the LPC Project helped me tremendously.
 Please check out the credits in the credits folder. They are the reasons that everything isn't just text with
 non animated squares and circles.
-
 directory for credits is <a href="src/assets/images/spriteSheets/credit">HERE</a>
-
+</h4>
+<h2>
 Big thanks to them!
+</h2>
+
+<h1> Game Images </h1>
 <p align="center">
   <img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.23.30%20PM.png" width="400" height="400">
 
