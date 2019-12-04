@@ -17,6 +17,7 @@ to run the project locally on port 3000 express proxy port 3001
 Still needs a little bit of fixes, was a big project and havent gotten around to absolutely everything.
 A list of future updates will be listed at the bottom.
 
+Going to go live at some Point just needs a major overhaul, but if you can get it to work on your machine.. its a good couple of days of fun. ;)
 
 Basic Structure -
 The game has 3 main classes, logic, a draw component, and a UI class.
