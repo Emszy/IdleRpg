@@ -109,7 +109,8 @@ Big thanks to them!
   <img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.24.05%20PM.png" width="400" height="400">
   <img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.24.15%20PM.png" width="400" height="400">
   <img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.24.24%20PM.png" width="400" height="400">
-</p>
   <img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.24.35%20PM.png" width="400" height="400">
+  <img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%209.58.47%20PM.png?raw=true" width="400" height="400">
+</p>
 
 
