@@ -101,12 +101,15 @@ non animated squares and circles.
 directory for credits is src/assets/images/spriteSheets/credit
 
 Big thanks to them!
+<p align="center">
+  <img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.23.30%20PM.png" width="400" height="400">
 
-<img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.23.30%20PM.png" width="400" height="400">
-<img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.23.43%20PM.png" width="400" height="400">
-<img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.23.53%20PM.png" width="400" height="400">
-<img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.24.05%20PM.png" width="400" height="400">
-<img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.24.15%20PM.png" width="400" height="400">
-<img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.24.24%20PM.png" width="400" height="400">
-<img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.24.35%20PM.png" width="400" height="400">
+  <img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.23.43%20PM.png" width="400" height="400">
+  <img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.23.53%20PM.png" width="400" height="400">
+  <img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.24.05%20PM.png" width="400" height="400">
+  <img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.24.15%20PM.png" width="400" height="400">
+  <img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.24.24%20PM.png" width="400" height="400">
+</p>
+  <img src="https://github.com/Emszy/IdleRpg/blob/master/src/assets/images/DemoImages/Screen%20Shot%202019-12-03%20at%205.24.35%20PM.png" width="400" height="400">
+
 
