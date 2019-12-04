@@ -98,7 +98,7 @@ as I knock them off the list I will update this read-me.
 Please check out the credits in the credits folder. They are the reasons that everything isn't just text with
 non animated squares and circles.
 
-directory for credits is src/assets/images/spriteSheets/credit
+directory for credits is <a href="src/assets/images/spriteSheets/credit">HERE</a>
 
 Big thanks to them!
 <p align="center">
